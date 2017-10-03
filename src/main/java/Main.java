@@ -4,9 +4,7 @@
 import org.apache.commons.cli.*;
 
 import java.sql.*;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Optional;
 
 public class Main {
     public static void main(String args[]) throws ParseException {
@@ -22,16 +20,6 @@ public class Main {
         Options options = new Options();
         options.addOption("t", false, "display current time");
 
-        // Option taskOption = new Option("task", "add todo tasks");
-        // taskOption.setArgs(Option.UNLIMITED_VALUES);
-
-        Option taskOption = Option.builder("task")
-                .desc("add todo tasks")
-                .hasArgs()
-                .build();
-
-        options.addOption(taskOption);
-
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
@@ -40,9 +28,6 @@ public class Main {
         } else {
             System.out.println("No data option supplied");
         }
-
-        Optional<String[]> task = Optional.ofNullable(cmd.getOptionValues("task"));
-        task.ifPresent(t -> System.out.println(Arrays.toString(t)));
     }
 
     // Before running the program, db needs to be started:
@@ -53,7 +38,7 @@ public class Main {
         try {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
             // /tododb;ifexists=true would allow to connect only to an existing db
-            connection = DriverManager.getConnection("jdbc:hsqldb:file:~/coding/tododb", "SA", "");
+            connection = DriverManager.getConnection("jdbc:hsqldb:file:~/temporary/tododb", "SA", "");
 
             if (connection != null) {
                 System.out.println("Successfully established connection!");
