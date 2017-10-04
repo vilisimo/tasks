@@ -1,3 +1,4 @@
+import colours.Printer;
 import org.apache.commons.cli.*;
 
 import java.util.Arrays;
@@ -17,6 +18,8 @@ public class ArgumentParser {
             Optional<String[]> task = Optional.ofNullable(cmd.getOptionValues("add"));
             task.ifPresentOrElse(t -> Arrays.stream(t).forEach(System.out::println), () -> System.out.println("Nothing added"));
 
+        } catch (MissingArgumentException e) {
+            Printer.printRed("Please provide a task description!");
         } catch (ParseException e) {
             e.printStackTrace();
         }
