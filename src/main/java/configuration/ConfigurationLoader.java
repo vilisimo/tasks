@@ -1,0 +1,56 @@
+package configuration;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.Optional.ofNullable;
+
+public class ConfigurationLoader {
+
+    public static JdbcConfiguration loadJdbcConfig(String path) {
+        requireNonNull(path);
+
+        InputStream input = getInputStream(path);
+        Properties properties = loadProperties(input);
+
+        return createJdbcConfig(properties);
+    }
+
+    static InputStream getInputStream(String path) {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream stream = classLoader.getResourceAsStream(path);
+
+        if (stream == null) {
+            throw new RuntimeException("Configuration file could not be found at the specified location (" + path + ")");
+        }
+
+        return stream;
+    }
+
+    static Properties loadProperties(InputStream input) {
+        Properties properties = new Properties();
+        try {
+            properties.load(input);
+            return properties;
+        } catch (IOException exception) {
+            throw new RuntimeException("Properties file could not be loaded", exception);
+        }
+    }
+
+    static JdbcConfiguration createJdbcConfig(Properties properties) {
+        JdbcConfiguration configuration = new JdbcConfiguration();
+
+        configuration.driver = ofNullable(properties.getProperty("jdbc.driver"))
+                .orElseThrow(() -> new NullPointerException("\"jdbc.driver\" property is missing"));
+        configuration.url = ofNullable(properties.getProperty("jdbc.url"))
+                .orElseThrow(() -> new NullPointerException("\"jdbc.url\" property is missing"));
+        configuration.username = ofNullable(properties.getProperty("jdbc.username"))
+                .orElseThrow(() -> new NullPointerException("\"jdbc.username\" property is missing"));
+        configuration.password = ofNullable(properties.getProperty("jdbc.password"))
+                .orElseThrow(() -> new NullPointerException("\"jdbc.password\" property is missing"));
+
+        return configuration;
+    }
+}
