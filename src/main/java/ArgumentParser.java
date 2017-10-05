@@ -1,4 +1,4 @@
-import colours.Printer;
+import colouring.Printer;
 import commands.Command;
 import commands.CreateTaskCommand;
 import org.apache.commons.cli.*;
