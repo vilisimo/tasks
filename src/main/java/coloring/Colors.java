@@ -1,4 +1,4 @@
-package colouring;
+package coloring;
 
 public enum Colors {
 

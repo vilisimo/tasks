@@ -1,4 +1,4 @@
-import colouring.Printer;
+import coloring.Printer;
 import commands.Command;
 import commands.CreateTaskCommand;
 import org.apache.commons.cli.*;
@@ -20,7 +20,7 @@ public class ArgumentParser {
             }
 
         } catch (MissingArgumentException e) {
-            Printer.printRed("Please provide a task description!");
+            Printer.error("Please provide a task description!");
         } catch (ParseException e) {
             e.printStackTrace();
         }
