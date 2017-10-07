@@ -1,14 +1,7 @@
-// To run through maven:
-// >>> mvn exec:java -Dexec.args="--help"
-
-import org.apache.commons.cli.*;
-
 import java.sql.*;
-import java.util.Date;
 
 public class Main {
-    public static void main(String args[]) throws ParseException {
-        createOptions(args);
+    public static void main(String args[]) {
         try (Connection connection = connect()) {
             createTable(connection);
         } catch (SQLException e) {
@@ -16,27 +9,10 @@ public class Main {
         }
     }
 
-    private static void createOptions(String args[]) throws ParseException {
-        Options options = new Options();
-        options.addOption("t", false, "display current time");
-
-        CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse(options, args);
-
-        if (cmd.hasOption("t")) {
-            System.out.println("Date is: " + new Date());
-        } else {
-            System.out.println("No data option supplied");
-        }
-    }
-
-    // Before running the program, db needs to be started:
-    // >>> java -classpath lib/hsqldb.jar org.hsqldb.server.Server --database.0 file:hsqldb/tododb --dbname.0 tododb
     private static Connection connect() {
         Connection connection = null;
 
         try {
-            Class.forName("org.hsqldb.jdbc.JDBCDriver");
             // /tododb;ifexists=true would allow to connect only to an existing db
             connection = DriverManager.getConnection("jdbc:hsqldb:file:~/temporary/tododb", "SA", "");
 
@@ -45,7 +21,7 @@ public class Main {
             } else {
                 System.out.println("Connection was not established...");
             }
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
