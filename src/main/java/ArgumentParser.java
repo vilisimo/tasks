@@ -5,9 +5,6 @@ import org.apache.commons.cli.*;
 
 import java.util.Optional;
 
-// TODO: mutually exclusive groups. I.e., if add task is specified
-// TODO: saving to database
-
 public class ArgumentParser {
 
     public static Optional<Command> parse(Options options, String[] args) {
