@@ -9,3 +9,5 @@ flags should not be allowed.
 * Add clearing all tasks
 * Crossed out / different color for done tasks
 * Add time to finish
+* ~~Add logger~~
+* Add liquibase
