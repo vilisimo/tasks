@@ -1,0 +1,8 @@
+# Liquibase settings
+changeLogFile: src/main/resources/db/db.changelog.yaml
+
+# Database properties
+driver: ${jdbc.driver}
+url: ${jdbc.url}
+username: ${jdbc.username}
+password: ${jdbc.password}

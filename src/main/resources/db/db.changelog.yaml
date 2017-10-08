@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: vilisimo
+      changes:
+        - createTable:
+            tableName: person
+            columns:
+              - column:
+                  name: firstname
+                  type: varchar(50)
