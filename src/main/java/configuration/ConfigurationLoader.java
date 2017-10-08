@@ -1,5 +1,8 @@
 package configuration;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -9,11 +12,15 @@ import static java.util.Optional.ofNullable;
 
 public class ConfigurationLoader {
 
+    private final static Logger logger = LogManager.getLogger();
+
     public static JdbcConfiguration loadJdbcConfig(String path) {
         requireNonNull(path);
 
         InputStream input = getInputStream(path);
+        logger.trace("Loaded input stream from {}", path);
         Properties properties = loadProperties(input);
+        logger.info("Loaded properties from {}", path);
 
         return createJdbcConfig(properties);
     }
