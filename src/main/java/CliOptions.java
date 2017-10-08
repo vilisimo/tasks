@@ -17,7 +17,7 @@ public class CliOptions {
 
     private static Option createAddTask() {
         return Option.builder("add")
-                .desc("Adds a new todo task")
+                .desc("Adds a new task")
                 .argName("Add task")
                 .hasArgs()
                 .build();
