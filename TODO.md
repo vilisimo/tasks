@@ -10,4 +10,4 @@ flags should not be allowed.
 * Crossed out / different color for done tasks
 * Add time to finish
 * ~~Add logger~~
-* Add liquibase
+* ~~Add liquibase~~
