@@ -17,8 +17,10 @@ public class Application {
     public static void main(String args[]) {
         JdbcConfiguration jdbcConfig = ConfigurationLoader.loadJdbcConfig("db/server.properties");
         Database database = new Database(jdbcConfig);
+
         Options options = CliOptions.createOptions();
         Optional<Command> command = ArgumentParser.parse(options, args);
+        command.ifPresent(Command::execute);
 
         database.closeConnection();
     }

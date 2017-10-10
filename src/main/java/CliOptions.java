@@ -10,6 +10,7 @@ public class CliOptions {
     public static Options createOptions() {
         Options options = new Options();
         options.addOption(createAddTask());
+        options.addOption(createDeadline());
         logger.info("Added command line options");
 
         return options;
@@ -17,9 +18,18 @@ public class CliOptions {
 
     private static Option createAddTask() {
         return Option.builder("add")
+                .required()
                 .desc("Adds a new task")
                 .argName("Add task")
                 .hasArgs()
+                .build();
+    }
+
+    private static Option createDeadline() {
+        return Option.builder("d")
+                .desc("Add deadline for the task")
+                .argName("Deadline")
+                .hasArg()
                 .build();
     }
 }
