@@ -15,7 +15,7 @@ public class ConfigurationLoader {
     private final static Logger logger = LogManager.getLogger();
 
     public static JdbcConfiguration loadJdbcConfig(String path) {
-        requireNonNull(path);
+        requireNonNull(path, "Path was not provided");
 
         InputStream input = getInputStream(path);
         logger.trace("Loaded input stream from {}", path);
