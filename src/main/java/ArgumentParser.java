@@ -2,10 +2,12 @@ import cli.OptionNames;
 import coloring.Printer;
 import commands.Command;
 import commands.CreateTaskCommand;
+import dates.DateParser;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -44,12 +46,13 @@ public class ArgumentParser {
 
             if (endDate.isPresent()) {
                 logger.trace("Found deadline option");
-                commandBuilder.deadline(Instant.now());
+                Timestamp date = DateParser.parseDate(endDate.get());
+                commandBuilder.deadline(date);
             }
 
             command = Optional.of(commandBuilder.build());
 
-        } catch (MissingArgumentException | MissingOptionException e) {
+        } catch (MissingArgumentException | MissingOptionException | NumberFormatException e) {
             Printer.error(e.getMessage());
         } catch (ParseException e) {
             throw new RuntimeException("Command parsing has failed", e);

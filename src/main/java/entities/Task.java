@@ -1,13 +1,13 @@
 package entities;
 
-import java.time.Instant;
+import java.sql.Timestamp;
 
 public class Task {
 
     private String description;
-    private Instant deadline;
+    private Timestamp deadline;
 
-    public Task(String description, Instant deadline) {
+    public Task(String description, Timestamp deadline) {
         this.description = description;
         this.deadline = deadline;
     }
@@ -20,11 +20,11 @@ public class Task {
         this.description = description;
     }
 
-    public Instant getDeadline() {
+    public Timestamp getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Instant deadline) {
+    public void setDeadline(Timestamp deadline) {
         this.deadline = deadline;
     }
 

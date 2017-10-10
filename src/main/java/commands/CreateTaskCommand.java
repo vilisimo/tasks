@@ -5,7 +5,7 @@ import entities.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.Instant;
+import java.sql.Timestamp;
 
 public class CreateTaskCommand implements Command {
 
@@ -13,7 +13,7 @@ public class CreateTaskCommand implements Command {
 
     private Task task;
 
-    private CreateTaskCommand(String[] descriptionArray, Instant deadline) {
+    private CreateTaskCommand(String[] descriptionArray, Timestamp deadline) {
         String description = String.join(" ", descriptionArray);
         this.task = new Task(description, deadline);
     }
@@ -26,14 +26,14 @@ public class CreateTaskCommand implements Command {
 
     public static class Builder {
         private String[] description;
-        private Instant deadline = null;
+        private Timestamp deadline = null;
 
         public Builder description(String[] description) {
             this.description = description;
             return this;
         }
 
-        public Builder deadline(Instant deadline) {
+        public Builder deadline(Timestamp deadline) {
             this.deadline = deadline;
             return this;
         }
