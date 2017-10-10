@@ -1,3 +1,4 @@
+import cli.OptionNames;
 import coloring.Printer;
 import commands.Command;
 import commands.CreateTaskCommand;
@@ -7,6 +8,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
 import java.util.Optional;
+
+import static cli.OptionNames.ADD;
+import static cli.OptionNames.DEADLINE;
 
 public class ArgumentParser {
 
@@ -26,8 +30,8 @@ public class ArgumentParser {
             CommandLine cmd = parser.parse(options, args);
             logger.info("Parsed command line arguments");
 
-            Optional<String[]> task = Optional.ofNullable(cmd.getOptionValues("add"));
-            Optional<String> endDate = Optional.ofNullable(cmd.getOptionValue("d"));
+            Optional<String[]> task = Optional.ofNullable(cmd.getOptionValues(ADD));
+            Optional<String> endDate = Optional.ofNullable(cmd.getOptionValue(DEADLINE));
 
             if (task.isPresent()) {
                 logger.trace("Found description option");

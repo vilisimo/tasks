@@ -1,3 +1,4 @@
+import cli.CliOptions;
 import commands.Command;
 import configuration.ConfigurationLoader;
 import configuration.JdbcConfiguration;

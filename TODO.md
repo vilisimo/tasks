@@ -11,3 +11,5 @@ flags should not be allowed.
 * Add time to finish
 * ~~Add logger~~
 * ~~Add liquibase~~
+* Move argument parser from static to normal class
+* Add conversion to dates from strings of deadlines

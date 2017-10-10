@@ -1,4 +1,5 @@
-import cli.CliOptions;
+package cli;
+
 import org.apache.commons.cli.Options;
 import org.junit.Before;
 import org.junit.Test;
