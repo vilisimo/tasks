@@ -15,16 +15,20 @@ import static cli.OptionNames.DEADLINE;
 public class ArgumentParser {
 
     private static final Logger logger = LogManager.getLogger();
+    private CommandLineParser parser;
 
-    public static Optional<Command> parse(Options options, String[] args) {
+    public ArgumentParser() {
+        this.parser = new DefaultParser();
+    }
+
+    public Optional<Command> parse(Options options, String[] args) {
         Optional<Command> command = Optional.empty();
 
-        if (args.length < 1) {
+        if (isEmpty(args)) {
             return command;
         }
 
         CreateTaskCommand.Builder commandBuilder = new CreateTaskCommand.Builder();
-        CommandLineParser parser = new DefaultParser();
 
         try {
             CommandLine cmd = parser.parse(options, args);
@@ -43,7 +47,6 @@ public class ArgumentParser {
                 commandBuilder.deadline(Instant.now());
             }
 
-            logger.trace("Creating {}", CreateTaskCommand.class.getSimpleName());
             command = Optional.of(commandBuilder.build());
 
         } catch (MissingArgumentException | MissingOptionException e) {
@@ -53,5 +56,9 @@ public class ArgumentParser {
         }
 
         return command;
+    }
+
+    private static boolean isEmpty(String[] args) {
+        return args.length < 1;
     }
 }

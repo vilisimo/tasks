@@ -20,7 +20,8 @@ public class Application {
         Database database = new Database(jdbcConfig);
 
         Options options = CliOptions.createOptions();
-        Optional<Command> command = ArgumentParser.parse(options, args);
+        ArgumentParser parser = new ArgumentParser();
+        Optional<Command> command = parser.parse(options, args);
         command.ifPresent(Command::execute);
 
         database.closeConnection();

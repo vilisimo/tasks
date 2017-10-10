@@ -39,6 +39,7 @@ public class CreateTaskCommand implements Command {
         }
 
         public CreateTaskCommand build() {
+            logger.trace("Creating {}", CreateTaskCommand.class.getSimpleName());
             return new CreateTaskCommand(description, deadline);
         }
     }
