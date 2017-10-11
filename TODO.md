@@ -1,7 +1,7 @@
 ### Todo
 * Add mutually exclusive groups. I.e., if add task is specified, other irrelevant 
 flags should not be allowed.
-* Add saving to the database
+* ~~Add saving to the database~~
 * Add retrieving from the database
 * Add removing from the database
 * Add retrieving today's tasks
@@ -11,5 +11,7 @@ flags should not be allowed.
 * Add time to finish
 * ~~Add logger~~
 * ~~Add liquibase~~
-* Move argument parser from static to normal class
-* Add conversion to dates from strings of deadlines
+* ~~Move argument parser from static to normal class~~
+* ~~Add conversion to dates from strings of deadlines~~
+* Add (optional) categories for tasks
+* Add ability to filter on categories
