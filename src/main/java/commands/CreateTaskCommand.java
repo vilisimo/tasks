@@ -1,11 +1,12 @@
 package commands;
 
-import coloring.Printer;
+import configuration.JdbcConfiguration;
+import datasource.Database;
 import entities.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class CreateTaskCommand implements Command {
 
@@ -19,9 +20,24 @@ public class CreateTaskCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public void execute(JdbcConfiguration configuration) throws SQLException {
         logger.trace("Executing {} on {}", CreateTaskCommand.class.getSimpleName(), task.toString());
-        Printer.warning("BE ADVISED: this method should be fully implemented before use");
+        Database db = new Database(configuration);
+
+        String update = "INSERT INTO TASKS(description, deadline) VALUES (?, ?)";
+        try (Connection conn = db.getConnection();
+             PreparedStatement statement = conn.prepareStatement(update, Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setString(1, task.getDescription());
+            statement.setTimestamp(2, task.getDeadline());
+            statement.executeUpdate();
+            logger.trace("Successfully executed an update");
+
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                resultSet.next();
+                logger.info("Committed task to the database, id={}", resultSet.getLong(1));
+            }
+        }
     }
 
     public static class Builder {

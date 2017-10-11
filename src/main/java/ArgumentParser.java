@@ -1,4 +1,3 @@
-import cli.OptionNames;
 import coloring.Printer;
 import commands.Command;
 import commands.CreateTaskCommand;
@@ -8,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Optional;
 
 import static cli.OptionNames.ADD;
