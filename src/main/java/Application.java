@@ -1,11 +1,10 @@
 import cli.CliOptions;
-import coloring.Printer;
 import commands.Command;
 import configuration.ConfigurationLoader;
 import configuration.JdbcConfiguration;
+import datasource.Database;
 import org.apache.commons.cli.Options;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
 /**
@@ -21,13 +20,6 @@ public class Application {
         Options options = CliOptions.createOptions();
         ArgumentParser parser = new ArgumentParser();
         Optional<Command> command = parser.parse(options, args);
-
-        command.ifPresent(cmd -> {
-            try {
-                cmd.execute(jdbcConfig);
-            } catch (SQLException e) {
-                Printer.error("SQL Error while executing the command");
-            }
-        });
+        command.ifPresent(cmd -> cmd.execute(new Database(jdbcConfig)));
     }
 }

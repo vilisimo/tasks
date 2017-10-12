@@ -1,12 +1,12 @@
 package commands;
 
-import configuration.JdbcConfiguration;
 import datasource.Database;
 import entities.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class CreateTaskCommand implements Command {
 
@@ -20,23 +20,13 @@ public class CreateTaskCommand implements Command {
     }
 
     @Override
-    public void execute(JdbcConfiguration configuration) throws SQLException {
+    public void execute(Database database) {
         logger.trace("Executing {} on {}", CreateTaskCommand.class.getSimpleName(), task.toString());
-        Database db = new Database(configuration);
 
-        String update = "INSERT INTO TASKS(description, deadline) VALUES (?, ?)";
-        try (Connection conn = db.getConnection();
-             PreparedStatement statement = conn.prepareStatement(update, Statement.RETURN_GENERATED_KEYS)) {
-
-            statement.setString(1, task.getDescription());
-            statement.setTimestamp(2, task.getDeadline());
-            statement.executeUpdate();
-            logger.trace("Successfully executed an update");
-
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                resultSet.next();
-                logger.info("Committed task to the database, id={}", resultSet.getLong(1));
-            }
+        try {
+            database.save(task);
+        } catch (SQLException e) {
+            throw new RuntimeException("SQL execution failed", e);
         }
     }
 

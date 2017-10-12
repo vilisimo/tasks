@@ -1,9 +1,7 @@
 package commands;
 
-import configuration.JdbcConfiguration;
-
-import java.sql.SQLException;
+import datasource.Database;
 
 public interface Command {
-    void execute(JdbcConfiguration configuration) throws SQLException;
+    void execute(Database database);
 }
