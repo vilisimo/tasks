@@ -7,12 +7,6 @@ import org.apache.commons.cli.Options;
 
 import java.util.Optional;
 
-/**
- * To run app with Maven:
- * >>> mvn clean install
- * >>> mvn exec:java -Dexec.args="arguments"
- */
-
 public class Application {
 
     public static void main(String args[]) {
