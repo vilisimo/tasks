@@ -2,10 +2,10 @@ package entities;
 
 import java.sql.Timestamp;
 
-public class Task {
+public final class Task {
 
-    private String description;
-    private Timestamp deadline;
+    private final String description;
+    private final Timestamp deadline;
 
     public Task(String description, Timestamp deadline) {
         this.description = description;
@@ -16,16 +16,8 @@ public class Task {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Timestamp getDeadline() {
         return deadline;
-    }
-
-    public void setDeadline(Timestamp deadline) {
-        this.deadline = deadline;
     }
 
     @Override
