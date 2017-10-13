@@ -2,7 +2,8 @@ import cli.CliOptions;
 import commands.Command;
 import configuration.ConfigurationLoader;
 import configuration.JdbcConfiguration;
-import datasource.Database;
+
+import datasource.DatabaseFactory;
 import org.apache.commons.cli.Options;
 
 import java.util.Optional;
@@ -14,6 +15,6 @@ public class Application {
         Options options = CliOptions.createOptions();
         ArgumentParser parser = new ArgumentParser();
         Optional<Command> command = parser.parse(options, args);
-        command.ifPresent(cmd -> cmd.execute(new Database(jdbcConfig)));
+        command.ifPresent(cmd -> cmd.execute(DatabaseFactory.createDatabase("hsql", jdbcConfig)));
     }
 }
