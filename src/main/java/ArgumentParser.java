@@ -12,16 +12,17 @@ import java.util.Optional;
 import static cli.OptionNames.ADD;
 import static cli.OptionNames.DEADLINE;
 
-public class ArgumentParser {
+class ArgumentParser {
 
     private static final Logger logger = LogManager.getLogger();
+
     private CommandLineParser parser;
 
-    public ArgumentParser() {
+    ArgumentParser() {
         this.parser = new DefaultParser();
     }
 
-    public Optional<Command> parse(Options options, String[] args) {
+    Optional<Command> parse(Options options, String[] args) {
         Optional<Command> command = Optional.empty();
 
         if (isEmpty(args)) {
