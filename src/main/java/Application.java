@@ -15,6 +15,6 @@ public class Application {
         Options options = CliOptions.createOptions();
         ArgumentParser parser = new ArgumentParser();
         Optional<Command> command = parser.parse(options, args);
-        command.ifPresent(cmd -> cmd.execute(DatabaseFactory.createDatabase("hsql", jdbcConfig)));
+        command.ifPresent(cmd -> cmd.execute(DatabaseFactory.createDatabase("hsqldb", jdbcConfig)));
     }
 }
