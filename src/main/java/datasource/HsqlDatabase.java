@@ -1,7 +1,7 @@
 package datasource;
 
+import commands.parameters.AddTaskParameter;
 import configuration.JdbcConfiguration;
-import entities.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hsqldb.jdbc.JDBCPool;
@@ -25,7 +25,7 @@ class HsqlDatabase implements Database {
     }
 
     @Override
-    public void save(Task task) throws SQLException {
+    public void save(AddTaskParameter task) throws SQLException {
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
 

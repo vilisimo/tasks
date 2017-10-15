@@ -1,13 +1,15 @@
 import coloring.Printer;
+import commands.AddTaskCommand;
 import commands.Command;
-import commands.CreateTaskCommand;
+import commands.parameters.AddTaskParameter;
 import dates.DateParser;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Timestamp;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static cli.OptionNames.ADD;
 import static cli.OptionNames.DEADLINE;
@@ -22,34 +24,18 @@ class ArgumentParser {
         this.parser = new DefaultParser();
     }
 
-    Optional<Command> parse(Options options, String[] args) {
-        Optional<Command> command = Optional.empty();
+    List<Command> parse(Options options, String[] args) {
+        List<Command> commands = new ArrayList<>();
 
         if (isEmpty(args)) {
-            return command;
+            return commands;
         }
-
-        CreateTaskCommand.Builder commandBuilder = new CreateTaskCommand.Builder();
 
         try {
             CommandLine cmd = parser.parse(options, args);
             logger.info("Parsed command line arguments");
 
-            Optional<String[]> task = Optional.ofNullable(cmd.getOptionValues(ADD));
-            Optional<String> endDate = Optional.ofNullable(cmd.getOptionValue(DEADLINE));
-
-            if (task.isPresent()) {
-                logger.trace("Found description option");
-                commandBuilder.description(task.get());
-            }
-
-            if (endDate.isPresent()) {
-                logger.trace("Found deadline option");
-                Timestamp date = DateParser.parseDate(endDate.get());
-                commandBuilder.deadline(date);
-            }
-
-            command = Optional.of(commandBuilder.build());
+            commands.add(createAddTaskCommand(cmd));
 
         } catch (MissingArgumentException | MissingOptionException | NumberFormatException e) {
             Printer.error(e.getMessage());
@@ -57,7 +43,21 @@ class ArgumentParser {
             throw new RuntimeException("Command parsing has failed", e);
         }
 
-        return command;
+        return commands;
+    }
+
+    private AddTaskCommand createAddTaskCommand(CommandLine cmd) {
+        logger.trace("Creating {}", AddTaskCommand.class.getSimpleName());
+
+        AddTaskParameter.Builder addTaskBuilder = new AddTaskParameter.Builder();
+        addTaskBuilder.description(cmd.getOptionValues(ADD));
+
+        if (cmd.getOptionValue(DEADLINE) != null) {
+            Timestamp date = DateParser.parseDate(cmd.getOptionValue(DEADLINE));
+            addTaskBuilder.deadline(date);
+        }
+
+        return new AddTaskCommand(addTaskBuilder.build());
     }
 
     private static boolean isEmpty(String[] args) {

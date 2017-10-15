@@ -1,9 +1,9 @@
 package datasource;
 
-import entities.Task;
+import commands.parameters.AddTaskParameter;
 
 import java.sql.SQLException;
 
 public interface Database {
-    void save(Task task) throws SQLException;
+    void save(AddTaskParameter task) throws SQLException;
 }
