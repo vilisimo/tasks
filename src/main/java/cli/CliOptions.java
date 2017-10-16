@@ -14,16 +14,15 @@ public class CliOptions {
 
     public static Options createOptions() {
         Options options = new Options();
-        options.addOption(createAddTask());
+        options.addOption(createAddTaskCommand());
         options.addOption(createDeadline());
         logger.info("Added command line options");
 
         return options;
     }
 
-    private static Option createAddTask() {
+    private static Option createAddTaskCommand() {
         return Option.builder(ADD)
-                .required()
                 .desc("Adds a new task")
                 .argName("Add task")
                 .hasArgs()
