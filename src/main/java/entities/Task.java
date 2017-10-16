@@ -1,22 +1,34 @@
 package entities;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 public final class Task {
 
+    private final int id;
     private final String description;
-    private final Timestamp deadline;
+    private final Instant created;
+    private final Instant deadline;
 
-    public Task(String description, Timestamp deadline) {
+    public Task(int id, String description, Instant created, Instant deadline) {
+        this.id = id;
         this.description = description;
+        this.created = created;
         this.deadline = deadline;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public Timestamp getDeadline() {
+    public Instant getCreated() {
+        return created;
+    }
+
+    public Instant getDeadline() {
         return deadline;
     }
 
