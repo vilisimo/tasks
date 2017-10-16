@@ -1,5 +1,6 @@
 package datasource;
 
+import coloring.Printer;
 import commands.parameters.AddTaskParameter;
 import commands.parameters.ShowTasksParameter;
 import configuration.JdbcConfiguration;
@@ -38,11 +39,13 @@ class HsqlDatabase implements Database {
             statement.setString(1, task.getDescription());
             statement.setTimestamp(2, task.getDeadline());
             statement.executeUpdate();
-            logger.trace("Successfully saved a task");
 
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 resultSet.next();
-                logger.info("Committed task to the database, id={}", resultSet.getLong(1));
+                long taskId = resultSet.getLong(1);
+                Printer.success("Successfully saved a task with id=" + taskId + ".");
+
+                logger.info("Committed task(id={}) to the database", taskId);
             }
         }
     }
