@@ -1,7 +1,9 @@
 import coloring.Printer;
 import commands.AddTaskCommand;
 import commands.Command;
+import commands.ShowTasksCommand;
 import commands.parameters.AddTaskParameter;
+import commands.parameters.ShowTasksParameter;
 import dates.DateParser;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -11,8 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cli.OptionNames.ADD;
-import static cli.OptionNames.DEADLINE;
+import static cli.OptionNames.*;
 
 class ArgumentParser {
 
@@ -36,6 +37,7 @@ class ArgumentParser {
             logger.info("Parsed command line arguments");
 
             commands.add(createAddTaskCommand(cmd));
+            commands.add(createShowTasksCommand(cmd));
 
         } catch (MissingArgumentException | MissingOptionException | NumberFormatException e) {
             Printer.error(e.getMessage());
@@ -44,6 +46,10 @@ class ArgumentParser {
         }
 
         return commands;
+    }
+
+    private static boolean isEmpty(String[] args) {
+        return args.length < 1;
     }
 
     private AddTaskCommand createAddTaskCommand(CommandLine cmd) {
@@ -60,7 +66,13 @@ class ArgumentParser {
         return new AddTaskCommand(addTaskBuilder.build());
     }
 
-    private static boolean isEmpty(String[] args) {
-        return args.length < 1;
+    private ShowTasksCommand createShowTasksCommand(CommandLine cmd) {
+        logger.trace("Creating {}", ShowTasksCommand.class.getSimpleName());
+
+        if (cmd.hasOption(SHOW)) {
+            return new ShowTasksCommand(new ShowTasksParameter(false));
+        } else {
+            return new ShowTasksCommand(new ShowTasksParameter(true));
+        }
     }
 }

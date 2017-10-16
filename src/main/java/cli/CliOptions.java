@@ -5,8 +5,7 @@ import org.apache.commons.cli.Options;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static cli.OptionNames.ADD;
-import static cli.OptionNames.DEADLINE;
+import static cli.OptionNames.*;
 
 public class CliOptions {
 
@@ -16,6 +15,7 @@ public class CliOptions {
         Options options = new Options();
         options.addOption(createAddTaskCommand());
         options.addOption(createDeadline());
+        options.addOption(createShowCommand());
         logger.info("Added command line options");
 
         return options;
@@ -34,6 +34,14 @@ public class CliOptions {
                 .desc("Add deadline for the task")
                 .argName("Deadline")
                 .hasArg()
+                .build();
+    }
+
+
+    private static Option createShowCommand() {
+        return Option.builder(SHOW)
+                .desc("Shows currently saved tasks")
+                .argName("Show tasks")
                 .build();
     }
 }
