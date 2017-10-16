@@ -14,7 +14,6 @@ public class AddTaskCommand extends Command<AddTaskParameter> {
     @Override
     void executeParameters(Database database) {
         try {
-            logger.trace("Attempting to save a task");
             database.save(parameter);
         } catch (SQLException e) {
             throw new RuntimeException("SQL execution failed", e);

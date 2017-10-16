@@ -33,6 +33,8 @@ class HsqlDatabase implements Database {
 
     @Override
     public void save(AddTaskParameter task) throws SQLException {
+        logger.trace("Attempting to save a task");
+
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
 
