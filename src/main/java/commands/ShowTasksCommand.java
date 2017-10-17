@@ -17,18 +17,19 @@ public class ShowTasksCommand extends Command<ShowTasksParameter> {
 
     @Override
     void executeParameters(Database database) {
+        List<Task> tasks;
         try {
-            List<Task> tasks = database.getAll(parameter);
-
-            tasks.forEach(task -> {
-                Printer.success("Task " + task.getId() + ":"
-                        + "\n" + task.getDescription()
-                        + "\nCreated: " + TimeUtils.instantLocalDate(task.getCreated())
-                        + "\nDeadline: " + TimeUtils.instantLocalDate(task.getDeadline())
-                        + "\n");
-            });
+            tasks = database.getAll(parameter);
         } catch (SQLException e) {
             throw new RuntimeException("Retrieval of tasks has failed", e);
         }
+        
+        tasks.forEach(task -> Printer.success(
+                "Task " + task.getId() + ":"
+                + "\n" + task.getDescription()
+                + "\nCreated: " + TimeUtils.instantLocalDate(task.getCreated())
+                + "\nDeadline: " + TimeUtils.instantLocalDate(task.getDeadline())
+                + "\n")
+        );
     }
 }
