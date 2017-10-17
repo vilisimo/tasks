@@ -9,9 +9,22 @@ import java.util.Properties;
 
 import static configuration.ConfigurationLoader.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class ConfigurationLoaderTest {
+
+    private static final String TEST_FILE_LOCATION = "test.properties";
+
+    @Test
+    public void loadsExistingFile() {
+        JdbcConfiguration configuration = ConfigurationLoader.loadJdbcConfig(TEST_FILE_LOCATION);
+
+        assertThat(configuration.url, is(notNullValue()));
+        assertThat(configuration.password, is(notNullValue()));
+        assertThat(configuration.username, is(notNullValue()));
+        assertThat(configuration.driver, is(notNullValue()));
+    }
 
     @Test(expected = NullPointerException.class)
     public void doesNotAcceptNullPath() {
