@@ -20,6 +20,7 @@ public class ConfigurationLoaderTest {
     public void loadsExistingFile() {
         JdbcConfiguration configuration = ConfigurationLoader.loadJdbcConfig(TEST_FILE_LOCATION);
 
+        assertThat(configuration.name, is(notNullValue()));
         assertThat(configuration.url, is(notNullValue()));
         assertThat(configuration.password, is(notNullValue()));
         assertThat(configuration.username, is(notNullValue()));
@@ -55,6 +56,7 @@ public class ConfigurationLoaderTest {
     @Test
     public void configurationFileIsReturned() {
         Properties properties = new Properties();
+        properties.setProperty("jdbc.name", "testName");
         properties.setProperty("jdbc.driver", "testDriver");
         properties.setProperty("jdbc.url", "testUrl");
         properties.setProperty("jdbc.username", "testUsername");
@@ -62,10 +64,22 @@ public class ConfigurationLoaderTest {
 
         JdbcConfiguration configuration = ConfigurationLoader.createJdbcConfig(properties);
 
+        assertThat(configuration.name, is("testName"));
         assertThat(configuration.driver, is("testDriver"));
         assertThat(configuration.url, is("testUrl"));
         assertThat(configuration.username, is("testUsername"));
         assertThat(configuration.password, is(""));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void configurationFileRequiresName() {
+        Properties properties = new Properties();
+        properties.setProperty("jdbc.driver", "testDriver");
+        properties.setProperty("jdbc.url", "testUrl");
+        properties.setProperty("jdbc.username", "testUsername");
+        properties.setProperty("jdbc.password", "");
+
+        ConfigurationLoader.createJdbcConfig(properties);
     }
 
     @Test(expected = NullPointerException.class)

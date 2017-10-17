@@ -4,8 +4,8 @@ import configuration.JdbcConfiguration;
 
 public class DatabaseFactory {
 
-    public static Database createDatabase(String name, JdbcConfiguration configuration) {
-        switch (name) {
+    public static Database createDatabase(JdbcConfiguration configuration) {
+        switch (configuration.name) {
             case "hsqldb":
                 return new HsqlDatabase(configuration);
             default:

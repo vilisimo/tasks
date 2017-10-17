@@ -87,7 +87,7 @@
 
     <build>
         <filters>
-            <filter>src/main/resources/db/server.properties</filter>
+            <filter>src/main/resources/db/db.properties</filter>
         </filters>
 
         <resources>

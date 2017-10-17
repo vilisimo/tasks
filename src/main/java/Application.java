@@ -11,8 +11,8 @@ import java.util.List;
 public class Application {
 
     public static void main(String args[]) {
-        JdbcConfiguration jdbcConfig = ConfigurationLoader.loadJdbcConfig("db/server.properties");
-        Database database = DatabaseFactory.createDatabase("hsqldb", jdbcConfig);
+        JdbcConfiguration jdbcConfig = ConfigurationLoader.loadJdbcConfig("db/db.properties");
+        Database database = DatabaseFactory.createDatabase(jdbcConfig);
         Options options = CliOptions.createOptions();
         ArgumentParser parser = new ArgumentParser();
         List<Command> commands = parser.parse(options, args);

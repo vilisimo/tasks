@@ -49,6 +49,8 @@ public class ConfigurationLoader {
     static JdbcConfiguration createJdbcConfig(Properties properties) {
         JdbcConfiguration configuration = new JdbcConfiguration();
 
+        configuration.name = ofNullable(properties.getProperty("jdbc.name"))
+                .orElseThrow(() -> new NullPointerException("\"jdbc.name\" property is missing"));
         configuration.driver = ofNullable(properties.getProperty("jdbc.driver"))
                 .orElseThrow(() -> new NullPointerException("\"jdbc.driver\" property is missing"));
         configuration.url = ofNullable(properties.getProperty("jdbc.url"))
