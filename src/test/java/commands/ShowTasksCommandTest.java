@@ -22,6 +22,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -82,5 +83,12 @@ public class ShowTasksCommandTest {
 
         assertThat(output, containsString("Test1"));
         assertThat(output, containsString("Test2"));
+    }
+    
+    @Test(expected = RuntimeException.class)
+    public void convertsSqlExceptionToRuntime() throws SQLException {
+        doThrow(SQLException.class).when(database).getAll(any(ShowTasksParameter.class));
+
+        command.executeParameters(database);
     }
 }
