@@ -2,7 +2,11 @@ package coloring;
 
 import static coloring.Colors.*;
 
-public class Printer {
+public final class Printer {
+
+    private Printer() {
+        throw new AssertionError("The class should not be instantiated");
+    }
 
     public static void success(String successText) {
         System.out.println(ANSI_GREEN + successText + ANSI_RESET);

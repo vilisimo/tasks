@@ -8,7 +8,11 @@ import java.time.LocalTime;
 import static dates.Days.TODAY;
 import static dates.Days.TOMORROW;
 
-public class DateParser {
+public final class DateParser {
+
+    private DateParser() {
+        throw new AssertionError("The class should not be instantiated");
+    }
 
     public static Timestamp parseDate(String daysFromNow) {
         LocalDateTime beforeMidnight = beforeMidnight();

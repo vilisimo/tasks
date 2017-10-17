@@ -2,7 +2,11 @@ package datasource;
 
 import configuration.JdbcConfiguration;
 
-public class DatabaseFactory {
+public final class DatabaseFactory {
+
+    private DatabaseFactory() {
+        throw new AssertionError("The class should not be instantiated");
+    }
 
     public static Database createDatabase(JdbcConfiguration configuration) {
         switch (configuration.name) {

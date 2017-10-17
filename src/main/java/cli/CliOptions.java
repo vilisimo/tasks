@@ -7,7 +7,11 @@ import org.apache.logging.log4j.Logger;
 
 import static cli.OptionNames.*;
 
-public class CliOptions {
+public final class CliOptions {
+
+    private CliOptions() {
+        throw new AssertionError("The class should not be instantiated");
+    }
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -16,6 +20,7 @@ public class CliOptions {
         options.addOption(createAddTaskCommand());
         options.addOption(createDeadline());
         options.addOption(createShowCommand());
+
         logger.info("Added command line options");
 
         return options;
