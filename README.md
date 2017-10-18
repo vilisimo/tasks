@@ -34,4 +34,5 @@ Adding tasks:
 -d <n>          Sets a deadline for a task (n days). 
                 For convenience, "today" and "tomorrow"
                 are also supported.
+-show           Shows all curently saved tasks.
 ~~~
