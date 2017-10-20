@@ -39,10 +39,10 @@ class ArgumentParser {
             commands.add(createAddTaskCommand(cmd));
             commands.add(createShowTasksCommand(cmd));
 
-        } catch (MissingArgumentException | MissingOptionException | NumberFormatException e) {
+        } catch (MissingArgumentException | NumberFormatException e) {
             Printer.error(e.getMessage());
         } catch (ParseException e) {
-            throw new RuntimeException("Command parsing has failed", e);
+            throw new RuntimeException("Command parsing has failed: " + e.getMessage().toLowerCase(), e);
         }
 
         return commands;
