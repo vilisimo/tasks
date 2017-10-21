@@ -38,6 +38,8 @@ public class ShowTasksCommandTest {
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
+    private final PrintStream standardOut = System.out;
+
 
     @Before
     public void setUpStream() {
@@ -47,7 +49,7 @@ public class ShowTasksCommandTest {
 
     @After
     public void resetStream() {
-        System.setOut(null);
+        System.setOut(standardOut);
     }
 
     @Test
@@ -84,7 +86,7 @@ public class ShowTasksCommandTest {
         assertThat(output, containsString("Test1"));
         assertThat(output, containsString("Test2"));
     }
-    
+
     @Test(expected = RuntimeException.class)
     public void convertsSqlExceptionToRuntime() throws SQLException {
         doThrow(SQLException.class).when(database).getAll(any(ShowTasksParameter.class));

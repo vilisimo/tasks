@@ -14,6 +14,9 @@ public class PrinterTest {
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
+    private final PrintStream standardOut = System.out;
+
+
     @Before
     public void setUpStream() {
         System.setOut(new PrintStream(out));
@@ -21,7 +24,7 @@ public class PrinterTest {
 
     @After
     public void resetStream() {
-        System.setOut(null);
+        System.setOut(standardOut);
     }
 
     @Test

@@ -49,6 +49,19 @@ public class ArgumentParserTest {
     }
 
     @Test
+    public void informsAboutInvalidNumber() {
+        PrintStream standardOut = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        parser.parse(options, new String[] {"-add", "description", "-d", "invalid number"});
+
+        assertThat(out.toString(), containsString("is not a number"));
+
+        System.setOut(standardOut);
+    }
+
+    @Test
     public void addsEmptyCreateShowCommandEvenWhenNoArgument() {
         List<Command> commands = parser.parse(options, new String[] {"-add", "irrelevant"});
 
@@ -61,7 +74,8 @@ public class ArgumentParserTest {
     }
 
     @Test
-    public void informsAboutMissingArguments() {
+    public void informsAboutInvalidTaskId() {
+        PrintStream standardOut = System.out;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
 
@@ -69,18 +83,6 @@ public class ArgumentParserTest {
 
         assertThat(out.toString(), containsString("add"));
 
-        System.setOut(null);
-    }
-
-    @Test
-    public void informsAboutInvalidNumber() {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-
-        parser.parse(options, new String[] {"-add", "description", "-d", "invalid number"});
-
-        assertThat(out.toString(), containsString("is not a number"));
-
-        System.setOut(null);
+        System.setOut(standardOut);
     }
 }
