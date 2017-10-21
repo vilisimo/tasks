@@ -2,6 +2,7 @@ package datasource;
 
 import coloring.Printer;
 import commands.parameters.AddTaskParameter;
+import commands.parameters.RemoveTaskParameter;
 import commands.parameters.ShowTasksParameter;
 import configuration.JdbcConfiguration;
 import entities.Task;
@@ -20,6 +21,7 @@ class HsqlDatabase implements Database {
 
     private static final String INSERT = "INSERT INTO TASKS(description, deadline) VALUES (?, ?)";
     private static final String SELECT = "SELECT * FROM TASKS";
+    private static final String DELETE = "DELETE FROM TASKS WHERE TASKS.ID=?";
 
     private JDBCPool connectionPool;
 
@@ -79,6 +81,22 @@ class HsqlDatabase implements Database {
 
                 return tasks;
             }
+        }
+    }
+
+    @Override
+    public int delete(RemoveTaskParameter task) throws SQLException {
+        logger.trace("Attempting to remove a task (id={})", task.getTaskId());
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE)) {
+
+            statement.setInt(1, task.getTaskId());
+            int affectedRows = statement.executeUpdate();
+
+            logger.trace("Successfully deleted a row (id={})", task.getTaskId());
+
+            return affectedRows;
         }
     }
 }

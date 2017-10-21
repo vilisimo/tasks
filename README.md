@@ -35,4 +35,5 @@ Adding tasks:
                 For convenience, "today" and "tomorrow"
                 are also supported.
 -show           Shows all curently saved tasks.
+-del <id>       Deletes a task with a specified id.
 ~~~

@@ -3,7 +3,7 @@
 flags should not be allowed.
 * ~~Add saving to the database~~
 * ~~Add retrieving from the database~~
-* Add removing from the database
+* ~~Add removing from the database~~
 * Add retrieving today's tasks
 * Add retrieving tasks for n days
 * Add clearing all tasks
