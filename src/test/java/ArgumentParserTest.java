@@ -1,6 +1,7 @@
 import cli.CliOptions;
 import commands.AddTaskCommand;
 import commands.Command;
+import commands.RemoveTaskCommand;
 import commands.ShowTasksCommand;
 import org.apache.commons.cli.*;
 import org.junit.Test;
@@ -68,13 +69,34 @@ public class ArgumentParserTest {
         assertThat(commands, hasItem(isA(ShowTasksCommand.class)));
     }
 
+    @Test
+    public void addsRemoveTaskCommand() {
+        List<Command> commands = parser.parse(options, new String[] {"-del", "1"});
+
+        assertThat(commands, hasItem(isA(RemoveTaskCommand.class)));
+    }
+
+    @Test
+    public void informsAboutInvalidTaskId() {
+        PrintStream standardOut = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        parser.parse(options, new String[] {"-del", "invalid number"});
+
+        assertThat(out.toString(), containsString("is not a number"));
+
+        System.setOut(standardOut);
+    }
+
+
     @Test(expected = RuntimeException.class)
     public void throwsRuntimeWhenParsingFails() {
         parser.parse(options, new String[] {"-unrecognized command"});
     }
 
     @Test
-    public void informsAboutInvalidTaskId() {
+    public void informsAboutMissingArguments() {
         PrintStream standardOut = System.out;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));

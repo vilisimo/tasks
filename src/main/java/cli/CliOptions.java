@@ -20,6 +20,7 @@ public final class CliOptions {
         options.addOption(createAddTaskCommand());
         options.addOption(createDeadline());
         options.addOption(createShowCommand());
+        options.addOption(createRemoveCommand());
 
         logger.info("Added command line options");
 
@@ -47,6 +48,14 @@ public final class CliOptions {
         return Option.builder(SHOW)
                 .desc("Shows currently saved tasks")
                 .argName("Show tasks")
+                .build();
+    }
+
+    private static Option createRemoveCommand() {
+        return Option.builder(REMOVE)
+                .desc("Removes a task by its id")
+                .argName("Remove task")
+                .hasArg()
                 .build();
     }
 }

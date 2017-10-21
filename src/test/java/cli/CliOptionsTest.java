@@ -24,4 +24,9 @@ public class CliOptionsTest {
     public void createsDeadlineOption() {
         assertNotNull(options.getOption("d"));
     }
+
+    @Test
+    public void createsRemoveOption() {
+        assertNotNull(options.getOption("-del"));
+    }
 }

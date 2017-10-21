@@ -1,8 +1,10 @@
 import coloring.Printer;
 import commands.AddTaskCommand;
 import commands.Command;
+import commands.RemoveTaskCommand;
 import commands.ShowTasksCommand;
 import commands.parameters.AddTaskParameter;
+import commands.parameters.RemoveTaskParameter;
 import commands.parameters.ShowTasksParameter;
 import dates.DateParser;
 import org.apache.commons.cli.*;
@@ -38,6 +40,7 @@ class ArgumentParser {
 
             commands.add(createAddTaskCommand(cmd));
             commands.add(createShowTasksCommand(cmd));
+            commands.add(createRemoveTaskCommand(cmd));
 
         } catch (MissingArgumentException | NumberFormatException e) {
             Printer.error(e.getMessage());
@@ -73,6 +76,24 @@ class ArgumentParser {
             return new ShowTasksCommand(new ShowTasksParameter(false));
         } else {
             return new ShowTasksCommand(new ShowTasksParameter(true));
+        }
+    }
+
+    private RemoveTaskCommand createRemoveTaskCommand(CommandLine cmd) {
+        logger.trace("Creating {}", RemoveTaskCommand.class.getSimpleName());
+
+        if (cmd.getOptionValue(REMOVE) != null) {
+            String removeValue = cmd.getOptionValue(REMOVE);
+            try {
+                RemoveTaskParameter parameter = new RemoveTaskParameter(Integer.parseInt(removeValue));
+                return new RemoveTaskCommand(parameter);
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException("\"" + removeValue + "\" is not a number");
+            }
+        } else {
+            RemoveTaskParameter parameter = new RemoveTaskParameter(null);
+
+            return new RemoveTaskCommand(parameter);
         }
     }
 }
