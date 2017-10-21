@@ -2,15 +2,17 @@ package commands.parameters;
 
 public class RemoveTaskParameter extends Parameter {
 
-    private final int taskId;
+    private final Integer taskId;
 
-    public RemoveTaskParameter(int taskId) {
+    public RemoveTaskParameter(Integer taskId) {
         this.taskId = taskId;
     }
 
     @Override
     public State determineState() {
-        if (taskId >= 0) {
+        if (taskId == null) {
+            return State.EMPTY;
+        } else if (taskId >= 0) {
             return State.VALID;
         } else {
             this.errorMessage = "Task id cannot be negative";
@@ -18,7 +20,7 @@ public class RemoveTaskParameter extends Parameter {
         }
     }
 
-    public int getTaskId() {
+    public Integer getTaskId() {
         return taskId;
     }
 }

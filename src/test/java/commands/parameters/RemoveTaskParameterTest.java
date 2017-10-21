@@ -38,4 +38,11 @@ public class RemoveTaskParameterTest {
 
         assertThat(parameter.getErrorMessage(), is(notNullValue()));
     }
+
+    @Test
+    public void stateIsEmptyWithNullId() {
+        parameter = new RemoveTaskParameter(null);
+
+        assertThat(parameter.determineState(), is(Parameter.State.EMPTY));
+    }
 }
