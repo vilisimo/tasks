@@ -21,6 +21,7 @@ public final class CliOptions {
         options.addOption(createDeadlineOption());
         options.addOption(createShowOption());
         options.addOption(createRemoveOption());
+        options.addOption(createClearOption());
 
         logger.info("Added command line options");
 
@@ -56,6 +57,13 @@ public final class CliOptions {
                 .desc("Removes a task by its id")
                 .argName("Remove task")
                 .hasArg()
+                .build();
+    }
+
+    private static Option createClearOption() {
+        return Option.builder(CLEAR)
+                .desc("Clears (removes) all tasks")
+                .argName("Clear tasks")
                 .build();
     }
 }

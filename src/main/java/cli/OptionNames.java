@@ -5,4 +5,5 @@ public interface OptionNames {
     String DEADLINE = "d";
     String SHOW = "show";
     String REMOVE = "del";
+    String CLEAR = "clear";
 }

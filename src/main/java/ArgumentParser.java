@@ -1,9 +1,7 @@
 import coloring.Printer;
-import commands.AddTaskCommand;
-import commands.Command;
-import commands.RemoveTaskCommand;
-import commands.ShowTasksCommand;
+import commands.*;
 import commands.parameters.AddTaskParameter;
+import commands.parameters.ClearTasksParameter;
 import commands.parameters.RemoveTaskParameter;
 import commands.parameters.ShowTasksParameter;
 import dates.DateParser;
@@ -41,6 +39,7 @@ class ArgumentParser {
             commands.add(createAddTaskCommand(cmd));
             commands.add(createShowTasksCommand(cmd));
             commands.add(createRemoveTaskCommand(cmd));
+            commands.add(createClearTasksCommand(cmd));
 
         } catch (MissingArgumentException | NumberFormatException e) {
             Printer.error(e.getMessage());
@@ -94,6 +93,16 @@ class ArgumentParser {
             RemoveTaskParameter parameter = new RemoveTaskParameter(null);
 
             return new RemoveTaskCommand(parameter);
+        }
+    }
+
+    private ClearTasksCommand createClearTasksCommand(CommandLine cmd) {
+        logger.trace("Creating {}", ClearTasksCommand.class.getSimpleName());
+
+        if (cmd.hasOption(CLEAR)) {
+            return new ClearTasksCommand(new ClearTasksParameter(false));
+        } else {
+            return new ClearTasksCommand(new ClearTasksParameter(true));
         }
     }
 }

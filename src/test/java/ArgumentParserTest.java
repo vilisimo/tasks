@@ -1,8 +1,5 @@
 import cli.CliOptions;
-import commands.AddTaskCommand;
-import commands.Command;
-import commands.RemoveTaskCommand;
-import commands.ShowTasksCommand;
+import commands.*;
 import org.apache.commons.cli.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -87,6 +84,13 @@ public class ArgumentParserTest {
         List<Command> commands = parser.parse(options, new String[] {"-del", "1"});
 
         assertThat(commands, hasItem(isA(RemoveTaskCommand.class)));
+    }
+
+    @Test
+    public void addsClearTasksCommand() {
+        List<Command> commands = parser.parse(options, new String[] {"-clear"});
+
+        assertThat(commands, hasItem(isA(ClearTasksCommand.class)));
     }
 
     @Test

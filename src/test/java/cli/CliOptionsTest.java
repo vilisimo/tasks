@@ -27,6 +27,11 @@ public class CliOptionsTest {
 
     @Test
     public void createsRemoveOption() {
-        assertNotNull(options.getOption("-del"));
+        assertNotNull(options.getOption("del"));
+    }
+
+    @Test
+    public void createsClearOption() {
+        assertNotNull(options.getOption("clear"));
     }
 }
