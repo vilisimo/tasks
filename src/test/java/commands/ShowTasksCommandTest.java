@@ -65,7 +65,7 @@ public class ShowTasksCommandTest {
     public void handlesEmptyList() throws SQLException {
         when(database.getAll()).thenReturn(emptyList());
 
-        command.executeParameters(database);
+        command.executeCommand(database);
 
         assertThat(out.toString(), is(""));
     }
@@ -75,7 +75,7 @@ public class ShowTasksCommandTest {
         List<Task> tasks = singletonList(new Task(1, "Test", Instant.now(), Instant.now()));
         when(database.getAll()).thenReturn(tasks);
 
-        command.executeParameters(database);
+        command.executeCommand(database);
         String output = out.toString();
 
         assertThat(output, containsString("1"));
@@ -89,7 +89,7 @@ public class ShowTasksCommandTest {
                 new Task(2, "Test2", Instant.now(), Instant.now()));
         when(database.getAll()).thenReturn(tasks);
 
-        command.executeParameters(database);
+        command.executeCommand(database);
         String output = out.toString();
 
         assertThat(output, containsString("Test1"));
@@ -100,6 +100,6 @@ public class ShowTasksCommandTest {
     public void convertsSqlExceptionToRuntime() throws SQLException {
         doThrow(SQLException.class).when(database).getAll();
 
-        command.executeParameters(database);
+        command.executeCommand(database);
     }
 }

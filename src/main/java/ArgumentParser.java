@@ -1,6 +1,5 @@
 import coloring.Printer;
 import commands.*;
-import commands.parameters.RemoveTaskParameter;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -67,15 +66,12 @@ class ArgumentParser {
         if (cmd.getOptionValue(REMOVE) != null) {
             String removeValue = cmd.getOptionValue(REMOVE);
             try {
-                RemoveTaskParameter parameter = new RemoveTaskParameter(Integer.parseInt(removeValue));
-                return new RemoveTaskCommand(parameter);
+                return new RemoveTaskCommand(Integer.parseInt(removeValue));
             } catch (NumberFormatException e) {
                 throw new NumberFormatException("\"" + removeValue + "\" is not a number");
             }
         } else {
-            RemoveTaskParameter parameter = new RemoveTaskParameter(null);
-
-            return new RemoveTaskCommand(parameter);
+            return new RemoveTaskCommand(null);
         }
     }
 

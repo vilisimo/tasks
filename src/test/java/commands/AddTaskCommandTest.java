@@ -109,6 +109,6 @@ public class AddTaskCommandTest {
         command = AddTaskCommand.from(new String[] {"description"}, "1");
         doThrow(new SQLException()).when(database).save(eq(command));
 
-        command.executeParameters(database);
+        command.executeCommand(database);
     }
 }

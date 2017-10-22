@@ -1,8 +1,6 @@
 package commands;
 
-import commands.parameters.RemoveTaskParameter;
 import datasource.Database;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -10,7 +8,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.sql.SQLException;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
@@ -20,27 +20,44 @@ public class RemoveTaskCommandTest {
     @Mock
     private Database database;
 
-    @Mock
-    private RemoveTaskParameter parameter;
-
     private RemoveTaskCommand command;
 
-    @Before
-    public void setup() {
-        command = new RemoveTaskCommand(parameter);
+    @Test
+    public void stateIsValidWithPositiveId() {
+        command = new RemoveTaskCommand(1);
+
+        assertThat(command.getState(), is(Command.State.VALID));
+    }
+
+    @Test
+    public void stateIsInvalidWithNegativeId() {
+        command = new RemoveTaskCommand(-1);
+
+        assertThat(command.getState(), is(Command.State.INVALID));
+    }
+
+    @Test
+    public void stateIsEmptyWithNullId() {
+        command = new RemoveTaskCommand(null);
+
+        assertThat(command.getState(), is(Command.State.EMPTY));
     }
 
     @Test
     public void executesDelete() throws SQLException {
-        command.executeParameters(database);
+        command = new RemoveTaskCommand(1);
 
-        verify(database).delete(any(RemoveTaskParameter.class));
+        command.executeCommand(database);
+
+        verify(database).delete(eq(command));
     }
 
     @Test(expected = RuntimeException.class)
     public void convertsSqlExceptionToRuntimeException() throws SQLException {
-        doThrow(new SQLException()).when(database).delete(any(RemoveTaskParameter.class));
+        command = new RemoveTaskCommand(2);
 
-        command.executeParameters(database);
+        doThrow(new SQLException()).when(database).delete(eq(command));
+
+        command.executeCommand(database);
     }
 }

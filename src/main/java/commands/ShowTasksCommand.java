@@ -19,7 +19,7 @@ public class ShowTasksCommand extends Command {
     }
 
     @Override
-    void executeParameters(Database database) {
+    void executeCommand(Database database) {
         List<Task> tasks;
         try {
             tasks = database.getAll();

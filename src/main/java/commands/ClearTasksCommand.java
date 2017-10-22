@@ -15,7 +15,7 @@ public class ClearTasksCommand extends Command {
     }
 
     @Override
-    void executeParameters(Database database) {
+    void executeCommand(Database database) {
         try {
             database.clear();
         } catch (SQLException e) {

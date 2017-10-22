@@ -14,7 +14,7 @@ public class AddTaskCommand extends Command {
     private AddTaskCommand(String description, Timestamp deadline) {
         this.description = description;
         this.deadline = deadline;
-        this.state = determineState();
+        determineState();
     }
 
     public static AddTaskCommand from(String[] descriptionArray, String daysToDeadline) {
@@ -44,19 +44,19 @@ public class AddTaskCommand extends Command {
      *
      * @return state indicating if command is valid and can be acted upon.
      */
-    private Command.State determineState() {
+    private void determineState() {
         if (description != null) {
-            return Command.State.VALID;
+            this.state = Command.State.VALID;
         } else if (description == null && deadline != null) {
             this.errorMessage = "Description must be provided when adding a task";
-            return Command.State.INVALID;
+            this.state = Command.State.INVALID;
         } else {
-            return Command.State.EMPTY;
+            this.state = Command.State.EMPTY;
         }
     }
 
     @Override
-    void executeParameters(Database database) {
+    void executeCommand(Database database) {
         try {
             database.save(this);
         } catch (SQLException e) {

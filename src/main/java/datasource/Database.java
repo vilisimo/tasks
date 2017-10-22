@@ -1,7 +1,7 @@
 package datasource;
 
 import commands.AddTaskCommand;
-import commands.parameters.RemoveTaskParameter;
+import commands.RemoveTaskCommand;
 import entities.Task;
 
 import java.sql.SQLException;
@@ -10,6 +10,6 @@ import java.util.List;
 public interface Database {
     void save(AddTaskCommand task) throws SQLException;
     List<Task> getAll() throws SQLException;
-    int delete(RemoveTaskParameter task) throws SQLException;
+    int delete(RemoveTaskCommand task) throws SQLException;
     void clear() throws SQLException;
 }

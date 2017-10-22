@@ -2,7 +2,7 @@ package datasource;
 
 import coloring.Printer;
 import commands.AddTaskCommand;
-import commands.parameters.RemoveTaskParameter;
+import commands.RemoveTaskCommand;
 import configuration.JdbcConfiguration;
 import entities.Task;
 import org.apache.logging.log4j.LogManager;
@@ -85,7 +85,7 @@ class HsqlDatabase implements Database {
     }
 
     @Override
-    public int delete(RemoveTaskParameter task) throws SQLException {
+    public int delete(RemoveTaskCommand task) throws SQLException {
         logger.trace("Attempting to remove a task (id={})", task.getTaskId());
 
         try (Connection connection = connectionPool.getConnection();

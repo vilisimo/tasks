@@ -39,7 +39,7 @@ public class ClearTasksCommandTest {
     public void callsClearOnDatabase() throws SQLException {
         command = new ClearTasksCommand(true);
 
-        command.executeParameters(database);
+        command.executeCommand(database);
 
         verify(database).clear();
     }
@@ -50,6 +50,6 @@ public class ClearTasksCommandTest {
 
         doThrow(new SQLException()).when(database).clear();
 
-        command.executeParameters(database);
+        command.executeCommand(database);
     }
 }
