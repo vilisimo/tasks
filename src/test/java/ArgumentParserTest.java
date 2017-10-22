@@ -43,13 +43,6 @@ public class ArgumentParserTest {
     }
 
     @Test
-    public void addsCreateShowCommand() {
-        List<Command> commands = parser.parse(options, new String[] {"-show"});
-
-        assertThat(commands, hasItem(isA(ShowTasksCommand.class)));
-    }
-
-    @Test
     public void informsAboutInvalidNumber() {
         PrintStream standardOut = System.out;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -60,6 +53,26 @@ public class ArgumentParserTest {
         assertThat(out.toString(), containsString("is not a number"));
 
         System.setOut(standardOut);
+    }
+
+    @Test
+    public void informsAboutMissingArguments() {
+        PrintStream standardOut = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        parser.parse(options, new String[] {"-add"});
+
+        assertThat(out.toString(), containsString("add"));
+
+        System.setOut(standardOut);
+    }
+
+    @Test
+    public void addsCreateShowCommand() {
+        List<Command> commands = parser.parse(options, new String[] {"-show"});
+
+        assertThat(commands, hasItem(isA(ShowTasksCommand.class)));
     }
 
     @Test
@@ -89,22 +102,8 @@ public class ArgumentParserTest {
         System.setOut(standardOut);
     }
 
-
     @Test(expected = RuntimeException.class)
     public void throwsRuntimeWhenParsingFails() {
         parser.parse(options, new String[] {"-unrecognized command"});
-    }
-
-    @Test
-    public void informsAboutMissingArguments() {
-        PrintStream standardOut = System.out;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-
-        parser.parse(options, new String[] {"-add"});
-
-        assertThat(out.toString(), containsString("add"));
-
-        System.setOut(standardOut);
     }
 }
