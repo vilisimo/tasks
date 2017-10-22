@@ -2,18 +2,18 @@ package commands.parameters;
 
 public class ClearTasksParameter extends Parameter {
 
-    private boolean empty;
+    private boolean executable;
 
-    public ClearTasksParameter(boolean empty) {
-        this.empty = empty;
+    public ClearTasksParameter(boolean executable) {
+        this.executable = executable;
     }
 
     @Override
     public State determineState() {
-        if (empty) {
-            return State.EMPTY;
-        } else {
+        if (executable) {
             return State.VALID;
+        } else {
+            return State.EMPTY;
         }
     }
 }

@@ -13,14 +13,14 @@ public class ClearTasksParameterTest {
     public void returnsEmptyWithEmptyTrue() {
         parameter = new ClearTasksParameter(true);
 
-        assertThat(parameter.determineState(), is(Parameter.State.EMPTY));
+        assertThat(parameter.determineState(), is(Parameter.State.VALID));
     }
 
     @Test
     public void returnsValidWithEmptyFalse() {
         parameter = new ClearTasksParameter(false);
 
-        assertThat(parameter.determineState(), is(Parameter.State.VALID));
+        assertThat(parameter.determineState(), is(Parameter.State.EMPTY));
     }
 
 }

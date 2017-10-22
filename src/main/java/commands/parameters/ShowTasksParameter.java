@@ -2,15 +2,15 @@ package commands.parameters;
 
 public class ShowTasksParameter extends Parameter {
 
-    private boolean empty;
+    private boolean executable;
 
-    public ShowTasksParameter(boolean empty) {
-        this.empty = empty;
+    public ShowTasksParameter(boolean executable) {
+        this.executable = executable;
     }
 
     @Override
     public State determineState() {
-        if (!empty) {
+        if (executable) {
             return State.VALID;
         } else {
             return State.EMPTY;

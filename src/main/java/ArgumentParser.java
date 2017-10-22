@@ -71,11 +71,7 @@ class ArgumentParser {
     private ShowTasksCommand createShowTasksCommand(CommandLine cmd) {
         logger.trace("Creating {}", ShowTasksCommand.class.getSimpleName());
 
-        if (cmd.hasOption(SHOW)) {
-            return new ShowTasksCommand(new ShowTasksParameter(false));
-        } else {
-            return new ShowTasksCommand(new ShowTasksParameter(true));
-        }
+        return new ShowTasksCommand(new ShowTasksParameter(cmd.hasOption(SHOW)));
     }
 
     private RemoveTaskCommand createRemoveTaskCommand(CommandLine cmd) {
@@ -99,10 +95,6 @@ class ArgumentParser {
     private ClearTasksCommand createClearTasksCommand(CommandLine cmd) {
         logger.trace("Creating {}", ClearTasksCommand.class.getSimpleName());
 
-        if (cmd.hasOption(CLEAR)) {
-            return new ClearTasksCommand(new ClearTasksParameter(false));
-        } else {
-            return new ClearTasksCommand(new ClearTasksParameter(true));
-        }
+        return new ClearTasksCommand(new ClearTasksParameter(cmd.hasOption(CLEAR)));
     }
 }
