@@ -17,17 +17,17 @@ public final class CliOptions {
 
     public static Options createOptions() {
         Options options = new Options();
-        options.addOption(createAddTaskCommand());
-        options.addOption(createDeadline());
-        options.addOption(createShowCommand());
-        options.addOption(createRemoveCommand());
+        options.addOption(createAddTaskOption());
+        options.addOption(createDeadlineOption());
+        options.addOption(createShowOption());
+        options.addOption(createRemoveOption());
 
         logger.info("Added command line options");
 
         return options;
     }
 
-    private static Option createAddTaskCommand() {
+    private static Option createAddTaskOption() {
         return Option.builder(ADD)
                 .desc("Adds a new task")
                 .argName("Add task")
@@ -35,7 +35,7 @@ public final class CliOptions {
                 .build();
     }
 
-    private static Option createDeadline() {
+    private static Option createDeadlineOption() {
         return Option.builder(DEADLINE)
                 .desc("Add deadline for the task")
                 .argName("Deadline")
@@ -44,14 +44,14 @@ public final class CliOptions {
     }
 
 
-    private static Option createShowCommand() {
+    private static Option createShowOption() {
         return Option.builder(SHOW)
                 .desc("Shows currently saved tasks")
                 .argName("Show tasks")
                 .build();
     }
 
-    private static Option createRemoveCommand() {
+    private static Option createRemoveOption() {
         return Option.builder(REMOVE)
                 .desc("Removes a task by its id")
                 .argName("Remove task")
