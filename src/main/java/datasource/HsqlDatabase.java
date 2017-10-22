@@ -2,6 +2,7 @@ package datasource;
 
 import coloring.Printer;
 import commands.parameters.AddTaskParameter;
+import commands.parameters.ClearTasksParameter;
 import commands.parameters.RemoveTaskParameter;
 import commands.parameters.ShowTasksParameter;
 import configuration.JdbcConfiguration;
@@ -98,5 +99,10 @@ class HsqlDatabase implements Database {
 
             return affectedRows;
         }
+    }
+
+    @Override
+    public void clear(ClearTasksParameter parameter) throws SQLException {
+
     }
 }
