@@ -1,7 +1,7 @@
 package datasource;
 
 import coloring.Printer;
-import commands.parameters.AddTaskParameter;
+import commands.AddTaskCommand;
 import commands.parameters.ClearTasksParameter;
 import commands.parameters.RemoveTaskParameter;
 import configuration.JdbcConfiguration;
@@ -35,7 +35,7 @@ class HsqlDatabase implements Database {
     }
 
     @Override
-    public void save(AddTaskParameter task) throws SQLException {
+    public void save(AddTaskCommand task) throws SQLException {
         logger.trace("Attempting to save a task");
 
         try (Connection conn = connectionPool.getConnection();

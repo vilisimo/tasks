@@ -1,14 +1,11 @@
 import coloring.Printer;
 import commands.*;
-import commands.parameters.AddTaskParameter;
 import commands.parameters.ClearTasksParameter;
 import commands.parameters.RemoveTaskParameter;
-import dates.DateParser;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,15 +53,7 @@ class ArgumentParser {
     private AddTaskCommand createAddTaskCommand(CommandLine cmd) {
         logger.trace("Creating {}", AddTaskCommand.class.getSimpleName());
 
-        AddTaskParameter.Builder addTaskBuilder = new AddTaskParameter.Builder();
-        addTaskBuilder.description(cmd.getOptionValues(ADD));
-
-        if (cmd.getOptionValue(DEADLINE) != null) {
-            Timestamp date = DateParser.parseDate(cmd.getOptionValue(DEADLINE));
-            addTaskBuilder.deadline(date);
-        }
-
-        return new AddTaskCommand(addTaskBuilder.build());
+        return AddTaskCommand.from(cmd.getOptionValues(ADD), cmd.getOptionValue(DEADLINE));
     }
 
     private ShowTasksCommand createShowTasksCommand(CommandLine cmd) {

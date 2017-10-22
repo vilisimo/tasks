@@ -45,6 +45,7 @@ public abstract class Command<T extends Parameter> {
         }
     }
 
+    // TODO: remove method after removal of parameters.
     abstract void executeParameters(Database database);
 
     private void showError() {
