@@ -23,6 +23,7 @@ class HsqlDatabase implements Database {
     private static final String INSERT = "INSERT INTO TASKS(description, deadline) VALUES (?, ?)";
     private static final String SELECT = "SELECT * FROM TASKS";
     private static final String DELETE = "DELETE FROM TASKS WHERE TASKS.ID=?";
+    private static final String TRUNCATE = "TRUNCATE TABLE TASKS AND COMMIT";
 
     private JDBCPool connectionPool;
 
@@ -103,6 +104,14 @@ class HsqlDatabase implements Database {
 
     @Override
     public void clear(ClearTasksParameter parameter) throws SQLException {
+        logger.trace("Attempting to clear all tasks");
 
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(TRUNCATE)) {
+
+            statement.executeUpdate();
+
+            logger.trace("Successfully removed all tasks");
+        }
     }
 }

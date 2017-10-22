@@ -36,4 +36,5 @@ Adding tasks:
                 are also supported.
 -show           Shows all curently saved tasks.
 -del <id>       Deletes a task with a specified id.
+-clear          Deletes all tasks.
 ~~~
