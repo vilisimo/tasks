@@ -2,7 +2,6 @@ package datasource;
 
 import coloring.Printer;
 import commands.AddTaskCommand;
-import commands.parameters.ClearTasksParameter;
 import commands.parameters.RemoveTaskParameter;
 import configuration.JdbcConfiguration;
 import entities.Task;
@@ -102,7 +101,7 @@ class HsqlDatabase implements Database {
     }
 
     @Override
-    public void clear(ClearTasksParameter parameter) throws SQLException {
+    public void clear() throws SQLException {
         logger.trace("Attempting to clear all tasks");
 
         try (Connection connection = connectionPool.getConnection();

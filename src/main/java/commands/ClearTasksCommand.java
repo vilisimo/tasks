@@ -1,20 +1,23 @@
 package commands;
 
-import commands.parameters.ClearTasksParameter;
 import datasource.Database;
 
 import java.sql.SQLException;
 
-public class ClearTasksCommand extends Command<ClearTasksParameter> {
+public class ClearTasksCommand extends Command {
 
-    public ClearTasksCommand(ClearTasksParameter parameter) {
-        super(parameter);
+    public ClearTasksCommand(boolean executable) {
+        if (executable) {
+            state = State.VALID;
+        } else {
+            state = State.EMPTY;
+        }
     }
 
     @Override
     void executeParameters(Database database) {
         try {
-            database.clear(parameter);
+            database.clear();
         } catch (SQLException e) {
             throw new RuntimeException("Clearing of the tasks failed", e);
         }

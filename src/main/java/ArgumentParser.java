@@ -1,6 +1,5 @@
 import coloring.Printer;
 import commands.*;
-import commands.parameters.ClearTasksParameter;
 import commands.parameters.RemoveTaskParameter;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -83,6 +82,6 @@ class ArgumentParser {
     private ClearTasksCommand createClearTasksCommand(CommandLine cmd) {
         logger.trace("Creating {}", ClearTasksCommand.class.getSimpleName());
 
-        return new ClearTasksCommand(new ClearTasksParameter(cmd.hasOption(CLEAR)));
+        return new ClearTasksCommand(cmd.hasOption(CLEAR));
     }
 }

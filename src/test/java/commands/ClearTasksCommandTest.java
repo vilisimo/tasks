@@ -1,8 +1,6 @@
 package commands;
 
-import commands.parameters.ClearTasksParameter;
 import datasource.Database;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -10,7 +8,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.sql.SQLException;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
@@ -20,26 +19,36 @@ public class ClearTasksCommandTest {
     @Mock
     private Database database;
 
-    @Mock
-    private ClearTasksParameter parameter;
-
     private ClearTasksCommand command;
 
-    @Before
-    public void setup() {
-        command = new ClearTasksCommand(parameter);
+    @Test
+    public void returnsEmptyWithEmptyTrue() {
+        command = new ClearTasksCommand(true);
+
+        assertThat(command.getState(), is(Command.State.VALID));
+    }
+
+    @Test
+    public void returnsValidWithEmptyFalse() {
+        command = new ClearTasksCommand(false);
+
+        assertThat(command.getState(), is(Command.State.EMPTY));
     }
 
     @Test
     public void callsClearOnDatabase() throws SQLException {
+        command = new ClearTasksCommand(true);
+
         command.executeParameters(database);
 
-        verify(database).clear(any(ClearTasksParameter.class));
+        verify(database).clear();
     }
 
     @Test(expected = RuntimeException.class)
     public void convertsSqlExceptionToRuntime() throws SQLException {
-        doThrow(new SQLException()).when(database).clear(any(ClearTasksParameter.class));
+        command = new ClearTasksCommand(true);
+
+        doThrow(new SQLException()).when(database).clear();
 
         command.executeParameters(database);
     }

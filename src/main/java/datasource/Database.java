@@ -1,7 +1,6 @@
 package datasource;
 
 import commands.AddTaskCommand;
-import commands.parameters.ClearTasksParameter;
 import commands.parameters.RemoveTaskParameter;
 import entities.Task;
 
@@ -12,5 +11,5 @@ public interface Database {
     void save(AddTaskCommand task) throws SQLException;
     List<Task> getAll() throws SQLException;
     int delete(RemoveTaskParameter task) throws SQLException;
-    void clear(ClearTasksParameter parameter) throws SQLException;
+    void clear() throws SQLException;
 }
