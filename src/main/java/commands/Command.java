@@ -6,20 +6,33 @@ import datasource.Database;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static java.util.Objects.requireNonNull;
+
 public abstract class Command<T extends Parameter> {
 
     static final Logger logger = LogManager.getLogger();
 
+    // TODO: temporary for tests to compile. Remove later.
     final T parameter;
+
+    protected String errorMessage;
+    protected State state;
 
     Command(T parameter) {
         this.parameter = parameter;
+        this.state = State.EMPTY; // TODO: temporary to allow manual testing. Remove later.
+    }
+
+    // TODO: temporary for tests to compile. Remove later.
+    protected Command() {
+        parameter = null;
     }
 
     public final void execute(Database database) {
-        logger.trace("Executing {} on {}", this.getClass().getSimpleName(), parameter.getClass().getSimpleName());
+        requireNonNull(state, this.getClass().getSimpleName() + "'s state cannot be null");
 
-        Parameter.State state = parameter.determineState();
+        logger.trace("Executing {} (state={})", this.getClass().getSimpleName(), state.toString());
+
         switch (state) {
             case VALID:
                 executeParameters(database);
@@ -35,6 +48,14 @@ public abstract class Command<T extends Parameter> {
     abstract void executeParameters(Database database);
 
     private void showError() {
-        Printer.error(parameter.getErrorMessage());
+        Printer.error(errorMessage);
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public enum State {
+        VALID, INVALID, EMPTY
     }
 }

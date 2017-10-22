@@ -3,7 +3,6 @@ import commands.*;
 import commands.parameters.AddTaskParameter;
 import commands.parameters.ClearTasksParameter;
 import commands.parameters.RemoveTaskParameter;
-import commands.parameters.ShowTasksParameter;
 import dates.DateParser;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -71,7 +70,7 @@ class ArgumentParser {
     private ShowTasksCommand createShowTasksCommand(CommandLine cmd) {
         logger.trace("Creating {}", ShowTasksCommand.class.getSimpleName());
 
-        return new ShowTasksCommand(new ShowTasksParameter(cmd.hasOption(SHOW)));
+        return new ShowTasksCommand(cmd.hasOption(SHOW));
     }
 
     private RemoveTaskCommand createRemoveTaskCommand(CommandLine cmd) {

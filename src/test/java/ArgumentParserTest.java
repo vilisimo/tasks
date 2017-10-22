@@ -1,6 +1,6 @@
 import cli.CliOptions;
 import commands.*;
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.Options;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;

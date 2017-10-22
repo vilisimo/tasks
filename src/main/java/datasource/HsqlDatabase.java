@@ -4,7 +4,6 @@ import coloring.Printer;
 import commands.parameters.AddTaskParameter;
 import commands.parameters.ClearTasksParameter;
 import commands.parameters.RemoveTaskParameter;
-import commands.parameters.ShowTasksParameter;
 import configuration.JdbcConfiguration;
 import entities.Task;
 import org.apache.logging.log4j.LogManager;
@@ -57,7 +56,7 @@ class HsqlDatabase implements Database {
     }
 
     @Override
-    public List<Task> getAll(ShowTasksParameter parameter) throws SQLException {
+    public List<Task> getAll() throws SQLException {
         logger.trace("Attempting to retrieve all tasks");
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(SELECT)) {

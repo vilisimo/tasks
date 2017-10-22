@@ -1,7 +1,6 @@
 package commands;
 
 import coloring.Printer;
-import commands.parameters.ShowTasksParameter;
 import datasource.Database;
 import entities.Task;
 import utils.TimeUtils;
@@ -9,17 +8,21 @@ import utils.TimeUtils;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ShowTasksCommand extends Command<ShowTasksParameter> {
+public class ShowTasksCommand extends Command {
 
-    public ShowTasksCommand(ShowTasksParameter parameter) {
-        super(parameter);
+    public ShowTasksCommand(boolean executable) {
+        if (executable) {
+            state = State.VALID;
+        } else {
+            state = State.EMPTY;
+        }
     }
 
     @Override
     void executeParameters(Database database) {
         List<Task> tasks;
         try {
-            tasks = database.getAll(parameter);
+            tasks = database.getAll();
         } catch (SQLException e) {
             throw new RuntimeException("Retrieval of tasks has failed", e);
         }
