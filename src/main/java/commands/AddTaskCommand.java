@@ -1,7 +1,7 @@
 package commands;
 
 import datasource.Database;
-import dates.DateParser;
+import utils.Chronos;
 import utils.Strings;
 
 import java.sql.SQLException;
@@ -20,11 +20,7 @@ public class AddTaskCommand extends Command {
 
     public static AddTaskCommand from(String[] descriptionArray, String daysToDeadline) {
         String description = Strings.joinStrings(descriptionArray).orElse(null);
-
-        Timestamp deadline = null;
-        if (daysToDeadline != null) {
-            deadline = DateParser.parseDate(daysToDeadline);
-        }
+        Timestamp deadline = Chronos.convertDaysToTimestamp(daysToDeadline).orElse(null);
 
         return new AddTaskCommand(description, deadline);
     }
