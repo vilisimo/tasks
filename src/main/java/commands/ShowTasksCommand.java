@@ -10,11 +10,19 @@ import java.util.List;
 
 public class ShowTasksCommand extends Command {
 
+    private boolean executable;
+
     public ShowTasksCommand(boolean executable) {
+        this.executable = executable;
+        determineState();
+    }
+
+    @Override
+    protected void determineState() {
         if (executable) {
-            state = State.VALID;
+            this.state = State.VALID;
         } else {
-            state = State.EMPTY;
+            this.state = State.EMPTY;
         }
     }
 

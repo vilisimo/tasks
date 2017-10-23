@@ -44,7 +44,8 @@ public class AddTaskCommand extends Command {
      *
      * @return state indicating if command is valid and can be acted upon.
      */
-    private void determineState() {
+    @Override
+    protected void determineState() {
         if (description != null) {
             this.state = Command.State.VALID;
         } else if (description == null && deadline != null) {

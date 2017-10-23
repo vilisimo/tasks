@@ -31,6 +31,8 @@ public abstract class Command {
         }
     }
 
+    protected abstract void determineState();
+
     abstract void executeCommand(Database database);
 
     private void showError() {

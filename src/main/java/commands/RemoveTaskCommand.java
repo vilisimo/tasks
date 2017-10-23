@@ -13,7 +13,8 @@ public class RemoveTaskCommand extends Command {
         determineState();
     }
 
-    private void determineState() {
+    @Override
+    protected void determineState() {
         if (taskId == null) {
             this.state = Command.State.EMPTY;
         } else if (taskId >= 0) {
