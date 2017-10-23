@@ -3,7 +3,7 @@ package commands;
 import coloring.Printer;
 import datasource.Database;
 import entities.Task;
-import utils.TimeUtils;
+import utils.Chronos;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -38,8 +38,8 @@ public class ShowTasksCommand extends Command {
         tasks.forEach(task -> Printer.success(
                 "Task " + task.getId() + ":"
                 + "\n" + task.getDescription()
-                + "\nCreated: " + TimeUtils.instantLocalDate(task.getCreated())
-                + "\nDeadline: " + TimeUtils.instantLocalDate(task.getDeadline())
+                + "\nCreated: " + Chronos.instantLocalDate(task.getCreated())
+                + "\nDeadline: " + Chronos.instantLocalDate(task.getDeadline())
                 + "\n")
         );
     }

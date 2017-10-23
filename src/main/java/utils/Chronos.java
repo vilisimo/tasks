@@ -4,9 +4,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-public final class TimeUtils {
+public final class Chronos {
 
-    private TimeUtils() {
+    private Chronos() {
         throw new AssertionError("The class should not be instantiated");
     }
 
