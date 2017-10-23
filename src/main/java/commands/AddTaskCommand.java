@@ -2,6 +2,7 @@ package commands;
 
 import datasource.Database;
 import dates.DateParser;
+import utils.Strings;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -18,11 +19,7 @@ public class AddTaskCommand extends Command {
     }
 
     public static AddTaskCommand from(String[] descriptionArray, String daysToDeadline) {
-        String description = null;
-        if (descriptionArray != null) {
-            description = String.join(" ", descriptionArray);
-            logger.trace("Adding description: {}", description);
-        }
+        String description = Strings.joinStrings(descriptionArray).orElse(null);
 
         Timestamp deadline = null;
         if (daysToDeadline != null) {
