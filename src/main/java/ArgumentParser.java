@@ -1,11 +1,13 @@
 import coloring.Printer;
 import commands.*;
+import dates.DateParser;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static cli.OptionNames.*;
 
@@ -57,7 +59,7 @@ class ArgumentParser {
     private ShowTasksCommand createShowTasksCommand(CommandLine cmd) {
         logger.trace("Creating {}", ShowTasksCommand.class.getSimpleName());
 
-        return new ShowTasksCommand(cmd.hasOption(SHOW));
+        return ShowTasksCommand.from(cmd.hasOption(SHOW), cmd.getOptionValue(SHOW));
     }
 
     private RemoveTaskCommand createRemoveTaskCommand(CommandLine cmd) {

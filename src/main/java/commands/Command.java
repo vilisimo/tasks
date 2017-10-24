@@ -9,7 +9,7 @@ import static java.util.Objects.requireNonNull;
 
 public abstract class Command {
 
-    private static final Logger logger = LogManager.getLogger();
+    static final Logger logger = LogManager.getLogger();
 
     String errorMessage;
     State state;

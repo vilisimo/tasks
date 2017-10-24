@@ -39,7 +39,7 @@ public class ShowTasksCommandTest {
     @Before
     public void setUpStream() {
         System.setOut(new PrintStream(out));
-        command = new ShowTasksCommand(true);
+        command = ShowTasksCommand.from(true, null);
     }
 
     @After
@@ -49,14 +49,21 @@ public class ShowTasksCommandTest {
 
     @Test
     public void setsValidState() {
-        ShowTasksCommand command = new ShowTasksCommand(true);
+        ShowTasksCommand command = ShowTasksCommand.from(true, null);
+
+        assertThat(command.getState(), is(Command.State.VALID));
+    }
+
+    @Test
+    public void setsValidStateWithOptionalArgument() {
+        ShowTasksCommand command = ShowTasksCommand.from(true, "1");
 
         assertThat(command.getState(), is(Command.State.VALID));
     }
 
     @Test
     public void setsEmptyState() {
-        ShowTasksCommand command = new ShowTasksCommand(false);
+        ShowTasksCommand command = ShowTasksCommand.from(false, null);
 
         assertThat(command.getState(), is(Command.State.EMPTY));
     }
