@@ -44,11 +44,12 @@ public final class CliOptions {
                 .build();
     }
 
-
     private static Option createShowOption() {
         return Option.builder(SHOW)
                 .desc("Shows currently saved tasks")
                 .argName("Show tasks")
+                .optionalArg(true)
+                .numberOfArgs(1)
                 .build();
     }
 

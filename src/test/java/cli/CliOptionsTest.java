@@ -4,6 +4,7 @@ import org.apache.commons.cli.Options;
 import org.junit.Before;
 import org.junit.Test;
 
+import static cli.OptionNames.*;
 import static org.junit.Assert.assertNotNull;
 
 public class CliOptionsTest {
@@ -17,21 +18,26 @@ public class CliOptionsTest {
 
     @Test
     public void createsAddTaskOption() {
-        assertNotNull(options.getOption("add"));
+        assertNotNull(options.getOption(ADD));
     }
 
     @Test
     public void createsDeadlineOption() {
-        assertNotNull(options.getOption("d"));
+        assertNotNull(options.getOption(DEADLINE));
     }
 
     @Test
     public void createsRemoveOption() {
-        assertNotNull(options.getOption("del"));
+        assertNotNull(options.getOption(REMOVE));
     }
 
     @Test
     public void createsClearOption() {
-        assertNotNull(options.getOption("clear"));
+        assertNotNull(options.getOption(CLEAR));
+    }
+    
+    @Test
+    public void createsShowOption() {
+        assertNotNull(options.getOption(SHOW));
     }
 }
