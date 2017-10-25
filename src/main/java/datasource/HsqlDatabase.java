@@ -18,12 +18,6 @@ class HsqlDatabase implements Database {
 
     private final static Logger logger = LogManager.getLogger();
 
-    private static final String INSERT = "INSERT INTO TASKS(description, deadline) VALUES (?, ?)";
-    private static final String SELECT = "SELECT * FROM TASKS";
-    private static final String DELETE = "DELETE FROM TASKS WHERE TASKS.ID=?";
-    private static final String TRUNCATE = "TRUNCATE TABLE TASKS AND COMMIT";
-    private static final String DEADLINE_FILTERED_SELECT = "SELECT * FROM TASKS WHERE deadline = ?";
-
     private JDBCPool connectionPool;
 
     HsqlDatabase(JdbcConfiguration config) {
@@ -39,7 +33,7 @@ class HsqlDatabase implements Database {
         logger.trace("Attempting to save a task");
 
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement statement = conn.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = conn.prepareStatement(Statements.insert(), Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, task.getDescription());
             statement.setTimestamp(2, task.getDeadline());
@@ -59,7 +53,7 @@ class HsqlDatabase implements Database {
     public List<Task> getAll() throws SQLException {
         logger.trace("Attempting to retrieve all tasks");
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement statement = conn.prepareStatement(SELECT)) {
+             PreparedStatement statement = conn.prepareStatement(Statements.select())) {
 
             try (ResultSet rs = statement.executeQuery()) {
                 logger.trace("Retrieved a result representing all tasks");
@@ -76,7 +70,7 @@ class HsqlDatabase implements Database {
         logger.trace("Attempting to remove a task (id={})", task.getTaskId());
 
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(DELETE)) {
+             PreparedStatement statement = connection.prepareStatement(Statements.delete())) {
 
             statement.setInt(1, task.getTaskId());
             int affectedRows = statement.executeUpdate();
@@ -92,7 +86,7 @@ class HsqlDatabase implements Database {
         logger.trace("Attempting to clear all tasks");
 
         try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(TRUNCATE)) {
+             PreparedStatement statement = connection.prepareStatement(Statements.truncate())) {
 
             statement.executeUpdate();
 
@@ -104,9 +98,7 @@ class HsqlDatabase implements Database {
     public List<Task> filter(Timestamp deadline) throws SQLException {
         logger.trace("Attempting to retrieve tasks filtered deadline(={})", deadline);
 
-        String query = deadline == null ?
-                "SELECT * FROM TASKS WHERE DEADLINE IS NULL" :
-                DEADLINE_FILTERED_SELECT;
+        String query = Statements.filter(deadline);
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
