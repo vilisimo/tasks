@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 
@@ -20,7 +21,9 @@ import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -108,5 +111,23 @@ public class ShowTasksCommandTest {
         doThrow(SQLException.class).when(database).getAll();
 
         command.executeCommand(database);
+    }
+
+    @Test
+    public void callsCorrectMethodWhenDeadlineGiven() throws SQLException {
+        command = ShowTasksCommand.from(true, "1");
+
+        command.execute(database);
+
+        verify(database).filter(any(Timestamp.class));
+    }
+
+    @Test
+    public void callsCorrectMethodWhenDeadlineNotGiven() throws SQLException {
+        command = ShowTasksCommand.from(true, null);
+
+        command.execute(database);
+
+        verify(database).getAll();
     }
 }

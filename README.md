@@ -31,10 +31,17 @@ Currently supported commands are:
 ~~~
 Adding tasks:
 -add <task>     Adds a task.
--d <n>          Sets a deadline for a task (n days). 
+    -d <n>      Sets a deadline for a task (n days). 
                 For convenience, "today" and "tomorrow"
                 are also supported.
--show           Shows all curently saved tasks.
+-show {filter}  Shows all curently saved tasks. Tasks 
+                can be filtered on deadline (optional). 
+                Filter can be any of the following: 
+                    * none - unset deadline
+                    * integer - days from today
+                    * today - same as 0
+                    * tomorrow - same as 1
+                
 -del <id>       Deletes a task with a specified id.
 -clear          Deletes all tasks.
 ~~~

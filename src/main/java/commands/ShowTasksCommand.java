@@ -7,6 +7,7 @@ import entities.Task;
 import utils.Chronos;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public abstract class ShowTasksCommand extends Command {
@@ -66,16 +67,37 @@ public abstract class ShowTasksCommand extends Command {
 
     private static class ShowTimeFilteredTasks extends ShowTasksCommand {
 
-        private String daysToDeadline;
+        private Timestamp deadline;
 
         private ShowTimeFilteredTasks(boolean executable, String daysToDeadline) {
             super(executable);
-            this.daysToDeadline = daysToDeadline;
+            this.deadline = parseDeadline(daysToDeadline);
         }
 
         @Override
         void executeCommand(Database database) {
-            System.out.println("Deadline: " + DateParser.parseDate(daysToDeadline));
+            List<Task> tasks;
+            try {
+                tasks = database.filter(deadline);
+            } catch (SQLException e) {
+                throw new RuntimeException("Retrieval of tasks has failed", e);
+            }
+
+            tasks.forEach(task -> Printer.success(
+                    "Task " + task.getId() + ":"
+                            + "\n" + task.getDescription()
+                            + "\nCreated: " + Chronos.instantLocalDate(task.getCreated())
+                            + "\nDeadline: " + Chronos.instantLocalDate(task.getDeadline())
+                            + "\n")
+            );
+        }
+
+        private Timestamp parseDeadline(String daysToDeadline) {
+            if (!daysToDeadline.equalsIgnoreCase("none")) {
+                return DateParser.parseDate(daysToDeadline);
+            }
+
+            return null;
         }
     }
 }

@@ -22,6 +22,7 @@ class HsqlDatabase implements Database {
     private static final String SELECT = "SELECT * FROM TASKS";
     private static final String DELETE = "DELETE FROM TASKS WHERE TASKS.ID=?";
     private static final String TRUNCATE = "TRUNCATE TABLE TASKS AND COMMIT";
+    private static final String DEADLINE_FILTERED_SELECT = "SELECT * FROM TASKS WHERE deadline = ?";
 
     private JDBCPool connectionPool;
 
@@ -62,21 +63,7 @@ class HsqlDatabase implements Database {
 
             try (ResultSet rs = statement.executeQuery()) {
                 logger.trace("Retrieved a result representing all tasks");
-
-                List<Task> tasks = new ArrayList<>();
-                while (rs.next()) {
-                    int taskId = rs.getInt(1);
-                    logger.trace("Processing task (id=" + taskId + ")");
-                    String description = rs.getString(2);
-                    Timestamp createdDate = rs.getTimestamp(3);
-                    Timestamp endDate = rs.getTimestamp(4); // 3rd column is "created"
-                    Instant created = createdDate == null ? null : createdDate.toInstant();
-                    Instant deadline = endDate == null ? null : endDate.toInstant();
-
-                    Task task = new Task(taskId, description, created, deadline);
-                    tasks.add(task);
-                }
-
+                List<Task> tasks = createTasks(rs);
                 logger.trace("Successfully retrieved all tasks");
 
                 return tasks;
@@ -111,5 +98,49 @@ class HsqlDatabase implements Database {
 
             logger.trace("Successfully removed all tasks");
         }
+    }
+
+    @Override
+    public List<Task> filter(Timestamp deadline) throws SQLException {
+        logger.trace("Attempting to retrieve tasks filtered deadline(={})", deadline);
+
+        String query = deadline == null ?
+                "SELECT * FROM TASKS WHERE DEADLINE IS NULL" :
+                DEADLINE_FILTERED_SELECT;
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            if (!query.contains("NULL")) {
+                statement.setTimestamp(1, deadline);
+            }
+
+            try (ResultSet rs = statement.executeQuery()) {
+                logger.trace("Retrieved a result representing all tasks");
+                List<Task> tasks = createTasks(rs);
+                logger.trace("Successfully filtered and retrieved the tasks");
+
+                return tasks;
+            }
+        }
+    }
+
+    private List<Task> createTasks(ResultSet rs) throws SQLException {
+        List<Task> tasks = new ArrayList<>();
+
+        while (rs.next()) {
+            int taskId = rs.getInt(1);
+            logger.trace("Processing task (id=" + taskId + ")");
+            String description = rs.getString(2);
+            Timestamp createdDate = rs.getTimestamp(3);
+            Timestamp endDate = rs.getTimestamp(4);
+            Instant created = createdDate == null ? null : createdDate.toInstant();
+            Instant deadline = endDate == null ? null : endDate.toInstant();
+
+            Task task = new Task(taskId, description, created, deadline);
+            tasks.add(task);
+        }
+
+        return tasks;
     }
 }
