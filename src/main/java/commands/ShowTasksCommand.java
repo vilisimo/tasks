@@ -4,7 +4,6 @@ import coloring.Printer;
 import datasource.Database;
 import dates.DateParser;
 import entities.Task;
-import utils.Chronos;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -55,13 +54,7 @@ public abstract class ShowTasksCommand extends Command {
                 throw new RuntimeException("Retrieval of tasks has failed", e);
             }
 
-            tasks.forEach(task -> Printer.success(
-                    "Task " + task.getId() + ":"
-                            + "\n" + task.getDescription()
-                            + "\nCreated: " + Chronos.instantLocalDate(task.getCreated())
-                            + "\nDeadline: " + Chronos.instantLocalDate(task.getDeadline())
-                            + "\n")
-            );
+            Printer.printTasks(tasks);
         }
     }
 
@@ -83,13 +76,7 @@ public abstract class ShowTasksCommand extends Command {
                 throw new RuntimeException("Retrieval of tasks has failed", e);
             }
 
-            tasks.forEach(task -> Printer.success(
-                    "Task " + task.getId() + ":"
-                            + "\n" + task.getDescription()
-                            + "\nCreated: " + Chronos.instantLocalDate(task.getCreated())
-                            + "\nDeadline: " + Chronos.instantLocalDate(task.getDeadline())
-                            + "\n")
-            );
+            Printer.printTasks(tasks);
         }
 
         private Timestamp parseDeadline(String daysToDeadline) {

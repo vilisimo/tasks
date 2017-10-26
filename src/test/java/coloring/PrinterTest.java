@@ -1,11 +1,16 @@
 package coloring;
 
+import entities.Task;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import utils.Chronos;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
@@ -71,5 +76,16 @@ public class PrinterTest {
         Printer.warning("test");
 
         assertThat(out.toString(), containsString(Colors.ANSI_RESET.toString()));
+    }
+
+    @Test
+    public void printsTasks() {
+        Task task = new Task(1, "description", Instant.now(), Instant.now().plus(1, ChronoUnit.DAYS));
+
+        Printer.printTasks(Collections.singletonList(task));
+
+        assertThat(out.toString(), containsString("description"));
+        assertThat(out.toString(), containsString("1"));
+        assertThat(out.toString(), containsString(Chronos.instantToLocalDate(Instant.now())));
     }
 }

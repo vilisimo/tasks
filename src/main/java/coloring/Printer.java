@@ -1,5 +1,10 @@
 package coloring;
 
+import entities.Task;
+import utils.Chronos;
+
+import java.util.List;
+
 import static coloring.Colors.*;
 
 public final class Printer {
@@ -18,5 +23,15 @@ public final class Printer {
 
     public static void warning(String warningText) {
         System.out.println(ANSI_YELLOW + warningText + ANSI_RESET);
+    }
+
+    public static void printTasks(List<Task> tasks) {
+        tasks.forEach(task -> Printer.success(
+                "Task " + task.getId() + ":"
+                        + "\n" + task.getDescription()
+                        + "\nCreated: " + Chronos.instantToLocalDate(task.getCreated())
+                        + "\nDeadline: " + Chronos.instantToLocalDate(task.getDeadline())
+                        + "\n")
+        );
     }
 }
