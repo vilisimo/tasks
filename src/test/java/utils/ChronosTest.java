@@ -18,14 +18,14 @@ public class ChronosTest {
     public void localDateAndInstantMatch() {
         LocalDate date = LocalDate.now();
 
-        String instantToDate = Chronos.instantLocalDate(Instant.now());
+        String instantToDate = Chronos.instantToLocalDate(Instant.now());
 
         assertThat(date.toString(), is(instantToDate));
     }
 
     @Test
     public void handlesNull() {
-        String date = Chronos.instantLocalDate(null);
+        String date = Chronos.instantToLocalDate(null);
 
         assertThat(date, is("N/A"));
     }

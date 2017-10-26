@@ -14,7 +14,7 @@ public final class Chronos {
         throw new AssertionError("The class should not be instantiated");
     }
 
-    public static String instantLocalDate(Instant instant) {
+    public static String instantToLocalDate(Instant instant) {
         return instant == null ? "N/A" : LocalDate.from(instant.atZone(ZoneId.systemDefault())).toString();
     }
 
