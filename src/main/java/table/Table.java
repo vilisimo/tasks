@@ -15,8 +15,7 @@ public class Table {
 
     public Table(Header header) {
         this.header = Optional.ofNullable(header).orElseThrow(() -> new MissingHeader("Table must have a header"));
-        int bordersWidth = header.columnCount() + 1;
-        this.width = header.getWidth() + bordersWidth;
+        this.width = header.getWidth();
         this.rows = new ArrayList<>();
     }
 
@@ -42,6 +41,10 @@ public class Table {
                 throw new MismatchedColumns("Value is missing from the header: " + column);
             }
         }
+    }
+
+    public int columnCount() {
+        return header.columnCount();
     }
 
     /**

@@ -11,18 +11,13 @@ import static org.junit.Assert.assertThat;
 
 public class TableTest {
 
-//    @Rule
-//    public ExpectedException expectedException = ExpectedException.none();
-//
-
     private final Header header = new Header(Map.of("key1", 1, "key2", 2));
 
     @Test
     public void constructorSetsWidth() {
         Table table = new Table(header);
-        int bordersWidth = header.columnCount() + 1;
 
-        assertThat(table.getWidth(), is(header.getWidth() + bordersWidth));
+        assertThat(table.getWidth(), is(header.getWidth()));
     }
 
     @Test(expected = MissingHeader.class)
@@ -59,5 +54,13 @@ public class TableTest {
         table.addRow(new DataRow(Map.of("key1", "val5", "key2", "val6")));
 
         assertThat(table.getRows().size(), is(3));
+    }
+
+    @Test
+    public void returnsColumnCountCorrespondingToHeader() {
+        Header header = new Header(Map.of("key1", 1, "key2", 2));
+        Table table = new Table(header);
+
+        assertThat(table.columnCount(), is(header.columnCount()));
     }
 }
