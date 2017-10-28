@@ -15,4 +15,10 @@ public final class Validations {
             throw new EmptyCollection(message);
         }
     }
+
+    public static void requireNonNegative(int number, String message) {
+        if (number < 0) {
+            throw new IllegalArgumentException(message);
+        }
+    }
 }

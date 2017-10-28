@@ -3,6 +3,7 @@ package utils;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
+import static utils.Validations.requireNonNegative;
 
 public final class Strings {
 
@@ -25,13 +26,7 @@ public final class Strings {
              return string;
         }
 
-        StringBuilder builder = new StringBuilder();
-        builder.append(string);
-        for (int i = string.length(); i < minimumLength; i++) {
-            builder.append(padChar);
-        }
-
-        return builder.toString();
+        return string + repeat(padChar, minimumLength - string.length());
     }
 
     public static String padLeft(String string, int minimumLength, char padChar) {
@@ -41,11 +36,20 @@ public final class Strings {
             return string;
         }
 
-        StringBuilder builder = new StringBuilder();
-        for (int i = string.length(); i < minimumLength; i++) {
-            builder.append(padChar);
+        return repeat(padChar, minimumLength - string.length()) + string;
+    }
+
+    public static String repeat(char character, int times) {
+        requireNonNegative(times, "'" + character + "' cannot be repeated " + times + " times");
+
+        if (times == 0) {
+            return "";
         }
-        builder.append(string);
+
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < times; i++) {
+            builder.append(character);
+        }
 
         return builder.toString();
     }

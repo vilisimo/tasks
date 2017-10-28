@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import static utils.Validations.requireNonEmpty;
+import static utils.Validations.requireNonNegative;
 
 public class ValidationsTest {
 
@@ -16,7 +17,17 @@ public class ValidationsTest {
     }
 
     @Test
-    public void recognizesNonEmptyMap() {
+    public void allowsNonEmptyMap() {
         requireNonEmpty(Map.of("a", "b"), "test");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void recognizesNegativeNumber() {
+        requireNonNegative(-1, "test");
+    }
+
+    @Test
+    public void allowsNonNegativeNumber() {
+        requireNonNegative(0, "test");
     }
 }

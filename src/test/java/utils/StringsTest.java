@@ -70,4 +70,21 @@ public class StringsTest {
     public void padLeftDoesNotAcceptNull() {
         Strings.padRight(null, 1, ' ');
     }
+
+    @Test
+    public void repeatsCharacters() {
+        String string = Strings.repeat('a', 9);
+
+        assertThat(string.length(), is(9));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void doesNotAllowNegativeNumbers() {
+        Strings.repeat('a', -1);
+    }
+
+    @Test
+    public void returnEmptyStringWhenTimesIsZero() {
+        assertThat(Strings.repeat('a', 0), is(""));
+    }
 }
