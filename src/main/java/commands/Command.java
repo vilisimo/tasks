@@ -1,6 +1,6 @@
 package commands;
 
-import coloring.Printer;
+import printing.Printer;
 import datasource.Database;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

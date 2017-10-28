@@ -1,4 +1,4 @@
-package coloring;
+package printing;
 
 import entities.Task;
 import utils.Chronos;

@@ -4,6 +4,7 @@ import entities.Task;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import printing.Printer;
 import utils.Chronos;
 
 import java.io.ByteArrayOutputStream;

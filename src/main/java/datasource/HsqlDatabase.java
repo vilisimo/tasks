@@ -1,6 +1,6 @@
 package datasource;
 
-import coloring.Printer;
+import printing.Printer;
 import commands.AddTaskCommand;
 import commands.RemoveTaskCommand;
 import configuration.JdbcConfiguration;

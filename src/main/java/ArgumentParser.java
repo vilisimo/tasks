@@ -1,4 +1,4 @@
-import coloring.Printer;
+import printing.Printer;
 import commands.*;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;

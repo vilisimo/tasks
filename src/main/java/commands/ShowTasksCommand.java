@@ -1,6 +1,6 @@
 package commands;
 
-import coloring.Printer;
+import printing.Printer;
 import datasource.Database;
 import dates.DateParser;
 import entities.Task;
