@@ -1,5 +1,6 @@
 package table;
 
+import exceptions.MismatchedColumns;
 import exceptions.MissingHeader;
 import exceptions.MissingColumn;
 import org.junit.Before;
@@ -14,21 +15,18 @@ import static org.junit.Assert.assertThat;
 
 public class TableTest {
 
-    private Header header;
+//    @Rule
+//    public ExpectedException expectedException = ExpectedException.none();
+//
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
-    @Before
-    public void setup() {
-        header = new Header(80);
-    }
+    private final Header header = new Header(Map.of("key1", 1, "key2", 2));
 
     @Test
     public void constructorSetsWidth() {
         Table table = new Table(header);
+        int bordersWidth = header.columnCount() + 1;
 
-        assertThat(table.getWidth(), is(header.getWidth()));
+        assertThat(table.getWidth(), is(header.getWidth() + bordersWidth));
     }
 
     @Test(expected = MissingHeader.class)
@@ -37,48 +35,33 @@ public class TableTest {
     }
 
     @Test
-    public void getsHeaderColumns() {
-        header.setColumns(Map.of("key", 78));
-        Table table = new Table(header);
+    public void tableRecognizesWhenThereAreNoRows() {
+        Table table = new Table(new Header(Map.of("key", 1)));
 
-        Map<String, Integer> columns = table.getHeaderColumns();
+        assertThat(table.isEmpty(), is(true));
+    }
 
-        assertThat(columns, is(Map.of("key", 78)));
+    @Test(expected = MismatchedColumns.class)
+    public void tableRecognizesMismatchedHeaderAndDataRowSizes() {
+        Table table = new Table(new Header(Map.of("key1", 1, "key2", 2)));
+
+        table.addRow(new DataRow(Map.of("key1", "val1")));
+    }
+
+    @Test(expected = MismatchedColumns.class)
+    public void tableRecognizesRowsThatHaveValuesNotInTheHeader() {
+        Table table = new Table(new Header(Map.of("key1", 1, "key2", 2)));
+
+        table.addRow(new DataRow(Map.of("key1", "val1", "key3", "val3")));
     }
 
     @Test
-    public void getsListOfRows() {
-        header.setColumns(Map.of("key1", 78));
-        Table table = new Table(header);
+    public void returnsAllAddedRows() {
+        Table table = new Table(new Header(Map.of("key1", 1, "key2", 2)));
+        table.addRow(new DataRow(Map.of("key1", "val1", "key2", "val2")));
+        table.addRow(new DataRow(Map.of("key1", "val3", "key2", "val4")));
+        table.addRow(new DataRow(Map.of("key1", "val5", "key2", "val6")));
 
-        table.addRow(Map.of("key1", "value1", "key2", "value1"));
-        table.addRow(Map.of("key1", "value2", "key2", "value2"));
-
-        assertThat(table.getRows().size(), is(2));
-    }
-
-    @Test(expected = MissingHeader.class)
-    public void refusesRowsWhenHeaderNotSet() {
-        Table table = new Table(header);
-
-        table.addRow(Map.of("key", "value"));
-    }
-
-    @Test(expected = MissingColumn.class)
-    public void refusesRowsThatDoNotHaveHeadersColumns() {
-        header.setColumns(Map.of("key", 78));
-        Table table = new Table(header);
-
-        table.addRow(Map.of("invalidKey", "value"));
-    }
-
-    @Test
-    public void refusesRowsThatHaveFewerColumnsThanHeader() {
-        expectedException.expect(MissingColumn.class);
-        expectedException.expectMessage("The row has less columns than the header");
-        header.setColumns(Map.of("key1", 70, "key2", 7));
-        Table table = new Table(header);
-
-        table.addRow(Map.of("key1", "value1"));
+        assertThat(table.getRows().size(), is(3));
     }
 }

@@ -1,44 +1,56 @@
 package table;
 
-import exceptions.InvalidWidth;
-import exceptions.MismatchedWidth;
+import exceptions.MissingColumn;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+import static utils.Validations.requireNonEmpty;
 
 public class Header {
 
+    private final Map<String, Integer> columns;
     private final int width;
-    private Map<String, Integer> columns = Collections.emptyMap();
 
-    public Header(int width) {
-        if (width < 1) {
-            throw new InvalidWidth("Width must be greater than 0");
+    public Header(Map<String, Integer> columns) {
+        requireNonNull(columns, "Header columns cannot be null");
+        requireNonEmpty(columns, "Header columns cannot be empty");
+
+        this.width = columns.values().stream().mapToInt(Number::intValue).sum();
+        this.columns = new LinkedHashMap<>(columns);
+    }
+
+    public List<String> getColumns() {
+        return columns.entrySet()
+                .stream()
+                .map(Map.Entry::getKey)
+                .collect(toList());
+    }
+
+    public int getColumnWidth(String column) {
+        if (!this.containsColumn(column)) {
+            throw new MissingColumn("Header does not have specified column ('" + column + "')");
         }
 
-        this.width = width;
+        return columns.get(column);
     }
 
-    public void setColumns(Map<String, Integer> columns) {
-        verifyWidth(columns);
-        this.columns = Collections.unmodifiableMap(columns);
+    public boolean containsColumn(String column) {
+        return columns.containsKey(column);
     }
 
-    private void verifyWidth(Map<String, Integer> columns) {
-        int columnsWidth = columns.values().stream().mapToInt(Number::intValue).sum();
-        int totalBorderWidth = columns.size() + 1;
-        int availableWidth = width - totalBorderWidth;
+    public boolean containsColumns(List<String> columnNames) {
+        requireNonNull(columnNames, "Supplied collection of column names should not be null");
 
-        if (columnsWidth > width) {
-            throw new MismatchedWidth("Width of the columns exceeds width of the header");
-        } else if (columnsWidth < width - availableWidth) {
-            throw new MismatchedWidth("Header width mismatch. Available width: " + availableWidth
-                    + ". Used width: " + columnsWidth);
-        }
+        return columns.keySet().containsAll(columnNames);
     }
 
-    public Map<String, Integer> getColumns() {
-        return columns;
+    public int columnCount() {
+        return columns.size();
     }
 
     public int getWidth() {

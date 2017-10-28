@@ -1,65 +1,61 @@
 package table;
 
-import exceptions.MissingColumn;
+import exceptions.MismatchedColumns;
 import exceptions.MissingHeader;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class Table {
 
     private final Header header;
-    private final List<DataRow> rows;
-    private int width;
+    private List<DataRow> rows;
+    private final int width;
 
     public Table(Header header) {
         this.header = Optional.ofNullable(header).orElseThrow(() -> new MissingHeader("Table must have a header"));
-        this.width = header.getWidth();
+        int bordersWidth = header.columnCount() + 1;
+        this.width = header.getWidth() + bordersWidth;
         this.rows = new ArrayList<>();
     }
 
-    /**
-     * Adds a row to a table.
-     *
-     * Note that the table will not accept data that has missing
-     * columns (map's keys). However, it lenient with regards to
-     * columns that do not exist in the header.
-     *
-     * @param rowColumns data to be stored in the table.
-     */
-    public void addRow(Map<String, String> rowColumns) {
-        requireNotEmpty();
-        requireSameSize(rowColumns);
-        containsHeaderColumns(rowColumns);
+    public void addRow(DataRow row) {
+        requireSameSize(row);
+        requireMatchingColumns(row);
 
-        rows.add(new DataRow(rowColumns));
+        rows.add(row);
     }
 
-    private void requireNotEmpty() {
-        if (getHeaderColumns().isEmpty()) {
-            throw new MissingHeader("Table must have a header with populated data");
+    private void requireSameSize(DataRow row) {
+        if (header.columnCount() != row.columnCount()) {
+            throw new MismatchedColumns("Header (" + header.columnCount() +") " +
+                    "and row (" + row.columnCount() + ") column count does not match");
         }
     }
 
-    private void requireSameSize(Map<String, String> rowColumns) {
-        if (getHeaderColumns().size() > rowColumns.size()) {
-            throw new MissingColumn("The row has less columns than the header");
-        }
-    }
+    private void requireMatchingColumns(DataRow row) {
+        List<String> rowColumns = row.getColumnNames();
 
-    private void containsHeaderColumns(Map<String, String> rowColumns) {
-        Map<String, Integer> headerColumns = getHeaderColumns();
-        headerColumns.forEach((column, width) -> {
-            if (!rowColumns.containsKey(column)) {
-                throw new MissingColumn("Column ['" + column + "'] is missing from " + DataRow.class.getSimpleName());
+        for (String column : rowColumns) {
+            if (!header.containsColumn(column)) {
+                throw new MismatchedColumns("Value is missing from the header: " + column);
             }
-        });
+        }
     }
 
-    public Map<String, Integer> getHeaderColumns() {
-        return header.getColumns();
+    /**
+     * Answers the question of whether the table has any rows.
+     *
+     * @return whether the table has rows
+     */
+    public boolean isEmpty() {
+        return rows.isEmpty();
+    }
+
+    public Header getHeader() {
+        return header;
     }
 
     public List<DataRow> getRows() {
