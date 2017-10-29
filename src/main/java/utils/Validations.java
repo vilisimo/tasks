@@ -16,8 +16,8 @@ public final class Validations {
         }
     }
 
-    public static void requireNonNegative(int number, String message) {
-        if (number < 0) {
+    public static void requireLarger(int minimum, int actual, String message) {
+        if (actual < minimum) {
             throw new IllegalArgumentException(message);
         }
     }

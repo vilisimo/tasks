@@ -3,7 +3,7 @@ package utils;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
-import static utils.Validations.requireNonNegative;
+import static utils.Validations.requireLarger;
 
 public final class Strings {
 
@@ -40,7 +40,7 @@ public final class Strings {
     }
 
     public static String repeat(char character, int times) {
-        requireNonNegative(times, "'" + character + "' cannot be repeated " + times + " times");
+        requireLarger(0, times, "'" + character + "' cannot be repeated " + times + " times");
 
         if (times == 0) {
             return "";

@@ -6,8 +6,8 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.Map;
 
+import static utils.Validations.requireLarger;
 import static utils.Validations.requireNonEmpty;
-import static utils.Validations.requireNonNegative;
 
 public class ValidationsTest {
 
@@ -23,11 +23,16 @@ public class ValidationsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void recognizesNegativeNumber() {
-        requireNonNegative(-1, "test");
+        requireLarger(0, -1, "test");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void doesNotPermitLowerNumber() {
+        requireLarger(10, 9, "test");
     }
 
     @Test
     public void allowsNonNegativeNumber() {
-        requireNonNegative(0, "test");
+        requireLarger(0, 0, "test");
     }
 }
