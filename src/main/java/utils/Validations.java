@@ -2,6 +2,7 @@ package utils;
 
 import exceptions.EmptyCollection;
 
+import java.util.Collection;
 import java.util.Map;
 
 public final class Validations {
@@ -12,6 +13,12 @@ public final class Validations {
 
     public static <T, V> void requireNonEmpty(Map<T, V> map, String message) {
         if (map.isEmpty()) {
+            throw new EmptyCollection(message);
+        }
+    }
+
+    public static void requireNonEmpty(Collection collection, String message) {
+        if (collection.isEmpty()) {
             throw new EmptyCollection(message);
         }
     }
