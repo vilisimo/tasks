@@ -1,7 +1,11 @@
 package utils;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -10,6 +14,9 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class StringsTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void joinsStringArray() {
@@ -86,5 +93,44 @@ public class StringsTest {
     @Test
     public void returnEmptyStringWhenTimesIsZero() {
         assertThat(Strings.repeat('a', 0), is(""));
+    }
+
+    @Test
+    public void chopsString() {
+        List<String> result = new ArrayList<>();
+        Strings.chopString("Testing", 4, result);
+
+        assertThat(result.size(), is(2));
+        assertThat(String.join("", result), containsString("\n"));
+    }
+
+    @Test
+    public void doesNotChopStringsThatAreShortEnough() {
+        List<String> result = new ArrayList<>();
+        Strings.chopString("Test", 4, result);
+
+        assertThat(result.size(), is(1));
+        assertThat(result.get(0), is("Test"));
+    }
+
+    @Test
+    public void doesNotAcceptNullResultList() {
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("Result list should not be null");
+
+        Strings.chopString("Test" ,4, null);
+    }
+
+    @Test
+    public void doesNotAcceptNullStringToBeChopped() {
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("String to be chopped should not be null");
+
+        Strings.chopString(null, 4, new ArrayList<>());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void doesNotAcceptNonPositiveSize() {
+        Strings.chopString("test", 0, new ArrayList<>());
     }
 }

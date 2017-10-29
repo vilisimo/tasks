@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.List;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
@@ -52,5 +53,18 @@ public final class Strings {
         }
 
         return builder.toString();
+    }
+
+    public static void chopString(String string, int size, List<String> result) {
+        requireNonNull(result, "Result list should not be null");
+        requireLarger(1, size, "Size should not be larger than 1 [current=" + size + "]");
+        requireNonNull(string, "String to be chopped should not be null");
+
+        if (string.length() > size) {
+            result.add(string.substring(0, size));
+            chopString("\n" + string.substring(size), size, result);
+        } else {
+            result.add(string);
+        }
     }
 }
