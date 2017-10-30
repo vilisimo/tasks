@@ -126,4 +126,40 @@ public class ContainersTest {
     public void doesNotAcceptEmptyContainer() {
         Containers.maxListSize(Collections.emptyList());
     }
+
+    @Test
+    public void splitsListsIntoSpecifiedNumberOfSlices() {
+        List<Integer> list = List.of(1, 2, 3, 4, 5, 6);
+
+        List<List<Integer>> lists = Containers.split(list, 3);
+
+        assertThat(lists.size(), is(3));
+        assertThat(lists.get(0).size(), is(2));
+        assertThat(lists.get(1).size(), is(2));
+        assertThat(lists.get(2).size(), is(2));
+    }
+
+    @Test
+    public void doesNotAllowNullListsToBeSplit() {
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("Collection should not be null");
+
+        Containers.split(null, 2);
+    }
+
+    @Test(expected = EmptyCollection.class)
+    public void doesNotAllowEmptyCollections() {
+        Containers.split(Collections.emptyList(), 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void doesNotAllowToSplitIntoLessThanOneList() {
+        Containers.split(List.of(1, 2, 3, 4), 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void doesNotAllowDivisionResultingInFloat() {
+        List<Integer> list = List.of(1, 2, 3);
+        Containers.split(list, 2);
+    }
 }

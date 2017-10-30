@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
+import static utils.Validations.requireLarger;
 import static utils.Validations.requireNonEmpty;
 import static utils.Validations.requireSameSize;
 
@@ -62,5 +63,26 @@ public final class Containers {
         }
 
         return result;
+    }
+
+    public static <T> List<List<T>> split(List<T> list, int slices) {
+        requireNonNull(list, "Collection should not be null");
+        requireNonEmpty(list, "Collection should not be empty");
+        requireLarger(1, slices, "List should be split into at least 1 slice");
+
+        if (list.size() % slices != 0) {
+            throw new IllegalArgumentException(
+                    "Lists cannot be divided equally (" + list.size() + "%" + slices + "!=0)");
+        }
+
+        List<List<T>> lists = new ArrayList<>(slices);
+
+        for (int i = 0; i < slices; i++) {
+            int from = i * (list.size() / slices);
+            int to = (list.size() / slices) * (i + 1);
+            lists.add(list.subList(from, to));
+        }
+
+        return lists;
     }
 }
