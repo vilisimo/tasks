@@ -57,7 +57,7 @@ public final class Strings {
     }
 
     public static List<String> chopString(String string, int size) {
-        requireLarger(1, size, "Size should not be larger than 1 [current=" + size + "]");
+        requireLarger(2, size, "Size should not be larger than 2 [current=" + size + "]");
         requireNonNull(string, "String to be chopped should not be null");
 
         List<String> result = new ArrayList<>();
