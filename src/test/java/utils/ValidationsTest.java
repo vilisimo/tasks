@@ -4,10 +4,12 @@ import exceptions.EmptyCollection;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static utils.Validations.requireLarger;
 import static utils.Validations.requireNonEmpty;
+import static utils.Validations.requireSameSize;
 
 public class ValidationsTest {
 
@@ -34,5 +36,26 @@ public class ValidationsTest {
     @Test
     public void allowsNonNegativeNumber() {
         requireLarger(0, 0, "test");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void doesNotPermitListsOfDifferentSizes() {
+        requireSameSize(List.of(
+                List.of(1, 2, 3),
+                List.of(1, 2)
+        ), "test");
+    }
+
+    @Test
+    public void allowsListsOfSameSize() {
+        requireSameSize(List.of(
+                List.of(1, 2),
+                List.of(1, 2)
+        ), "test");
+    }
+
+    @Test
+    public void allowsEmptyList() {
+        requireSameSize(List.of(), "test");
     }
 }

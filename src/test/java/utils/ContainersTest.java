@@ -19,6 +19,33 @@ public class ContainersTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
+    public void interleavesCollections() {
+        List<List<Integer>> lists = List.of(
+                List.of(1, 3, 5),
+                List.of(2, 4, 6));
+
+        List<Integer> result = Containers.interleave(lists, 3);
+
+        assertThat(result, is(List.of(1, 2, 3, 4, 5, 6)));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void refusesListsOfDifferentSize() {
+        List<List<Integer>> lists = List.of(
+                List.of(1, 2, 3),
+                List.of(1, 2));
+
+        Containers.interleave(lists, 3);
+    }
+
+    @Test
+    public void interleaveDoesNotAllowNulls() {
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("Collection should not be null");
+        Containers.interleave(null, 2);
+    }
+
+    @Test
     public void normalizeCollectionsDoesNotAcceptNullCollection() {
         expectedException.expect(NullPointerException.class);
         expectedException.expectMessage("Collection should not be null");

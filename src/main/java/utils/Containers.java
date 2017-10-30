@@ -1,10 +1,12 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 import static utils.Validations.requireNonEmpty;
+import static utils.Validations.requireSameSize;
 
 public final class Containers {
 
@@ -43,5 +45,22 @@ public final class Containers {
         }
 
         return size;
+    }
+
+    /**
+     * Interleaves lists. Assumes that lists are the same size.
+     */
+    public static <T> List<T> interleave(List<List<T>> lists, int iterations) {
+        requireNonNull(lists, "Collection should not be null");
+        requireSameSize(lists, "Lists should be of the same size");
+
+        List<T> result = new ArrayList<>();
+        for (int i = 0; i < iterations; i++) {
+            for (List<T> list : lists) {
+                result.add(list.get(i));
+            }
+        }
+
+        return result;
     }
 }
