@@ -1,6 +1,7 @@
 package utils;
 
 import exceptions.EmptyCollection;
+import exceptions.MismatchedSizes;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -38,7 +39,7 @@ public class ValidationsTest {
         requireLarger(0, 0, "test");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = MismatchedSizes.class)
     public void doesNotPermitListsOfDifferentSizes() {
         requireSameSize(List.of(
                 List.of(1, 2, 3),

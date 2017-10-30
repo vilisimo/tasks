@@ -1,6 +1,7 @@
 package utils;
 
 import exceptions.EmptyCollection;
+import exceptions.MismatchedSizes;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -29,7 +30,7 @@ public class ContainersTest {
         assertThat(result, is(List.of(1, 2, 3, 4, 5, 6)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = MismatchedSizes.class)
     public void refusesListsOfDifferentSize() {
         List<List<Integer>> lists = List.of(
                 List.of(1, 2, 3),

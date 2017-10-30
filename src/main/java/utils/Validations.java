@@ -1,6 +1,7 @@
 package utils;
 
 import exceptions.EmptyCollection;
+import exceptions.MismatchedSizes;
 
 import java.util.Collection;
 import java.util.List;
@@ -48,7 +49,7 @@ public final class Validations {
         }
 
         if (min != max) {
-            throw new IllegalArgumentException(message);
+            throw new MismatchedSizes(message);
         }
     }
 }
