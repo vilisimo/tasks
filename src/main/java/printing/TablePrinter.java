@@ -2,12 +2,10 @@ package printing;
 
 import table.Header;
 import table.Table;
+import utils.Containers;
 import utils.Strings;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -53,16 +51,45 @@ public class TablePrinter {
     private void printHeaderRow() {
         Header header = table.getHeader();
         List<String> columns = header.getColumns();
-        String rowRepresentation = columns
-                .stream()
-                .map(str -> designColumnString(str, header.getColumnWidth(str)))
-                .collect(Collectors.joining("|", "|", "|"));
 
-        System.out.println(rowRepresentation);
+        List<List<String>> formattedColumns = new ArrayList<>();
+        for (String column : columns) {
+            formattedColumns.add(Strings.chopString(column, header.getColumnWidth(column)));
+        }
+
+        Containers.normalizeListSizes(formattedColumns, "\n");
+        List<String> interleaved = Containers.interleave(formattedColumns, formattedColumns.get(0).size());
+        List<List<String>> split = Containers.split(interleaved, interleaved.size() / header.columnCount());
+
+        for (List<String> list : split) {
+            List<String> result = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                String row = list.get(i);
+                int width = header.getColumnWidth(columns.get(i));
+                result.add(designColumnString(row, width));
+            }
+
+            String rowRepresentation = result
+                    .stream()
+                    .collect(Collectors.joining("|", "|", "|"));
+
+            System.out.println(rowRepresentation);
+        }
+
+        //String rowRepresentation = columns
+        //        .stream()
+        //        .map(str -> designColumnString(str, header.getColumnWidth(str)))
+        //        .collect(Collectors.joining("|", "|", "|"));
+        //
+        //System.out.println(rowRepresentation);
     }
 
     private String designColumnString(String column, int size) {
         StringBuilder builder = new StringBuilder();
+
+        if (column.contains("\n")) {
+            column = column.replace("\n", "");
+        }
 
         builder.append(Strings.repeat(' ', cellPadding));
         builder.append(column);
@@ -90,7 +117,7 @@ public class TablePrinter {
 
     public static void main(String[] args) {
         int usableWidth = TablePrinter.usableWidth(79, 1, 3);
-        int titleLength = "title".length();
+        int titleLength = 4;
         int deadlineLength = "deadline".length();
         int descriptionLength = usableWidth - titleLength - deadlineLength;
         Map<String, Integer> columns = new LinkedHashMap<>();
