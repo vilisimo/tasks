@@ -97,8 +97,7 @@ public class StringsTest {
 
     @Test
     public void chopsString() {
-        List<String> result = new ArrayList<>();
-        Strings.chopString("Testing", 4, result);
+        List<String> result = Strings.chopString("Testing", 4);
 
         assertThat(result.size(), is(2));
         assertThat(String.join("", result), containsString("\n"));
@@ -106,19 +105,10 @@ public class StringsTest {
 
     @Test
     public void doesNotChopStringsThatAreShortEnough() {
-        List<String> result = new ArrayList<>();
-        Strings.chopString("Test", 4, result);
+        List<String> result = Strings.chopString("Test", 4);
 
         assertThat(result.size(), is(1));
         assertThat(result.get(0), is("Test"));
-    }
-
-    @Test
-    public void doesNotAcceptNullResultList() {
-        expectedException.expect(NullPointerException.class);
-        expectedException.expectMessage("Result list should not be null");
-
-        Strings.chopString("Test" ,4, null);
     }
 
     @Test
@@ -126,11 +116,11 @@ public class StringsTest {
         expectedException.expect(NullPointerException.class);
         expectedException.expectMessage("String to be chopped should not be null");
 
-        Strings.chopString(null, 4, new ArrayList<>());
+        Strings.chopString(null, 4);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void doesNotAcceptNonPositiveSize() {
-        Strings.chopString("test", 0, new ArrayList<>());
+        Strings.chopString("test", 0);
     }
 }

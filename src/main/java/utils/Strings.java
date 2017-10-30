@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,11 +56,17 @@ public final class Strings {
         return builder.toString();
     }
 
-    public static void chopString(String string, int size, List<String> result) {
-        requireNonNull(result, "Result list should not be null");
+    public static List<String> chopString(String string, int size) {
         requireLarger(1, size, "Size should not be larger than 1 [current=" + size + "]");
         requireNonNull(string, "String to be chopped should not be null");
 
+        List<String> result = new ArrayList<>();
+        chopString(string, size, result);
+
+        return result;
+    }
+
+    private static void chopString(String string, int size, List<String> result) {
         if (string.length() > size) {
             result.add(string.substring(0, size));
             chopString("\n" + string.substring(size), size, result);
