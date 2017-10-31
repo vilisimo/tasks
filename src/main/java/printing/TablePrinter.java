@@ -156,21 +156,21 @@ public class TablePrinter {
         int deadlineLength = "2018-01-11".length();
         int descriptionLength = usableWidth - titleLength - deadlineLength - deadlineLength;
 
-        Map<String, Integer> headerColumns = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> headerColumns = new LinkedHashMap<>();
         headerColumns.put("Title", titleLength);
         headerColumns.put("Description", descriptionLength);
         headerColumns.put("Created", deadlineLength);
         headerColumns.put("Deadline", deadlineLength);
         Header header = new Header(headerColumns);
 
-        Map<String, String> rowColumns = new LinkedHashMap<>();
+        LinkedHashMap<String, String> rowColumns = new LinkedHashMap<>();
         rowColumns.put("Title", "test1");
         rowColumns.put("Description", "Some really long description that has no way of fitting in one line and perhaps even not fitting on two lines or even three");
         rowColumns.put("Created", "2017-11-11");
         rowColumns.put("Deadline", "2018-05-11");
         DataRow row = new DataRow(rowColumns);
 
-        Map<String, String> rowColumns2 = new LinkedHashMap<>();
+        LinkedHashMap<String, String> rowColumns2 = new LinkedHashMap<>();
         rowColumns2.put("Title", "test2");
         rowColumns2.put("Description", "Shorter description that definitely fits on two lines");
         rowColumns2.put("Created", "2011-11-11");

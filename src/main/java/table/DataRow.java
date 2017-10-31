@@ -10,9 +10,9 @@ import static utils.Validations.requireNonEmpty;
 
 public class DataRow {
 
-    private final Map<String, String> columns;
+    private final LinkedHashMap<String, String> columns;
 
-    public DataRow(Map<String, String> columns) {
+    public DataRow(LinkedHashMap<String, String> columns) {
         requireNonNull(columns, "Row columns cannot be null");
         requireNonEmpty(columns, "Row columns cannot be empty");
 

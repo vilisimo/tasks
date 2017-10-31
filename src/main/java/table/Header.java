@@ -8,16 +8,14 @@ import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static utils.Validations.requireLarger;
-import static utils.Validations.requireNonEmpty;
-import static utils.Validations.requireSmaller;
+import static utils.Validations.*;
 
 public class Header {
 
-    private final Map<String, Integer> columns;
+    private final LinkedHashMap<String, Integer> columns;
     private final int width;
 
-    public Header(Map<String, Integer> columns) {
+    public Header(LinkedHashMap<String, Integer> columns) {
         requireNonNull(columns, "Header columns cannot be null");
         requireNonEmpty(columns, "Header columns cannot be empty");
 
