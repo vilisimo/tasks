@@ -53,40 +53,29 @@ public final class Containers {
     }
 
     /**
-     * Interleaves lists. Assumes that lists are the same size.
+     * Takes a bunch of lists and reorganizes them to form "rows".
+     * That is, the resulting list of lists will have as many lists
+     * as there are elements in the primal lists. Those "rows" will
+     * have 1..n-th elements from each list.
+     *
+     * Each list represents a row in an n-th column.
      */
-    public static <T> List<T> interleave(List<List<T>> lists, int iterations) {
-        requireNonNull(lists, "Collection should not be null");
+    public static <T> List<List<T>> interleave(List<List<T>> lists) {
+        requireNonNull(lists, "List should not be null");
+        requireNonEmpty(lists, "List should not be empty");
         requireSameSize(lists, "Lists should be of the same size");
 
-        List<T> result = new ArrayList<>();
+        int iterations = lists.get(0).size();
+
+        List<List<T>> result = new ArrayList<>();
         for (int i = 0; i < iterations; i++) {
+            List<T> intermediate = new ArrayList<>();
             for (List<T> list : lists) {
-                result.add(list.get(i));
+                intermediate.add(list.get(i));
             }
+            result.add(intermediate);
         }
 
         return result;
-    }
-
-    public static <T> List<List<T>> split(List<T> list, int slices) {
-        requireNonNull(list, "Collection should not be null");
-        requireNonEmpty(list, "Collection should not be empty");
-        requireLarger(1, slices, "List should be split into at least 1 slice");
-
-        if (list.size() % slices != 0) {
-            throw new IllegalArgumentException(
-                    "Lists cannot be divided equally (" + list.size() + "%" + slices + "!=0)");
-        }
-
-        List<List<T>> lists = new ArrayList<>(slices);
-
-        for (int i = 0; i < slices; i++) {
-            int from = i * (list.size() / slices);
-            int to = (list.size() / slices) * (i + 1);
-            lists.add(list.subList(from, to));
-        }
-
-        return lists;
     }
 }

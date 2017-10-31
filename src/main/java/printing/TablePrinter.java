@@ -14,9 +14,11 @@ import static utils.Validations.requireLarger;
 public class TablePrinter {
 
     private final Table table;
+
+    private final int cellPadding;
+
     private String fancyBorder;
     private String simpleBorder;
-    private final int cellPadding;
 
     public TablePrinter(Table table) {
         this.cellPadding = 1;
@@ -31,16 +33,7 @@ public class TablePrinter {
         printFancyBorder();
         printHeaderRow();
         printFancyBorder();
-        List<DataRow> rows = table.getRows();
-        for (int i = 0; i < rows.size(); i++) {
-            printRow(rows.get(i));
-            
-            if (i == rows.size() - 1) {
-                printFancyBorder();
-            } else {
-                printSimpleBorder();
-            }
-        }
+        printRows(table.getRows());
     }
 
     private void printFancyBorder() {
@@ -50,13 +43,6 @@ public class TablePrinter {
         System.out.println(fancyBorder);
     }
 
-    private void printSimpleBorder() {
-        if (simpleBorder == null) {
-            designSimpleBorder();
-        }
-        System.out.println(simpleBorder);
-    }
-
     private void designFancyBorder() {
         int whitespacePadding = (cellPadding * table.columnCount()) * 2;
         int borderPadding = table.columnCount() + 1;
@@ -64,13 +50,6 @@ public class TablePrinter {
         int cornerWidth = 2;
         String horizontalFiller = String.join("", Collections.nCopies(totalWidth - cornerWidth, "-"));
         this.fancyBorder = "+" + horizontalFiller + "+";
-    }
-
-    private void designSimpleBorder() {
-        int whitespacePadding = (cellPadding * table.columnCount()) * 2;
-        int borderPadding = table.columnCount() + 1;
-        int totalWidth = table.getWidth() + whitespacePadding + borderPadding;
-        this.simpleBorder = String.join("", Collections.nCopies(totalWidth, "-"));
     }
 
     private void printHeaderRow() {
@@ -83,8 +62,7 @@ public class TablePrinter {
         }
 
         Containers.normalizeListSizes(formattedColumns);
-        List<String> interleaved = Containers.interleave(formattedColumns, formattedColumns.get(0).size());
-        List<List<String>> split = Containers.split(interleaved, interleaved.size() / header.columnCount());
+        List<List<String>> split = Containers.interleave(formattedColumns);
 
         for (List<String> list : split) {
             List<String> result = new ArrayList<>();
@@ -102,6 +80,32 @@ public class TablePrinter {
         }
     }
 
+    private void printRows(List<DataRow> rows) {
+        for (int i = 0; i < rows.size(); i++) {
+            printRow(rows.get(i));
+
+            if (i == rows.size() - 1) {
+                printFancyBorder();
+            } else {
+                printSimpleBorder();
+            }
+        }
+    }
+
+    private void printSimpleBorder() {
+        if (simpleBorder == null) {
+            designSimpleBorder();
+        }
+        System.out.println(simpleBorder);
+    }
+
+    private void designSimpleBorder() {
+        int whitespacePadding = (cellPadding * table.columnCount()) * 2;
+        int borderPadding = table.columnCount() + 1;
+        int totalWidth = table.getWidth() + whitespacePadding + borderPadding;
+        this.simpleBorder = String.join("", Collections.nCopies(totalWidth, "-"));
+    }
+
     private void printRow(DataRow row) {
         Header header = table.getHeader();
         List<String> names = row.getColumnNames();
@@ -117,8 +121,7 @@ public class TablePrinter {
         }
 
         Containers.normalizeListSizes(formattedColumns);
-        List<String> interleaved = Containers.interleave(formattedColumns, formattedColumns.get(0).size());
-        List<List<String>> split = Containers.split(interleaved, interleaved.size() / header.columnCount());
+        List<List<String>> split = Containers.interleave(formattedColumns);
 
         for (List<String> list : split) {
             List<String> result = new ArrayList<>();

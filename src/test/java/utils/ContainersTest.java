@@ -23,12 +23,14 @@ public class ContainersTest {
     @Test
     public void interleavesCollections() {
         List<List<Integer>> lists = List.of(
-                List.of(1, 3, 5),
-                List.of(2, 4, 6));
+                List.of(1, 4),
+                List.of(2, 5),
+                List.of(3, 6)
+        );
 
-        List<Integer> result = Containers.interleave(lists, 3);
+        List<List<Integer>> result = Containers.interleave(lists);
 
-        assertThat(result, is(List.of(1, 2, 3, 4, 5, 6)));
+        assertThat(result, is(List.of(List.of(1, 2, 3), List.of(4, 5, 6))));
     }
 
     @Test(expected = MismatchedSizes.class)
@@ -37,14 +39,19 @@ public class ContainersTest {
                 List.of(1, 2, 3),
                 List.of(1, 2));
 
-        Containers.interleave(lists, 3);
+        Containers.interleave(lists);
+    }
+
+    @Test(expected = EmptyCollection.class)
+    public void refusesEmptyList() {
+        Containers.interleave(List.of());
     }
 
     @Test
     public void interleaveDoesNotAllowNulls() {
         expectedException.expect(NullPointerException.class);
-        expectedException.expectMessage("Collection should not be null");
-        Containers.interleave(null, 2);
+        expectedException.expectMessage("List should not be null");
+        Containers.interleave(null);
     }
 
     @Test
@@ -126,41 +133,5 @@ public class ContainersTest {
     @Test(expected = EmptyCollection.class)
     public void doesNotAcceptEmptyContainer() {
         Containers.maxListSize(Collections.emptyList());
-    }
-
-    @Test
-    public void splitsListsIntoSpecifiedNumberOfSlices() {
-        List<Integer> list = List.of(1, 2, 3, 4, 5, 6);
-
-        List<List<Integer>> lists = Containers.split(list, 3);
-
-        assertThat(lists.size(), is(3));
-        assertThat(lists.get(0).size(), is(2));
-        assertThat(lists.get(1).size(), is(2));
-        assertThat(lists.get(2).size(), is(2));
-    }
-
-    @Test
-    public void doesNotAllowNullListsToBeSplit() {
-        expectedException.expect(NullPointerException.class);
-        expectedException.expectMessage("Collection should not be null");
-
-        Containers.split(null, 2);
-    }
-
-    @Test(expected = EmptyCollection.class)
-    public void doesNotAllowEmptyCollections() {
-        Containers.split(Collections.emptyList(), 1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void doesNotAllowToSplitIntoLessThanOneList() {
-        Containers.split(List.of(1, 2, 3, 4), 0);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void doesNotAllowDivisionResultingInFloat() {
-        List<Integer> list = List.of(1, 2, 3);
-        Containers.split(list, 2);
     }
 }
