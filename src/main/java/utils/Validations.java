@@ -31,6 +31,12 @@ public final class Validations {
         }
     }
 
+    public static void requireSmaller(int maximum, int actual, String message) {
+        if (actual > maximum) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
     public static <T> void requireSameSize(List<List<T>> lists, String message) {
         if (lists.isEmpty()) {
             return;

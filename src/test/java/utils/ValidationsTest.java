@@ -37,6 +37,16 @@ public class ValidationsTest {
         requireLarger(0, 0, "test");
     }
 
+    @Test
+    public void allowsEqualNumber() {
+        requireSmaller(0, 0, "test");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void doesNotPermitLargerNumber() {
+        requireSmaller(9, 10, "test");
+    }
+
     @Test(expected = MismatchedSizes.class)
     public void doesNotPermitListsOfDifferentSizes() {
         requireSameSize(List.of(

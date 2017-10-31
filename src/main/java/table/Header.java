@@ -8,7 +8,9 @@ import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
+import static utils.Validations.requireLarger;
 import static utils.Validations.requireNonEmpty;
+import static utils.Validations.requireSmaller;
 
 public class Header {
 
@@ -36,6 +38,21 @@ public class Header {
         }
 
         return columns.get(column);
+    }
+
+    /**
+     * Get column by its position in the header.
+     *
+     * Numbering starts at 0.
+     */
+    public int getColumnWidth(int columnPosition) {
+        requireLarger(0, columnPosition, "Column position [" + columnPosition + "] cannot be negative");
+        requireSmaller(columns.size() - 1, columnPosition, "Column position [\" + columnPosition + \"] is too large.");
+
+        List<String> columnTitles = getColumns();
+        String columnString = columnTitles.get(columnPosition);
+
+        return columns.get(columnString);
     }
 
     public boolean containsColumn(String column) {

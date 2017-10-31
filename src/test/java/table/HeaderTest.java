@@ -113,4 +113,29 @@ public class HeaderTest {
 
         assertThat(header.columnCount(), is(1));
     }
+
+    @Test
+    public void retrievesCorrectValuesBasedOnColumnPosition() {
+        Map<String, Integer> orderedMap = new LinkedHashMap<>();
+        orderedMap.put("key1", 1);
+        orderedMap.put("key2", 2);
+        Header header = new Header(orderedMap);
+
+        assertThat(header.getColumnWidth(0), is(1));
+        assertThat(header.getColumnWidth(1), is(2));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void doesNotAcceptNegativeColumnPosition() {
+        Header header = new Header(Map.of("key1", 1, "key2", 2));
+
+        header.getColumnWidth(-1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void doesNotAcceptLargerThanSizePositions() {
+        Header header = new Header(Map.of("key1", 1));
+
+        header.getColumnWidth(1);
+    }
 }
