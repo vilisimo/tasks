@@ -9,6 +9,7 @@ import utils.Strings;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static utils.Validations.requireLarger;
 
 public class TablePrinter {
@@ -23,136 +24,18 @@ public class TablePrinter {
     public TablePrinter(Table table) {
         this.cellPadding = 1;
         this.table = table;
+        this.fancyBorder = designBorder('+');
+        this.simpleBorder = designBorder('-');
     }
 
-    public void printTable() {
-        printHeader();
-    }
-
-    private void printHeader() {
-        printFancyBorder();
-        printHeaderRow();
-        printFancyBorder();
-        printRows(table.getRows());
-    }
-
-    private void printFancyBorder() {
-        if (fancyBorder == null) {
-            designFancyBorder();
-        }
-        System.out.println(fancyBorder);
-    }
-
-    private void designFancyBorder() {
+    private String designBorder(char corner) {
         int whitespacePadding = (cellPadding * table.columnCount()) * 2;
         int borderPadding = table.columnCount() + 1;
         int totalWidth = table.getWidth() + whitespacePadding + borderPadding;
         int cornerWidth = 2;
         String horizontalFiller = String.join("", Collections.nCopies(totalWidth - cornerWidth, "-"));
-        this.fancyBorder = "+" + horizontalFiller + "+";
-    }
 
-    private void printHeaderRow() {
-        Header header = table.getHeader();
-        List<String> columns = header.getColumns();
-
-        List<List<String>> formattedColumns = new ArrayList<>();
-        for (String column : columns) {
-            formattedColumns.add(Strings.chopString(column, header.getColumnWidth(column)));
-        }
-
-        Containers.normalizeListSizes(formattedColumns);
-        List<List<String>> split = Containers.interleave(formattedColumns);
-
-        for (List<String> list : split) {
-            List<String> result = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                String row = list.get(i);
-                int width = header.getColumnWidth(columns.get(i));
-                result.add(designColumnString(row, width));
-            }
-
-            String rowRepresentation = result
-                    .stream()
-                    .collect(Collectors.joining("|", "|", "|"));
-
-            System.out.println(rowRepresentation);
-        }
-    }
-
-    private void printRows(List<DataRow> rows) {
-        for (int i = 0; i < rows.size(); i++) {
-            printRow(rows.get(i));
-
-            if (i == rows.size() - 1) {
-                printFancyBorder();
-            } else {
-                printSimpleBorder();
-            }
-        }
-    }
-
-    private void printSimpleBorder() {
-        if (simpleBorder == null) {
-            designSimpleBorder();
-        }
-        System.out.println(simpleBorder);
-    }
-
-    private void designSimpleBorder() {
-        int whitespacePadding = (cellPadding * table.columnCount()) * 2;
-        int borderPadding = table.columnCount() + 1;
-        int totalWidth = table.getWidth() + whitespacePadding + borderPadding;
-        this.simpleBorder = String.join("", Collections.nCopies(totalWidth, "-"));
-    }
-
-    private void printRow(DataRow row) {
-        Header header = table.getHeader();
-        List<String> names = row.getColumnNames();
-
-        List<String> columns = new ArrayList<>();
-        for (String name : names) {
-            columns.add(row.getColumnValue(name));
-        }
-
-        List<List<String>> formattedColumns = new ArrayList<>();
-        for (int i = 0; i < columns.size(); i++) {
-            formattedColumns.add(Strings.chopString(columns.get(i), header.getColumnWidth(names.get(i))));
-        }
-
-        Containers.normalizeListSizes(formattedColumns);
-        List<List<String>> split = Containers.interleave(formattedColumns);
-
-        for (List<String> list : split) {
-            List<String> result = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++) {
-                String r = list.get(i);
-                int width = header.getColumnWidth(names.get(i));
-                result.add(designColumnString(r, width));
-            }
-
-            String rowRepresentation = result
-                    .stream()
-                    .collect(Collectors.joining("|", "|", "|"));
-
-            System.out.println(rowRepresentation);
-        }
-    }
-
-    private String designColumnString(String column, int size) {
-        String string = Optional.ofNullable(column).orElse("");
-        StringBuilder builder = new StringBuilder();
-        builder.append(Strings.repeat(' ', cellPadding));
-        builder.append(string);
-        builder.append(Strings.repeat(' ', size - string.length()));
-        builder.append(Strings.repeat(' ', cellPadding));
-
-        return builder.toString();
-        // String result = builder.toString();
-        // if (result.length() >= 3 && result.charAt(1) == ' ') {
-        //     result = result.substring(0, 1) + result.substring(2, result.length()) + " ";
-        // }
-        // return result;
+        return corner + horizontalFiller + corner;
     }
 
     public static int usableWidth(int tableWidth, int singlePadWidth, int columns) {
@@ -171,6 +54,102 @@ public class TablePrinter {
         return  usableWidth;
     }
 
+    public void printTable() {
+        printHeader();
+        printRows();
+    }
+
+    private void printHeader() {
+        System.out.println(fancyBorder);
+        printHeaderRow();
+        System.out.println(fancyBorder);
+    }
+
+    private void printHeaderRow() {
+        Header header = table.getHeader();
+
+        List<List<String>> columnRows = header.getColumns()
+                .stream()
+                .map(column -> Strings.chopString(column, header.getColumnWidth(column)))
+                .collect(toList());
+
+        List<String> rowRepresentations = processColumnRows(columnRows);
+        rowRepresentations.forEach(System.out::println);
+    }
+
+    private void printRows() {
+        List<DataRow> rows = table.getRows();
+        for (int i = 0; i < rows.size(); i++) {
+            printRow(rows.get(i));
+
+            if (i == rows.size() - 1) {
+                System.out.println(fancyBorder);
+            } else {
+                System.out.println(simpleBorder);
+            }
+        }
+    }
+
+    private void printRow(DataRow row) {
+        Header header = table.getHeader();
+
+        List<String> names = row.getColumnNames();
+        List<String> columns = names
+                .stream()
+                .map(row::getColumnValue)
+                .collect(Collectors.toList());
+
+        List<List<String>> columnRows = new ArrayList<>();
+        for (int i = 0; i < columns.size(); i++) {
+            columnRows.add(Strings.chopString(columns.get(i), header.getColumnWidth(names.get(i))));
+        }
+
+        List<String> rowRepresentations = processColumnRows(columnRows);
+        rowRepresentations.forEach(System.out::println);
+    }
+
+    private List<String> processColumnRows(List<List<String>> columnRows) {
+        Containers.normalizeListSizes(columnRows);
+        columnRows = Containers.interleave(columnRows);
+
+        return designRowRepresentations(columnRows);
+    }
+
+    private List<String> designRowRepresentations(List<List<String>> columnRows) {
+        Header header = table.getHeader();
+
+        List<String> rowRepresentations = new ArrayList<>();
+
+        for (List<String> columnRow : columnRows) {
+            List<String> borderlessRow = new ArrayList<>();
+            for (int i = 0; i < columnRow.size(); i++) {
+                String row = columnRow.get(i);
+                int width = header.getColumnWidth(i);
+                borderlessRow.add(designColumnString(row, width));
+            }
+
+            rowRepresentations.add(attachBorders(borderlessRow));
+        }
+
+        return rowRepresentations;
+    }
+
+    private String designColumnString(String column, int size) {
+        String string = Optional.ofNullable(column).orElse("");
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(Strings.repeat(' ', cellPadding));
+        builder.append(string);
+        builder.append(Strings.repeat(' ', size - string.length()));
+        builder.append(Strings.repeat(' ', cellPadding));
+
+        return builder.toString();
+    }
+
+    private String attachBorders(List<String> borderlessRows) {
+        return borderlessRows.stream().collect(Collectors.joining("|", "|", "|"));
+    }
+
     public static void main(String[] args) {
         int usableWidth = TablePrinter.usableWidth(79, 1, 3);
         int titleLength = 4;
@@ -186,7 +165,7 @@ public class TablePrinter {
 
         Map<String, String> rowColumns = new LinkedHashMap<>();
         rowColumns.put("Title", "test1");
-        rowColumns.put("Description", "some really long description that has no way of fitting in one line and perhaps even not fitting on two lines or even three");
+        rowColumns.put("Description", "Some really long description that has no way of fitting in one line and perhaps even not fitting on two lines or even three");
         rowColumns.put("Created", "2017-11-11");
         rowColumns.put("Deadline", "2018-05-11");
         DataRow row = new DataRow(rowColumns);
