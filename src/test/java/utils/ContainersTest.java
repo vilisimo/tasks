@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertThat;
 
@@ -51,7 +52,7 @@ public class ContainersTest {
         expectedException.expect(NullPointerException.class);
         expectedException.expectMessage("Collection should not be null");
 
-        Containers.normalizeListSizes(null, "\n");
+        Containers.normalizeListSizes(null);
     }
 
     @Test
@@ -63,11 +64,11 @@ public class ContainersTest {
 
         List<List<String>> collections = List.of(list1, list2);
 
-        Containers.normalizeListSizes(collections, "\n");
+        Containers.normalizeListSizes(collections);
 
         assertThat(collections.get(1).size(), is(3));
-        assertThat(collections.get(1).get(1), is("\n"));
-        assertThat(collections.get(1).get(2), is("\n"));
+        assertThat(collections.get(1).get(1), nullValue());
+        assertThat(collections.get(1).get(2), nullValue());
     }
 
     @Test
@@ -79,7 +80,7 @@ public class ContainersTest {
 
         List<List<String>> collections = List.of(list1, list2);
 
-        Containers.normalizeListSizes(collections, "\n");
+        Containers.normalizeListSizes(collections);
 
         assertThat(collections.get(1).size(), is(3));
         assertThat(collections.get(0), is(list1));
@@ -90,7 +91,7 @@ public class ContainersTest {
     public void normalizeCollectionsReturnsEmptyCollectionWhenInputIsEmpty() {
         List<List<String>> collections = Collections.emptyList();
 
-        Containers.normalizeListSizes(collections, "filler");
+        Containers.normalizeListSizes(collections);
 
         assertThat(collections, is(empty()));
     }

@@ -17,8 +17,12 @@ public final class Containers {
 
     /**
      * Makes each collection of the same size by adding a specified filler.
+     *
+     * IMPORTANT: the lists WILL contain null values after normalization,
+     * unless they are already of the same size. Hence, it is imperative
+     * to use {@code Optional.ofNullable(T val).orElse(T other)} to avoid NPEs.
      */
-    public static <T> void normalizeListSizes(List<List<T>> lists, T filler) {
+    public static <T> void normalizeListSizes(List<List<T>> lists) {
         requireNonNull(lists, "Collection should not be null");
 
         if (lists.isEmpty()) {
@@ -27,9 +31,9 @@ public final class Containers {
 
         int maxSize = maxListSize(lists);
 
-        for (List<T> collection : lists) {
-            for (int i = collection.size(); i < maxSize; i++) {
-                collection.add(filler);
+        for (List<T> list : lists) {
+            for (int i = list.size(); i < maxSize; i++) {
+                list.add(null); //list?
             }
         }
     }

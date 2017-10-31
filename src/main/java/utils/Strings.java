@@ -69,7 +69,7 @@ public final class Strings {
     private static void chopString(String string, int size, List<String> result) {
         if (string.length() > size) {
             result.add(string.substring(0, size));
-            chopString("\n" + string.substring(size), size, result);
+            chopString(string.substring(size), size, result);
         } else {
             result.add(string);
         }

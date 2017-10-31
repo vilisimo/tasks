@@ -4,13 +4,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 public class StringsTest {
@@ -100,7 +97,7 @@ public class StringsTest {
         List<String> result = Strings.chopString("Testing", 4);
 
         assertThat(result.size(), is(2));
-        assertThat(String.join("", result), containsString("\n"));
+        assertThat(result.get(1), is("Testing".substring(4)));
     }
 
     @Test

@@ -8,9 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static utils.Validations.requireLarger;
-import static utils.Validations.requireNonEmpty;
-import static utils.Validations.requireSameSize;
+import static utils.Validations.*;
 
 public class ValidationsTest {
 

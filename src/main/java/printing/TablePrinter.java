@@ -82,7 +82,7 @@ public class TablePrinter {
             formattedColumns.add(Strings.chopString(column, header.getColumnWidth(column)));
         }
 
-        Containers.normalizeListSizes(formattedColumns, "\n");
+        Containers.normalizeListSizes(formattedColumns);
         List<String> interleaved = Containers.interleave(formattedColumns, formattedColumns.get(0).size());
         List<List<String>> split = Containers.split(interleaved, interleaved.size() / header.columnCount());
 
@@ -116,7 +116,7 @@ public class TablePrinter {
             formattedColumns.add(Strings.chopString(columns.get(i), header.getColumnWidth(names.get(i))));
         }
 
-        Containers.normalizeListSizes(formattedColumns, "\n");
+        Containers.normalizeListSizes(formattedColumns);
         List<String> interleaved = Containers.interleave(formattedColumns, formattedColumns.get(0).size());
         List<List<String>> split = Containers.split(interleaved, interleaved.size() / header.columnCount());
 
@@ -137,15 +137,11 @@ public class TablePrinter {
     }
 
     private String designColumnString(String column, int size) {
+        String string = Optional.ofNullable(column).orElse("");
         StringBuilder builder = new StringBuilder();
-
-        if (column.contains("\n")) {
-            column = column.replace("\n", "");
-        }
-
         builder.append(Strings.repeat(' ', cellPadding));
-        builder.append(column);
-        builder.append(Strings.repeat(' ', size - column.length()));
+        builder.append(string);
+        builder.append(Strings.repeat(' ', size - string.length()));
         builder.append(Strings.repeat(' ', cellPadding));
 
         return builder.toString();
