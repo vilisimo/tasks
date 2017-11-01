@@ -1,11 +1,16 @@
 package printing;
 
 import entities.Task;
+import table.DataRow;
+import table.Header;
+import table.Table;
 import utils.Chronos;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static coloring.Colors.*;
+import static java.util.Objects.requireNonNull;
 
 public final class Printer {
 
@@ -26,6 +31,8 @@ public final class Printer {
     }
 
     public static void printTasks(List<Task> tasks) {
+        requireNonNull(tasks, "Task list should not be null");
+
         tasks.forEach(task -> Printer.success(
                 "Task " + task.getId() + ":"
                         + "\n" + task.getDescription()

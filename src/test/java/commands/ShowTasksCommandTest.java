@@ -4,7 +4,9 @@ import datasource.Database;
 import entities.Task;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -26,6 +28,9 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ShowTasksCommandTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private Database database;
@@ -102,6 +107,16 @@ public class ShowTasksCommandTest {
 
         assertThat(output, containsString("Test1"));
         assertThat(output, containsString("Test2"));
+    }
+
+    @Test
+    public void rejectsNullList() throws SQLException {
+        when(database.getAll()).thenReturn(null);
+
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("Task list should not be null");
+
+        command.executeCommand(database);
     }
 
     @Test(expected = RuntimeException.class)
