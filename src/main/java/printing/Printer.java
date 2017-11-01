@@ -32,13 +32,36 @@ public final class Printer {
 
     public static void printTasks(List<Task> tasks) {
         requireNonNull(tasks, "Task list should not be null");
+        if (tasks.isEmpty()) {
+            return;
+        }
 
-        tasks.forEach(task -> Printer.success(
-                "Task " + task.getId() + ":"
-                        + "\n" + task.getDescription()
-                        + "\nCreated: " + Chronos.instantToLocalDate(task.getCreated())
-                        + "\nDeadline: " + Chronos.instantToLocalDate(task.getDeadline())
-                        + "\n")
-        );
+        int availableSpace = TablePrinter.usableWidth(79, 1, 4);
+        int taskWidth = "task".length();
+        int dateWidth = "2017-01-01".length();
+        int descriptionWidth = availableSpace - taskWidth - (dateWidth * 2);
+
+        LinkedHashMap<String, Integer> columns = new LinkedHashMap<>();
+        columns.put("Task", taskWidth);
+        columns.put("Description", descriptionWidth);
+        columns.put("Created", dateWidth);
+        columns.put("Deadline", dateWidth);
+        Header header = new Header(columns);
+        Table table = new Table(header);
+
+        tasks.forEach(task -> table.addRow(createRow(task)));
+
+        TablePrinter printer = new TablePrinter(table);
+        printer.printTable();
+    }
+
+    private static DataRow createRow(Task task) {
+        LinkedHashMap<String, String> row = new LinkedHashMap<>();
+        row.put("Task", String.valueOf(task.getId()));
+        row.put("Description", task.getDescription());
+        row.put("Created", Chronos.instantToLocalDate(task.getCreated()));
+        row.put("Deadline", Chronos.instantToLocalDate(task.getDeadline()));
+
+        return new DataRow(row);
     }
 }
