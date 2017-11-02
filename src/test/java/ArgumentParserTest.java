@@ -11,7 +11,6 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 /**
  * This is more of an integration test suite, as some of
@@ -107,8 +106,16 @@ public class ArgumentParserTest {
         System.setOut(standardOut);
     }
 
-    @Test(expected = RuntimeException.class)
-    public void throwsRuntimeWhenParsingFails() {
+    @Test
+    public void informsAboutParsingFailures() {
+        PrintStream standardOut = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
         parser.parse(options, new String[] {"-unrecognized command"});
+
+        assertThat(out.toString(), containsString("Unrecognized option"));
+
+        System.setOut(standardOut);
     }
 }

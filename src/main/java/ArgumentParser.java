@@ -40,7 +40,7 @@ class ArgumentParser {
         } catch (MissingArgumentException | NumberFormatException e) {
             Printer.error(e.getMessage());
         } catch (ParseException e) {
-            throw new RuntimeException("Command parsing has failed: " + e.getMessage().toLowerCase(), e);
+            Printer.error("Command parsing error [" + e.getMessage() + "]");
         }
 
         return commands;
