@@ -37,8 +37,10 @@ class ArgumentParser {
             commands.add(createRemoveTaskCommand(cmd));
             commands.add(createClearTasksCommand(cmd));
 
-        } catch (MissingArgumentException | NumberFormatException e) {
-            Printer.error(e.getMessage());
+        } catch (MissingArgumentException e) {
+            Printer.error("Missing argument error [" + e.getMessage() + "]");
+        } catch (NumberFormatException e) {
+            Printer.error("Number parsing error [" + e.getMessage() + "]");
         } catch (ParseException e) {
             Printer.error("Command parsing error [" + e.getMessage() + "]");
         }
