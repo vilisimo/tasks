@@ -23,6 +23,8 @@ class ArgumentParser {
         List<Command> commands = new ArrayList<>();
 
         if (isEmpty(args)) {
+            commands.add(createShowAllTasksCommand());
+
             return commands;
         }
 
@@ -52,6 +54,12 @@ class ArgumentParser {
         logger.trace("Creating {}", AddTaskCommand.class.getSimpleName());
 
         return AddTaskCommand.from(cmd.getOptionValues(ADD), cmd.getOptionValue(DEADLINE));
+    }
+
+    private ShowAllTasksCommand createShowAllTasksCommand() {
+        logger.trace("Creating {}", ShowAllTasksCommand.class.getSimpleName());
+
+        return new ShowAllTasksCommand(true);
     }
 
     private ShowTasksCommand createShowTasksCommand(CommandLine cmd) {

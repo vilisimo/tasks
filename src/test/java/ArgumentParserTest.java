@@ -26,10 +26,11 @@ public class ArgumentParserTest {
     private Options options = CliOptions.createOptions();
 
     @Test
-    public void returnsEmptyLitWithNoArgs() {
+    public void returnsShowAllTasksCommandWithNoArguments() {
         List<Command> commands = parser.parse(new Options(), new String[] {});
 
-        assertTrue(commands.isEmpty());
+        assertThat(commands.size(), is(1));
+        assertThat(commands, hasItem(isA(ShowAllTasksCommand.class)));
     }
 
     @Test
