@@ -7,11 +7,11 @@ import printing.Printer;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ShowAllTasksCommand extends Command {
+public class ShowTasksCommand extends Command {
 
     private boolean executable;
 
-    public ShowAllTasksCommand(boolean executable) {
+    public ShowTasksCommand(boolean executable) {
         this.executable = executable;
         determineState();
     }

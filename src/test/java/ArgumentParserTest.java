@@ -30,7 +30,7 @@ public class ArgumentParserTest {
         List<Command> commands = parser.parse(new Options(), new String[] {});
 
         assertThat(commands.size(), is(1));
-        assertThat(commands, hasItem(isA(ShowAllTasksCommand.class)));
+        assertThat(commands, hasItem(isA(ShowTasksCommand.class)));
     }
 
     @Test
@@ -68,16 +68,16 @@ public class ArgumentParserTest {
 
     @Test
     public void addsCreateShowCommand() {
-        List<Command> commands = parser.parse(options, new String[] {"-show"});
+        List<Command> commands = parser.parse(options, new String[] {"-filter", "1"});
 
-        assertThat(commands, hasItem(isA(ShowTasksCommand.class)));
+        assertThat(commands, hasItem(isA(FilterTasksCommand.class)));
     }
 
     @Test
     public void addsEmptyCreateShowCommandEvenWhenNoArgument() {
         List<Command> commands = parser.parse(options, new String[] {"-add", "irrelevant"});
 
-        assertThat(commands, hasItem(isA(ShowTasksCommand.class)));
+        assertThat(commands, hasItem(isA(FilterTasksCommand.class)));
     }
 
     @Test

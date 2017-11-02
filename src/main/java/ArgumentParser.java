@@ -33,7 +33,7 @@ class ArgumentParser {
             logger.info("Parsed command line arguments");
 
             commands.add(createAddTaskCommand(cmd));
-            commands.add(createShowTasksCommand(cmd));
+            commands.add(createFilterTasksCommand(cmd));
             commands.add(createRemoveTaskCommand(cmd));
             commands.add(createClearTasksCommand(cmd));
 
@@ -56,16 +56,16 @@ class ArgumentParser {
         return AddTaskCommand.from(cmd.getOptionValues(ADD), cmd.getOptionValue(DEADLINE));
     }
 
-    private ShowAllTasksCommand createShowAllTasksCommand() {
-        logger.trace("Creating {}", ShowAllTasksCommand.class.getSimpleName());
-
-        return new ShowAllTasksCommand(true);
-    }
-
-    private ShowTasksCommand createShowTasksCommand(CommandLine cmd) {
+    private ShowTasksCommand createShowAllTasksCommand() {
         logger.trace("Creating {}", ShowTasksCommand.class.getSimpleName());
 
-        return ShowTasksCommand.from(cmd.hasOption(SHOW), cmd.getOptionValue(SHOW));
+        return new ShowTasksCommand(true);
+    }
+
+    private FilterTasksCommand createFilterTasksCommand(CommandLine cmd) {
+        logger.trace("Creating {}", FilterTasksCommand.class.getSimpleName());
+
+        return FilterTasksCommand.from(cmd.getOptionValue(FILTER));
     }
 
     private RemoveTaskCommand createRemoveTaskCommand(CommandLine cmd) {

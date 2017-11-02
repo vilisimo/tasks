@@ -19,7 +19,7 @@ public final class CliOptions {
         Options options = new Options();
         options.addOption(createAddTaskOption());
         options.addOption(createDeadlineOption());
-        options.addOption(createShowOption());
+        options.addOption(createFilterOption());
         options.addOption(createRemoveOption());
         options.addOption(createClearOption());
 
@@ -44,12 +44,11 @@ public final class CliOptions {
                 .build();
     }
 
-    private static Option createShowOption() {
-        return Option.builder(SHOW)
-                .desc("Shows currently saved tasks")
-                .argName("Show tasks")
-                .optionalArg(true)
-                .numberOfArgs(1)
+    private static Option createFilterOption() {
+        return Option.builder(FILTER)
+                .desc("Filters saved tasks on given deadline")
+                .argName("Filter tasks")
+                .hasArg()
                 .build();
     }
 

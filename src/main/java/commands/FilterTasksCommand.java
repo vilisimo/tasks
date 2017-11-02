@@ -8,14 +8,26 @@ import entities.Task;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
-public abstract class ShowTasksCommand extends Command {
+public class FilterTasksCommand extends Command {
+
+    private Timestamp deadline;
 
     private boolean executable;
 
-    private ShowTasksCommand(boolean executable) {
+    private FilterTasksCommand(boolean executable, String filter) {
         this.executable = executable;
+        this.deadline = Optional.ofNullable(filter).map(this::parseDeadline).orElse(null);
         determineState();
+    }
+
+    private Timestamp parseDeadline(String daysToDeadline) {
+        if (!daysToDeadline.equalsIgnoreCase("none")) {
+            return DateParser.parseDate(daysToDeadline);
+        }
+
+        return null;
     }
 
     @Override
@@ -27,40 +39,22 @@ public abstract class ShowTasksCommand extends Command {
         }
     }
 
-    public static ShowTasksCommand from(boolean executable, String optionValue) {
-        logger.trace("Creating inner class of {}: {}", ShowTasksCommand.class.getSimpleName(),
-                    ShowTimeFilteredTasks.class.getSimpleName());
+    @Override
+    void executeCommand(Database database) {
+        List<Task> tasks;
+        try {
+            tasks = database.filter(deadline);
+        } catch (SQLException e) {
+            throw new RuntimeException("Retrieval of tasks has failed", e);
+        }
 
-        return new ShowTimeFilteredTasks(executable, optionValue);
+        Printer.printTasks(tasks);
     }
 
-    private static class ShowTimeFilteredTasks extends ShowTasksCommand {
+    public static FilterTasksCommand from(String optionValue) {
+        logger.trace("Creating inner class of {}: {}", FilterTasksCommand.class.getSimpleName(),
+                FilterTasksCommand.class.getSimpleName());
 
-        private Timestamp deadline;
-
-        private ShowTimeFilteredTasks(boolean executable, String daysToDeadline) {
-            super(executable);
-            this.deadline = parseDeadline(daysToDeadline);
-        }
-
-        @Override
-        void executeCommand(Database database) {
-            List<Task> tasks;
-            try {
-                tasks = database.filter(deadline);
-            } catch (SQLException e) {
-                throw new RuntimeException("Retrieval of tasks has failed", e);
-            }
-
-            Printer.printTasks(tasks);
-        }
-
-        private Timestamp parseDeadline(String daysToDeadline) {
-            if (!daysToDeadline.equalsIgnoreCase("none")) {
-                return DateParser.parseDate(daysToDeadline);
-            }
-
-            return null;
-        }
+        return new FilterTasksCommand(optionValue != null, optionValue);
     }
 }

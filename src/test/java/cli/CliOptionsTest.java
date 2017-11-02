@@ -38,6 +38,6 @@ public class CliOptionsTest {
     
     @Test
     public void createsShowOption() {
-        assertNotNull(options.getOption(SHOW));
+        assertNotNull(options.getOption(FILTER));
     }
 }

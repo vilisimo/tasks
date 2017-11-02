@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ShowTasksCommandTest {
+public class FilterTasksCommandTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -29,7 +29,7 @@ public class ShowTasksCommandTest {
     @Mock
     private Database database;
 
-    private ShowTasksCommand command;
+    private FilterTasksCommand command;
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -39,7 +39,7 @@ public class ShowTasksCommandTest {
     @Before
     public void setUpStream() {
         System.setOut(new PrintStream(out));
-        command = ShowTasksCommand.from(true, null);
+        command = FilterTasksCommand.from("1");
     }
 
     @After
@@ -49,31 +49,47 @@ public class ShowTasksCommandTest {
 
     @Test
     public void setsValidState() {
-        ShowTasksCommand command = ShowTasksCommand.from(true, null);
-
-        assertThat(command.getState(), is(Command.State.VALID));
-    }
-
-    @Test
-    public void setsValidStateWithOptionalArgument() {
-        ShowTasksCommand command = ShowTasksCommand.from(true, "1");
-
         assertThat(command.getState(), is(Command.State.VALID));
     }
 
     @Test
     public void setsEmptyState() {
-        ShowTasksCommand command = ShowTasksCommand.from(false, null);
+        FilterTasksCommand command = FilterTasksCommand.from(null);
 
         assertThat(command.getState(), is(Command.State.EMPTY));
     }
 
     @Test
-    public void callsCorrectMethodWhenDeadlineGiven() throws SQLException {
-        command = ShowTasksCommand.from(true, "1");
-
+    public void callsCorrectMethodWhenDeadlineGivenAsStringInteger() throws SQLException {
         command.execute(database);
 
         verify(database).filter(any(Timestamp.class));
+    }
+
+    @Test
+    public void callsCorrectMethodWhenDeadlineGivenAsToday() throws SQLException {
+        command = FilterTasksCommand.from("today");
+
+        command.executeCommand(database);
+
+        verify(database).filter(any(Timestamp.class));
+    }
+
+    @Test
+    public void callsCorrectMethodWhenDeadlineGivenAsTomorrow() throws SQLException {
+        command = FilterTasksCommand.from("tomorrow");
+
+        command.executeCommand(database);
+
+        verify(database).filter(any(Timestamp.class));
+    }
+
+    @Test
+    public void callsCorrectMethodWhenNoneAsFilterIsSpecified() throws SQLException {
+        command = FilterTasksCommand.from("none");
+
+        command.executeCommand(database);
+
+        verify(database).filter(null);
     }
 }

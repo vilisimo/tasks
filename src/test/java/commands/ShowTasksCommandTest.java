@@ -26,7 +26,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ShowAllTasksCommandTest {
+public class ShowTasksCommandTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -34,7 +34,7 @@ public class ShowAllTasksCommandTest {
     @Mock
     private Database database;
 
-    private ShowAllTasksCommand command;
+    private ShowTasksCommand command;
 
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -43,7 +43,7 @@ public class ShowAllTasksCommandTest {
 
     @Before
     public void setUpStream() {
-        command = new ShowAllTasksCommand(true);
+        command = new ShowTasksCommand(true);
         System.setOut(new PrintStream(out));
     }
 
@@ -59,7 +59,7 @@ public class ShowAllTasksCommandTest {
 
     @Test
     public void setsEmptyState() {
-        command = new ShowAllTasksCommand(false);
+        command = new ShowTasksCommand(false);
 
         assertThat(command.getState(), is(Command.State.EMPTY));
     }
