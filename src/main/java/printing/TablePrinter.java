@@ -74,6 +74,7 @@ public class TablePrinter {
                 .collect(toList());
 
         List<String> rowRepresentations = processColumnRows(columnRows);
+        rowRepresentations = rowRepresentations.stream().map(String::toUpperCase).collect(toList());
         rowRepresentations.forEach(System.out::println);
     }
 

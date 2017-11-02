@@ -28,34 +28,10 @@ public abstract class ShowTasksCommand extends Command {
     }
 
     public static ShowTasksCommand from(boolean executable, String optionValue) {
-        if (optionValue == null) {
-            logger.trace("Creating inner class of {}: {}", ShowTasksCommand.class.getSimpleName(),
-                    ShowAllTasksCommand.class.getSimpleName());
-            return new ShowAllTasksCommand(executable);
-        } else {
-            logger.trace("Creating inner class of {}: {}", ShowTasksCommand.class.getSimpleName(),
+        logger.trace("Creating inner class of {}: {}", ShowTasksCommand.class.getSimpleName(),
                     ShowTimeFilteredTasks.class.getSimpleName());
-            return new ShowTimeFilteredTasks(executable, optionValue);
-        }
-    }
 
-    private static class ShowAllTasksCommand extends ShowTasksCommand {
-
-        private ShowAllTasksCommand(boolean executable) {
-            super(executable);
-        }
-
-        @Override
-        void executeCommand(Database database) {
-            List<Task> tasks;
-            try {
-                tasks = database.getAll();
-            } catch (SQLException e) {
-                throw new RuntimeException("Retrieval of tasks has failed", e);
-            }
-
-            Printer.printTasks(tasks);
-        }
+        return new ShowTimeFilteredTasks(executable, optionValue);
     }
 
     private static class ShowTimeFilteredTasks extends ShowTasksCommand {

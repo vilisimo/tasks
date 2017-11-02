@@ -17,8 +17,6 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
 
-import static commands.Command.State.EMPTY;
-import static commands.Command.State.VALID;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -56,14 +54,14 @@ public class ShowAllTasksCommandTest {
 
     @Test
     public void setsValidState() {
-        assertThat(command.getState(), is(VALID));
+        assertThat(command.getState(), is(Command.State.VALID));
     }
 
     @Test
     public void setsEmptyState() {
         command = new ShowAllTasksCommand(false);
 
-        assertThat(command.getState(), is(EMPTY));
+        assertThat(command.getState(), is(Command.State.EMPTY));
     }
 
     @Test
