@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: tasks-2
+      author: simonas
+      changes:
+        - addColumn:
+            tableName: tasks
+            columns:
+            - column:
+                name: category
+                type: varchar(255)

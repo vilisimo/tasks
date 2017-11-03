@@ -2,3 +2,6 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: "changelogs/changelog-1.yaml"
+  - include:
+      relativeToChangelogFile: true
+      file: "changelogs/changelog-2.yaml"
