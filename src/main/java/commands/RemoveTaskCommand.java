@@ -8,9 +8,23 @@ public class RemoveTaskCommand extends Command {
 
     private final Integer taskId;
 
-    public RemoveTaskCommand(Integer taskId) {
+    private RemoveTaskCommand(Integer taskId) {
         this.taskId = taskId;
         determineState();
+    }
+
+    public static RemoveTaskCommand from(String optionValue) {
+        logger.trace("Creating {}", RemoveTaskCommand.class.getSimpleName());
+
+        if (optionValue != null) {
+            try {
+                return new RemoveTaskCommand(Integer.parseInt(optionValue));
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException("\"" + optionValue + "\" is not a number");
+            }
+        } else {
+            return new RemoveTaskCommand(null);
+        }
     }
 
     @Override

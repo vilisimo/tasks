@@ -1,7 +1,9 @@
 package commands;
 
 import datasource.Database;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -17,6 +19,9 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class RemoveTaskCommandTest {
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Mock
     private Database database;
 
@@ -24,28 +29,28 @@ public class RemoveTaskCommandTest {
 
     @Test
     public void stateIsValidWithPositiveId() {
-        command = new RemoveTaskCommand(1);
+        command = RemoveTaskCommand.from("1");
 
         assertThat(command.getState(), is(Command.State.VALID));
     }
 
     @Test
     public void stateIsInvalidWithNegativeId() {
-        command = new RemoveTaskCommand(-1);
+        command = RemoveTaskCommand.from("-1");
 
         assertThat(command.getState(), is(Command.State.INVALID));
     }
 
     @Test
     public void stateIsEmptyWithNullId() {
-        command = new RemoveTaskCommand(null);
+        command = RemoveTaskCommand.from(null);
 
         assertThat(command.getState(), is(Command.State.EMPTY));
     }
 
     @Test
     public void executesDelete() throws SQLException {
-        command = new RemoveTaskCommand(1);
+        command = RemoveTaskCommand.from("1");
 
         command.executeCommand(database);
 
@@ -54,10 +59,18 @@ public class RemoveTaskCommandTest {
 
     @Test(expected = RuntimeException.class)
     public void convertsSqlExceptionToRuntimeException() throws SQLException {
-        command = new RemoveTaskCommand(2);
+        command = RemoveTaskCommand.from("2");
 
         doThrow(new SQLException()).when(database).delete(eq(command));
 
         command.executeCommand(database);
+    }
+
+    @Test
+    public void reportsInvalidInput() {
+        expectedException.expectMessage("\"invalid\" is not a number");
+        expectedException.expect(NumberFormatException.class);
+
+        RemoveTaskCommand.from("invalid");
     }
 }

@@ -73,16 +73,7 @@ class ArgumentParser {
     private RemoveTaskCommand createRemoveTaskCommand(CommandLine cmd) {
         logger.trace("Creating {}", RemoveTaskCommand.class.getSimpleName());
 
-        if (cmd.getOptionValue(REMOVE) != null) {
-            String removeValue = cmd.getOptionValue(REMOVE);
-            try {
-                return new RemoveTaskCommand(Integer.parseInt(removeValue));
-            } catch (NumberFormatException e) {
-                throw new NumberFormatException("\"" + removeValue + "\" is not a number");
-            }
-        } else {
-            return new RemoveTaskCommand(null);
-        }
+        return RemoveTaskCommand.from(cmd.getOptionValue(REMOVE));
     }
 
     private ClearTasksCommand createClearTasksCommand(CommandLine cmd) {
