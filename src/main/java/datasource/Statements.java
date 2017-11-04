@@ -13,7 +13,7 @@ final class Statements {
     }
 
     static String insert() {
-        return "INSERT INTO TASKS(description, deadline) VALUES (?, ?)";
+        return "INSERT INTO TASKS(description, deadline, category) VALUES (?, ?, ?)";
     }
 
     static String delete() {

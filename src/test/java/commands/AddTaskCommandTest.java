@@ -22,63 +22,70 @@ public class AddTaskCommandTest {
 
     @Test
     public void handlesNullDescription() {
-        command = AddTaskCommand.from(null, "1");
+        command = AddTaskCommand.from(null, "1", new String[] {"category"});
 
         assertThat(command.getDescription(), is(nullValue()));
     }
 
     @Test
     public void handlesNonNullDescription() {
-        command = AddTaskCommand.from(new String[] {"test", "description"}, "1");
+        command = AddTaskCommand.from(new String[] {"test", "description"}, "1", new String[] {"category"});
 
         assertThat(command.getDescription(), is("test description"));
     }
 
     @Test
     public void handlesNullDaysToDeadline() {
-        command = AddTaskCommand.from(new String[] {"test"}, null);
+        command = AddTaskCommand.from(new String[] {"test"}, null, new String[] {"category"});
 
         assertThat(command.getDeadline(), is(nullValue()));
     }
 
     @Test
     public void handlesNonNullDaysToDeadline() {
-        command = AddTaskCommand.from(new String[] {"test"}, "1");
+        command = AddTaskCommand.from(new String[] {"test"}, "1", new String[] {"category"});
 
         assertThat(command.getDeadline(), is(notNullValue()));
     }
 
     @Test
     public void setsValidState() {
-        command = AddTaskCommand.from(new String[] {"notNull"}, null);
+        command = AddTaskCommand.from(new String[] {"notNull"}, null, new String[] {"category"});
 
         assertThat(command.getState(), is(Command.State.VALID));
     }
 
     @Test
     public void setsValidStateWithNonNullDaysToDeadline() {
-        command = AddTaskCommand.from(new String[] {"notNull"}, "1");
+        command = AddTaskCommand.from(new String[] {"notNull"}, "1", new String[] {"category"});
 
         assertThat(command.getState(), is(Command.State.VALID));
     }
 
     @Test
-    public void setsInvalidState() {
-        command = AddTaskCommand.from(null, "0");
+    public void setsInvalidStateWithGivenDeadline() {
+        command = AddTaskCommand.from(null, "0", null);
+
+        assertThat(command.getState(), is(Command.State.INVALID));
+    }
+
+    @Test
+    public void setsInvalidStateWithGivenCategory() {
+        command = AddTaskCommand.from(null, null, new String[] {"category"});
 
         assertThat(command.getState(), is(Command.State.INVALID));
     }
 
     @Test
     public void setsEmptyState() {
-        command = AddTaskCommand.from(null, null);
+        command = AddTaskCommand.from(null, null, null);
 
         assertThat(command.getState(), is(Command.State.EMPTY));
     }
 
     @Test
     public void saveIsCalledWithValidState() throws SQLException {
-        command = AddTaskCommand.from(new String[] {"description"}, "1");
+        command = AddTaskCommand.from(new String[] {"description"}, "1", new String[] {"category"});
 
         command.execute(database);
 
@@ -87,7 +94,7 @@ public class AddTaskCommandTest {
 
     @Test
     public void saveIsNotCalledWithInvalidState() throws SQLException {
-        command = AddTaskCommand.from(null, "1");
+        command = AddTaskCommand.from(null, "1", new String[] {"category"});
 
         command.execute(database);
 
@@ -96,7 +103,7 @@ public class AddTaskCommandTest {
 
     @Test
     public void saveIsNotCalledWithEmptyState() throws SQLException {
-        command = AddTaskCommand.from(null, null);
+        command = AddTaskCommand.from(null, null, null);
 
         command.execute(database);
 
@@ -106,7 +113,7 @@ public class AddTaskCommandTest {
 
     @Test(expected = RuntimeException.class)
     public void exceptionConvertedToRuntime() throws SQLException {
-        command = AddTaskCommand.from(new String[] {"description"}, "1");
+        command = AddTaskCommand.from(new String[] {"description"}, "1", new String[] {"category"});
         doThrow(new SQLException()).when(database).save(eq(command));
 
         command.executeCommand(database);

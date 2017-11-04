@@ -19,7 +19,7 @@ public class StatementsTest {
 
     @Test
     public void insertReturnsCorrectStatement() {
-        String expected = "INSERT INTO TASKS(description, deadline) VALUES (?, ?)";
+        String expected = "INSERT INTO TASKS(description, deadline, category) VALUES (?, ?, ?)";
 
         assertThat(insert(), is(expected));
     }

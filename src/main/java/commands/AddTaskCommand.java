@@ -10,19 +10,22 @@ import java.sql.Timestamp;
 public class AddTaskCommand extends Command {
 
     private final String description;
+    private final String category;
     private final Timestamp deadline;
 
-    private AddTaskCommand(String description, Timestamp deadline) {
+    private AddTaskCommand(String description, String category, Timestamp deadline) {
         this.description = description;
         this.deadline = deadline;
+        this.category = category;
         determineState();
     }
 
-    public static AddTaskCommand from(String[] descriptionArray, String daysToDeadline) {
+    public static AddTaskCommand from(String[] descriptionArray, String daysToDeadline, String[] categoryArray) {
         String description = Strings.joinStrings(descriptionArray).orElse(null);
         Timestamp deadline = Chronos.convertDaysToTimestamp(daysToDeadline).orElse(null);
+        String category = Strings.joinStrings(categoryArray).orElse("");
 
-        return new AddTaskCommand(description, deadline);
+        return new AddTaskCommand(description, category, deadline);
     }
 
     /**
@@ -41,7 +44,7 @@ public class AddTaskCommand extends Command {
     protected void determineState() {
         if (description != null) {
             this.state = Command.State.VALID;
-        } else if (description == null && deadline != null) {
+        } else if (description == null && (deadline != null || !category.equals("") )) {
             this.errorMessage = "Description must be provided when adding a task";
             this.state = Command.State.INVALID;
         } else {
@@ -64,5 +67,9 @@ public class AddTaskCommand extends Command {
 
     public Timestamp getDeadline() {
         return deadline;
+    }
+
+    public String getCategory() {
+        return category;
     }
 }

@@ -37,6 +37,7 @@ class HsqlDatabase implements Database {
 
             statement.setString(1, task.getDescription());
             statement.setTimestamp(2, task.getDeadline());
+            statement.setString(3, task.getCategory());
             statement.executeUpdate();
 
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
@@ -126,10 +127,11 @@ class HsqlDatabase implements Database {
             String description = rs.getString(2);
             Timestamp createdDate = rs.getTimestamp(3);
             Timestamp endDate = rs.getTimestamp(4);
+            String category = rs.getString(5);
             Instant created = createdDate == null ? null : createdDate.toInstant();
             Instant deadline = endDate == null ? null : endDate.toInstant();
 
-            Task task = new Task(taskId, description, created, deadline);
+            Task task = new Task(taskId, description, category, created, deadline);
             tasks.add(task);
         }
 
