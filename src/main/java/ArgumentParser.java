@@ -55,7 +55,7 @@ class ArgumentParser {
     private AddTaskCommand createAddTaskCommand(CommandLine cmd) {
         logger.trace("Creating {}", AddTaskCommand.class.getSimpleName());
 
-        return AddTaskCommand.from(cmd.getOptionValues(ADD), cmd.getOptionValue(DEADLINE));
+        return AddTaskCommand.from(cmd.getOptionValues(ADD), cmd.getOptionValue(DEADLINE), cmd.getOptionValues(CATEGORY));
     }
 
     private ShowTasksCommand createShowAllTasksCommand() {

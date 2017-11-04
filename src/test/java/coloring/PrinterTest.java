@@ -81,7 +81,8 @@ public class PrinterTest {
 
     @Test
     public void printsTasks() {
-        Task task = new Task(1, "description", Instant.now(), Instant.now().plus(1, ChronoUnit.DAYS));
+        Task task = new Task(1, "description", "category",
+                Instant.now(), Instant.now());
 
         Printer.printTasks(Collections.singletonList(task));
 

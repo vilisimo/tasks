@@ -1,9 +1,10 @@
 package cli;
 
-public interface OptionNames {
-    String ADD = "add";
-    String DEADLINE = "d";
-    String FILTER = "filter";
-    String REMOVE = "del";
-    String CLEAR = "clear";
+public final class OptionNames {
+    public static final String ADD = "add";
+    public static final String DEADLINE = "d";
+    public static final String CATEGORY = "cat";
+    public static final String FILTER = "filter";
+    public static final String REMOVE = "del";
+    public static final String CLEAR = "clear";
 }

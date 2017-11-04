@@ -102,7 +102,8 @@ public class TablePrinter {
 
         List<List<String>> columnRows = new ArrayList<>();
         for (int i = 0; i < columns.size(); i++) {
-            columnRows.add(Strings.chopString(columns.get(i), header.getColumnWidth(names.get(i))));
+            String columnValue = Optional.ofNullable(columns.get(i)).orElse("");
+            columnRows.add(Strings.chopString(columnValue, header.getColumnWidth(names.get(i))));
         }
 
         List<String> rowRepresentations = processColumnRows(columnRows);

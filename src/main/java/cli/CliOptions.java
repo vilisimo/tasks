@@ -22,6 +22,7 @@ public final class CliOptions {
         options.addOption(createFilterOption());
         options.addOption(createRemoveOption());
         options.addOption(createClearOption());
+        options.addOption(createCategoryOption());
 
         logger.info("Added command line options");
 
@@ -41,6 +42,14 @@ public final class CliOptions {
                 .desc("Add deadline for the task")
                 .argName("Deadline")
                 .hasArg()
+                .build();
+    }
+
+    private static Option createCategoryOption() {
+        return Option.builder(CATEGORY)
+                .desc("Add category for the task")
+                .argName("Category")
+                .hasArgs()
                 .build();
     }
 

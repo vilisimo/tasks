@@ -13,5 +13,5 @@ flags should not be allowed.~~ (decided against it)
 * ~~Add liquibase~~
 * ~~Move argument parser from static to normal class~~
 * ~~Add conversion to dates from strings of deadlines~~
-* Add (optional) categories for tasks
+* ~~Add (optional) categories for tasks~~
 * Add ability to filter on categories

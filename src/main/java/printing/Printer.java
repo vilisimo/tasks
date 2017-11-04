@@ -39,12 +39,13 @@ public final class Printer {
         int availableSpace = TablePrinter.usableWidth(79, 1, 4);
         int taskWidth = "task".length();
         int dateWidth = "2017-01-01".length();
-        int descriptionWidth = availableSpace - taskWidth - (dateWidth * 2);
+        int categoryWidth = "category".length();
+        int descriptionWidth = availableSpace - taskWidth - dateWidth - categoryWidth;
 
         LinkedHashMap<String, Integer> columns = new LinkedHashMap<>();
         columns.put("Task", taskWidth);
         columns.put("Description", descriptionWidth);
-        columns.put("Created", dateWidth);
+        columns.put("Category", categoryWidth);
         columns.put("Deadline", dateWidth);
         Header header = new Header(columns);
         Table table = new Table(header);
@@ -59,7 +60,7 @@ public final class Printer {
         LinkedHashMap<String, String> row = new LinkedHashMap<>();
         row.put("Task", String.valueOf(task.getId()));
         row.put("Description", task.getDescription());
-        row.put("Created", Chronos.instantToLocalDate(task.getCreated()));
+        row.put("Category", task.getCategory());
         row.put("Deadline", Chronos.instantToLocalDate(task.getDeadline()));
 
         return new DataRow(row);

@@ -40,4 +40,9 @@ public class CliOptionsTest {
     public void createsShowOption() {
         assertNotNull(options.getOption(FILTER));
     }
+
+    @Test
+    public void createsCategoryOption() {
+        assertNotNull(options.getOption(CATEGORY));
+    }
 }

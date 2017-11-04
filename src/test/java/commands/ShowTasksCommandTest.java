@@ -75,7 +75,8 @@ public class ShowTasksCommandTest {
 
     @Test
     public void printsNonEmptyList() throws SQLException {
-        List<Task> tasks = singletonList(new Task(1, "Test", Instant.now(), Instant.now()));
+        List<Task> tasks = singletonList(new Task(1, "Test", "Category",
+                Instant.now(), Instant.now()));
         when(database.getAll()).thenReturn(tasks);
 
         command.executeCommand(database);
@@ -83,13 +84,14 @@ public class ShowTasksCommandTest {
 
         assertThat(output, containsString("1"));
         assertThat(output, containsString("Test"));
+        assertThat(output, containsString("Category"));
     }
 
     @Test
     public void printsEveryItem() throws SQLException {
         List<Task> tasks = List.of(
-                new Task(1, "Test1", Instant.now(), Instant.now()),
-                new Task(2, "Test2", Instant.now(), Instant.now()));
+                new Task(1, "Test1", "Category", Instant.now(), Instant.now()),
+                new Task(2, "Test2", "Category", Instant.now(), Instant.now()));
         when(database.getAll()).thenReturn(tasks);
 
         command.executeCommand(database);
