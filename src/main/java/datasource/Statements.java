@@ -27,4 +27,8 @@ final class Statements {
     static String filter(Timestamp deadline) {
         return deadline == null ? "SELECT * FROM TASKS WHERE deadline IS NULL" : "SELECT * FROM TASKS WHERE deadline = ?";
     }
+
+    static String filter(String category) {
+        return category == null ? "SELECT * FROM TASKS WHERE category IS NULL" : "SELECT * FROM TASKS WHERE category = ?";
+    }
 }

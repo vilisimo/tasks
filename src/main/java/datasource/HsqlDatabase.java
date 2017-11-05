@@ -1,6 +1,5 @@
 package datasource;
 
-import printing.Printer;
 import commands.AddTaskCommand;
 import commands.RemoveTaskCommand;
 import configuration.JdbcConfiguration;
@@ -8,6 +7,7 @@ import entities.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hsqldb.jdbc.JDBCPool;
+import printing.Printer;
 
 import java.sql.*;
 import java.time.Instant;
@@ -110,6 +110,28 @@ class HsqlDatabase implements Database {
 
             try (ResultSet rs = statement.executeQuery()) {
                 logger.trace("Retrieved a result representing all tasks");
+                List<Task> tasks = createTasks(rs);
+                logger.trace("Successfully filtered and retrieved the tasks");
+
+                return tasks;
+            }
+        }
+    }
+
+    @Override
+    public List<Task> filter(String category) throws SQLException {
+        logger.trace("Attempting to retrieve tasks filtered category(={})", category);
+
+        String query = Statements.filter(category);
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            if (!query.contains("NULL")) {
+                statement.setString(1, category);
+            }
+
+            try (ResultSet rs = statement.executeQuery()) {
                 List<Task> tasks = createTasks(rs);
                 logger.trace("Successfully filtered and retrieved the tasks");
 

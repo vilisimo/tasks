@@ -1,33 +1,23 @@
 package commands;
 
-import printing.Printer;
-import datasource.Database;
 import dates.DateParser;
-import entities.Task;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Optional;
 
-public class FilterTasksCommand extends Command {
+public abstract class FilterTasksCommand extends Command {
 
-    private Timestamp deadline;
-
-    private boolean executable;
-
-    private FilterTasksCommand(boolean executable, Timestamp filter) {
-        this.executable = executable;
-        this.deadline = filter;
-        determineState();
-    }
+    boolean executable;
 
     public static FilterTasksCommand from(String optionValue) {
         logger.trace("Creating {}", FilterTasksCommand.class.getSimpleName());
 
-        Timestamp filter = Optional.ofNullable(optionValue).map(FilterTasksCommand::parseDeadline).orElse(null);
-
-        return new FilterTasksCommand(optionValue != null, filter);
+        try {
+            Timestamp filter = Optional.ofNullable(optionValue).map(FilterTasksCommand::parseDeadline).orElse(null);
+            return new FilterDeadlineCommand(optionValue != null, filter);
+        } catch (NumberFormatException e) {
+            return new FilterCategoryCommand(optionValue != null, optionValue);
+        }
     }
 
     private static Timestamp parseDeadline(String daysToDeadline) {
@@ -39,23 +29,11 @@ public class FilterTasksCommand extends Command {
     }
 
     @Override
-    protected void determineState() {
+    protected final void determineState() {
         if (executable) {
             this.state = State.VALID;
         } else {
             this.state = State.EMPTY;
         }
-    }
-
-    @Override
-    void executeCommand(Database database) {
-        List<Task> tasks;
-        try {
-            tasks = database.filter(deadline);
-        } catch (SQLException e) {
-            throw new RuntimeException("Retrieval of tasks has failed", e);
-        }
-
-        Printer.printTasks(tasks);
     }
 }

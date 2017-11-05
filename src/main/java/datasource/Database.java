@@ -14,4 +14,5 @@ public interface Database {
     int delete(RemoveTaskCommand task) throws SQLException;
     void clear() throws SQLException;
     List<Task> filter(Timestamp deadline) throws SQLException;
+    List<Task> filter(String category) throws SQLException;
 }

@@ -42,7 +42,7 @@ public class StatementsTest {
     public void filterDeadlineReturnsStatementWithIsNullWhenNullGiven() {
         String expected = "SELECT * FROM TASKS WHERE deadline IS NULL";
 
-        assertThat(filter(null), is(expected));
+        assertThat(filter((Timestamp) null), is(expected));
     }
 
     @Test
@@ -50,6 +50,20 @@ public class StatementsTest {
         String expected = "SELECT * FROM TASKS WHERE deadline = ?";
 
         assertThat(filter(new Timestamp(1)), is(expected));
+    }
+
+    @Test
+    public void filterCategoryReturnsStatementWithIsNullWhenNullGiven() {
+        String expected = "SELECT * FROM TASKS WHERE category IS NULL";
+
+        assertThat(filter((String) null), is(expected));
+    }
+
+    @Test
+    public void filterCategoryReturnsStatementWithEqualsWhenValidValueGiven() {
+        String expected = "SELECT * FROM TASKS WHERE category = ?";
+
+        assertThat(filter("does not matter"), is(expected));
     }
 
 }
