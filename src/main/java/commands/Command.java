@@ -1,9 +1,9 @@
 package commands;
 
-import printing.Printer;
 import datasource.Database;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import printing.Printer;
 
 import static java.util.Objects.requireNonNull;
 

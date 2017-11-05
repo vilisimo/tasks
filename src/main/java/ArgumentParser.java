@@ -1,8 +1,8 @@
-import printing.Printer;
 import commands.*;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import printing.Printer;
 
 import java.util.ArrayList;
 import java.util.List;
