@@ -16,13 +16,21 @@ public class FilterTasksCommand extends Command {
 
     private boolean executable;
 
-    private FilterTasksCommand(boolean executable, String filter) {
+    private FilterTasksCommand(boolean executable, Timestamp filter) {
         this.executable = executable;
-        this.deadline = Optional.ofNullable(filter).map(this::parseDeadline).orElse(null);
+        this.deadline = filter;
         determineState();
     }
 
-    private Timestamp parseDeadline(String daysToDeadline) {
+    public static FilterTasksCommand from(String optionValue) {
+        logger.trace("Creating {}", FilterTasksCommand.class.getSimpleName());
+
+        Timestamp filter = Optional.ofNullable(optionValue).map(FilterTasksCommand::parseDeadline).orElse(null);
+
+        return new FilterTasksCommand(optionValue != null, filter);
+    }
+
+    private static Timestamp parseDeadline(String daysToDeadline) {
         if (!daysToDeadline.equalsIgnoreCase("none")) {
             return DateParser.parseDate(daysToDeadline);
         }
@@ -49,12 +57,5 @@ public class FilterTasksCommand extends Command {
         }
 
         Printer.printTasks(tasks);
-    }
-
-    public static FilterTasksCommand from(String optionValue) {
-        logger.trace("Creating inner class of {}: {}", FilterTasksCommand.class.getSimpleName(),
-                FilterTasksCommand.class.getSimpleName());
-
-        return new FilterTasksCommand(optionValue != null, optionValue);
     }
 }
