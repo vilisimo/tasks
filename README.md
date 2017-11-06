@@ -35,7 +35,7 @@ Adding tasks:
     -d <n>          Sets a deadline for a task (n days). 
                     For convenience, "today" and "tomorrow"
                     are also supported.
--filter {filter}    Filters saved tasks. Tasks can be filtered 
+-filter <filter>    Filters saved tasks. Tasks can be filtered 
                     on deadline. Filter can be any of the 
                     following: 
                         * none - unset deadline
