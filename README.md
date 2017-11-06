@@ -1,5 +1,5 @@
 # About
-This is a simple command line tool to enable creating keeping track of tasks that need to be done.
+This is a simple command line tool to enable creating and keeping track of tasks that need to be done.
 
 # But why
 The major reason for this project is to have a simple project that allows some degree of experimentation. 
