@@ -55,7 +55,8 @@ class ArgumentParser {
     private AddTaskCommand createAddTaskCommand(CommandLine cmd) {
         logger.trace("Creating {}", AddTaskCommand.class.getSimpleName());
 
-        return AddTaskCommand.from(cmd.getOptionValues(ADD), cmd.getOptionValue(DEADLINE), cmd.getOptionValues(CATEGORY));
+        return AddTaskCommand.from(cmd.getOptionValues(ADD.shortOpt()), cmd.getOptionValue(DEADLINE.shortOpt()),
+                cmd.getOptionValues(CATEGORY.shortOpt()));
     }
 
     private ShowTasksCommand createShowAllTasksCommand() {
@@ -67,18 +68,18 @@ class ArgumentParser {
     private FilterTasksCommand createFilterTasksCommand(CommandLine cmd) {
         logger.trace("Creating {}", FilterTasksCommand.class.getSimpleName());
 
-        return FilterTasksCommand.from(cmd.getOptionValue(FILTER));
+        return FilterTasksCommand.from(cmd.getOptionValue(FILTER.shortOpt()));
     }
 
     private RemoveTaskCommand createRemoveTaskCommand(CommandLine cmd) {
         logger.trace("Creating {}", RemoveTaskCommand.class.getSimpleName());
 
-        return RemoveTaskCommand.from(cmd.getOptionValue(REMOVE));
+        return RemoveTaskCommand.from(cmd.getOptionValue(REMOVE.shortOpt()));
     }
 
     private ClearTasksCommand createClearTasksCommand(CommandLine cmd) {
         logger.trace("Creating {}", ClearTasksCommand.class.getSimpleName());
 
-        return new ClearTasksCommand(cmd.hasOption(CLEAR));
+        return new ClearTasksCommand(cmd.hasOption(CLEAR.shortOpt()));
     }
 }

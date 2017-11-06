@@ -58,9 +58,9 @@ public class ArgumentParserTest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
 
-        parser.parse(options, new String[] {"-add"});
+        parser.parse(options, new String[] {"-a"});
 
-        assertThat(out.toString(), containsString("add"));
+        assertThat(out.toString(), containsString("a"));
 
         System.setOut(standardOut);
     }
@@ -81,7 +81,7 @@ public class ArgumentParserTest {
 
     @Test
     public void addsRemoveTaskCommand() {
-        List<Command> commands = parser.parse(options, new String[] {"-del", "1"});
+        List<Command> commands = parser.parse(options, new String[] {"-rm", "1"});
 
         assertThat(commands, hasItem(isA(RemoveTaskCommand.class)));
     }

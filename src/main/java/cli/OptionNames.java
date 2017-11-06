@@ -1,10 +1,33 @@
 package cli;
 
-public final class OptionNames {
-    public static final String ADD = "add";
-    public static final String DEADLINE = "d";
-    public static final String CATEGORY = "cat";
-    public static final String FILTER = "filter";
-    public static final String REMOVE = "del";
-    public static final String CLEAR = "clear";
+public enum OptionNames {
+    ADD("add", "a"),
+    DEADLINE("deadline", "d"),
+    CATEGORY("category", "cat"),
+
+    FILTER("filter", "f"),
+
+    REMOVE("remove", "rm"),
+    CLEAR("clear");
+
+    private final String longOpt;
+    private final String shortOpt;
+
+    OptionNames(String longOpt, String shortOpt) {
+        this.longOpt = longOpt;
+        this.shortOpt = shortOpt;
+    }
+
+    OptionNames(String longOpt) {
+        this.longOpt = longOpt;
+        this.shortOpt = longOpt;
+    }
+
+    public String longOpt() {
+        return longOpt;
+    }
+
+    public String shortOpt() {
+        return shortOpt;
+    }
 }

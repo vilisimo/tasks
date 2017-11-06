@@ -18,31 +18,31 @@ public class CliOptionsTest {
 
     @Test
     public void createsAddTaskOption() {
-        assertNotNull(options.getOption(ADD));
+        assertNotNull(options.getOption(ADD.shortOpt()));
     }
 
     @Test
     public void createsDeadlineOption() {
-        assertNotNull(options.getOption(DEADLINE));
+        assertNotNull(options.getOption(DEADLINE.shortOpt()));
     }
 
     @Test
     public void createsRemoveOption() {
-        assertNotNull(options.getOption(REMOVE));
+        assertNotNull(options.getOption(REMOVE.shortOpt()));
     }
 
     @Test
     public void createsClearOption() {
-        assertNotNull(options.getOption(CLEAR));
+        assertNotNull(options.getOption(CLEAR.shortOpt()));
     }
     
     @Test
     public void createsShowOption() {
-        assertNotNull(options.getOption(FILTER));
+        assertNotNull(options.getOption(FILTER.shortOpt()));
     }
 
     @Test
     public void createsCategoryOption() {
-        assertNotNull(options.getOption(CATEGORY));
+        assertNotNull(options.getOption(CATEGORY.shortOpt()));
     }
 }

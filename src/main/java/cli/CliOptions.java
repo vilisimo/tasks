@@ -30,7 +30,8 @@ public final class CliOptions {
     }
 
     private static Option createAddTaskOption() {
-        return Option.builder(ADD)
+        return Option.builder(ADD.shortOpt())
+                .longOpt(ADD.longOpt())
                 .desc("Adds a new task")
                 .argName("Add task")
                 .hasArgs()
@@ -38,7 +39,8 @@ public final class CliOptions {
     }
 
     private static Option createDeadlineOption() {
-        return Option.builder(DEADLINE)
+        return Option.builder(DEADLINE.shortOpt())
+                .longOpt(DEADLINE.longOpt())
                 .desc("Add deadline for the task")
                 .argName("Deadline")
                 .hasArg()
@@ -46,7 +48,8 @@ public final class CliOptions {
     }
 
     private static Option createCategoryOption() {
-        return Option.builder(CATEGORY)
+        return Option.builder(CATEGORY.shortOpt())
+                .longOpt(CATEGORY.longOpt())
                 .desc("Add category for the task")
                 .argName("Category")
                 .hasArgs()
@@ -54,7 +57,8 @@ public final class CliOptions {
     }
 
     private static Option createFilterOption() {
-        return Option.builder(FILTER)
+        return Option.builder(FILTER.shortOpt())
+                .longOpt(FILTER.longOpt())
                 .desc("Filters saved tasks on given deadline")
                 .argName("Filter tasks")
                 .hasArg()
@@ -62,7 +66,8 @@ public final class CliOptions {
     }
 
     private static Option createRemoveOption() {
-        return Option.builder(REMOVE)
+        return Option.builder(REMOVE.shortOpt())
+                .longOpt(REMOVE.longOpt())
                 .desc("Removes a task by its id")
                 .argName("Remove task")
                 .hasArg()
@@ -70,7 +75,8 @@ public final class CliOptions {
     }
 
     private static Option createClearOption() {
-        return Option.builder(CLEAR)
+        return Option.builder(CLEAR.shortOpt())
+                .longOpt(CLEAR.longOpt())
                 .desc("Clears (removes) all tasks")
                 .argName("Clear tasks")
                 .build();

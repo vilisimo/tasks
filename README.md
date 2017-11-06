@@ -30,19 +30,20 @@ If something useful comes out of it, all the better for it.
 Currently supported commands are:
 ~~~
 Adding tasks:
-{no arguments}      Shows all tasks.
--add <task>         Adds a task.
-    -d <n>          Sets a deadline for a task (n days). 
-                    For convenience, "today" and "tomorrow"
-                    are also supported.
--filter <filter>    Filters saved tasks. Tasks can be filtered 
-                    on deadline. Filter can be any of the 
-                    following: 
-                        * none - unset deadline
-                        * integer - days from today
-                        * today - same as 0
-                        * tomorrow - same as 1
-                
--del <id>           Deletes a task with a specified id.
--clear              Deletes all tasks.
+{no arguments}              Shows all tasks.
+-add    -a  <task>          Adds a task.
+        -d <n>              Sets a deadline for a task (n days). 
+                            For convenience, "today" and "tomorrow"
+                            are also supported.
+-filter -f  <filter>        Filters saved tasks. Tasks can be filtered 
+                            on deadline. Filter can be any of the 
+                            following: 
+                                * none - unset deadline
+                                * integer - days from today
+                                * today - same as 0
+                                * tomorrow - same as 1
+                            If none of these are supplied, filtering
+                            is done on the categories instead.
+-remove -rm <id>            Deletes a task with a specified id.
+-clear                      Deletes all tasks.
 ~~~
