@@ -1,6 +1,5 @@
 ### Todo
 * Refactor project to make it cleaner and simpler
-* Add short options
 * Add documentation to methods
 * Crossed out / different color for done tasks
 * Add state (done: yes/no)

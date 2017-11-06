@@ -17,6 +17,11 @@ public class CliOptionsTest {
     }
 
     @Test
+    public void createsHelpOption() {
+        assertNotNull(options.getOption(HELP.shortOpt()));
+    }
+
+    @Test
     public void createsAddTaskOption() {
         assertNotNull(options.getOption(ADD.shortOpt()));
     }

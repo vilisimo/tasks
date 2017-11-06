@@ -31,6 +31,7 @@ Currently supported commands are:
 ~~~
 Adding tasks:
 {no arguments}              Shows all tasks.
+-help   -h                  Prints help message.
 -add    -a  <task>          Adds a task.
         -d <n>              Sets a deadline for a task (n days). 
                             For convenience, "today" and "tomorrow"

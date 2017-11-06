@@ -32,6 +32,7 @@ class ArgumentParser {
             CommandLine cmd = parser.parse(options, args);
             logger.info("Parsed command line arguments");
 
+            commands.add(createPrintHelpCommand(cmd, options));
             commands.add(createAddTaskCommand(cmd));
             commands.add(createFilterTasksCommand(cmd));
             commands.add(createRemoveTaskCommand(cmd));
@@ -50,6 +51,12 @@ class ArgumentParser {
 
     private static boolean isEmpty(String[] args) {
         return args.length < 1;
+    }
+
+    private PrintHelpCommand createPrintHelpCommand(CommandLine cmd, Options options) {
+        logger.trace("Creating {}", PrintHelpCommand.class.getSimpleName());
+
+        return PrintHelpCommand.from(cmd.hasOption(HELP.shortOpt()), options);
     }
 
     private AddTaskCommand createAddTaskCommand(CommandLine cmd) {

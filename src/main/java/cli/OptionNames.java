@@ -8,7 +8,9 @@ public enum OptionNames {
     FILTER("filter", "f"),
 
     REMOVE("remove", "rm"),
-    CLEAR("clear");
+    CLEAR("clear"),
+
+    HELP("help", "h");
 
     private final String longOpt;
     private final String shortOpt;

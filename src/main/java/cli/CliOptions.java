@@ -17,6 +17,7 @@ public final class CliOptions {
 
     public static Options createOptions() {
         Options options = new Options();
+        options.addOption(createHelpOption());
         options.addOption(createAddTaskOption());
         options.addOption(createDeadlineOption());
         options.addOption(createFilterOption());
@@ -29,11 +30,18 @@ public final class CliOptions {
         return options;
     }
 
+    private static Option createHelpOption() {
+        return Option.builder(HELP.shortOpt())
+                .longOpt(HELP.longOpt())
+                .desc("Prints this message")
+                .build();
+    }
+
     private static Option createAddTaskOption() {
         return Option.builder(ADD.shortOpt())
                 .longOpt(ADD.longOpt())
-                .desc("Adds a new task")
-                .argName("Add task")
+                .desc("Add a new task")
+                .argName("task")
                 .hasArgs()
                 .build();
     }
@@ -41,8 +49,8 @@ public final class CliOptions {
     private static Option createDeadlineOption() {
         return Option.builder(DEADLINE.shortOpt())
                 .longOpt(DEADLINE.longOpt())
-                .desc("Add deadline for the task")
-                .argName("Deadline")
+                .desc("Add a deadline for the task [used with -add]")
+                .argName("deadline")
                 .hasArg()
                 .build();
     }
@@ -50,8 +58,8 @@ public final class CliOptions {
     private static Option createCategoryOption() {
         return Option.builder(CATEGORY.shortOpt())
                 .longOpt(CATEGORY.longOpt())
-                .desc("Add category for the task")
-                .argName("Category")
+                .desc("Add category for the task [used with -add]")
+                .argName("category")
                 .hasArgs()
                 .build();
     }
@@ -59,8 +67,8 @@ public final class CliOptions {
     private static Option createFilterOption() {
         return Option.builder(FILTER.shortOpt())
                 .longOpt(FILTER.longOpt())
-                .desc("Filters saved tasks on given deadline")
-                .argName("Filter tasks")
+                .desc("Filters saved tasks on a given deadline")
+                .argName("filter")
                 .hasArg()
                 .build();
     }
@@ -69,7 +77,7 @@ public final class CliOptions {
         return Option.builder(REMOVE.shortOpt())
                 .longOpt(REMOVE.longOpt())
                 .desc("Removes a task by its id")
-                .argName("Remove task")
+                .argName("task id")
                 .hasArg()
                 .build();
     }
@@ -78,7 +86,6 @@ public final class CliOptions {
         return Option.builder(CLEAR.shortOpt())
                 .longOpt(CLEAR.longOpt())
                 .desc("Clears (removes) all tasks")
-                .argName("Clear tasks")
                 .build();
     }
 }

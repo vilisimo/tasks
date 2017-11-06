@@ -94,6 +94,13 @@ public class ArgumentParserTest {
     }
 
     @Test
+    public void addsPrintHelpCommand() {
+        List<Command> commands = parser.parse(options, new String[] {"-help"});
+
+        assertThat(commands, hasItem(isA(PrintHelpCommand.class)));
+    }
+
+    @Test
     public void informsAboutInvalidTaskId() {
         PrintStream standardOut = System.out;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
