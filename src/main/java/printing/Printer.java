@@ -9,7 +9,7 @@ import utils.Chronos;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static coloring.Colors.*;
+import static colors.Colors.*;
 import static java.util.Objects.requireNonNull;
 
 public final class Printer {

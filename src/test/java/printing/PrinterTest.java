@@ -1,5 +1,6 @@
-package coloring;
+package printing;
 
+import colors.Colors;
 import entities.Task;
 import org.junit.After;
 import org.junit.Before;
