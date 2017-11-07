@@ -32,7 +32,7 @@ class HsqlDatabase implements Database {
     }
 
     @Override
-    public void save(AddTaskCommand task) throws SQLException {
+    public long save(AddTaskCommand task) throws SQLException {
         logger.trace("Attempting to save a task");
 
         try (Connection conn = connectionPool.getConnection();
@@ -46,9 +46,10 @@ class HsqlDatabase implements Database {
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 resultSet.next();
                 long taskId = resultSet.getLong(1);
-                Printer.success("Successfully saved a task with id=" + taskId + ".");
 
                 logger.info("Successfully committed a task(id={}) to the database", taskId);
+
+                return taskId;
             }
         }
     }
@@ -61,9 +62,9 @@ class HsqlDatabase implements Database {
              PreparedStatement statement = conn.prepareStatement(Statements.select())) {
 
             try (ResultSet rs = statement.executeQuery()) {
-                logger.trace("Retrieved a result representing all tasks");
                 List<Task> tasks = createTasks(rs);
-                logger.trace("Successfully retrieved all tasks");
+
+                logger.info("Successfully retrieved all tasks");
 
                 return tasks;
             }
@@ -72,7 +73,7 @@ class HsqlDatabase implements Database {
 
     @Override
     public int delete(RemoveTaskCommand task) throws SQLException {
-        logger.trace("Attempting to remove a task (id={})", task.getTaskId());
+        logger.trace("Attempting to remove a task [id={}]", task.getTaskId());
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(Statements.delete())) {
@@ -95,7 +96,7 @@ class HsqlDatabase implements Database {
 
             statement.executeUpdate();
 
-            logger.trace("Successfully removed all tasks");
+            logger.info("Successfully removed all tasks");
         }
     }
 
@@ -104,7 +105,6 @@ class HsqlDatabase implements Database {
         logger.trace("Attempting to retrieve tasks filtered deadline(={})", deadline);
 
         String query = Statements.filter(deadline);
-
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -113,9 +113,9 @@ class HsqlDatabase implements Database {
             }
 
             try (ResultSet rs = statement.executeQuery()) {
-                logger.trace("Retrieved a result representing all tasks");
                 List<Task> tasks = createTasks(rs);
-                logger.trace("Successfully filtered and retrieved the tasks");
+
+                logger.info("Successfully filtered tasks on deadline [={}]", deadline);
 
                 return tasks;
             }
@@ -127,7 +127,6 @@ class HsqlDatabase implements Database {
         logger.trace("Attempting to retrieve tasks filtered category(={})", category);
 
         String query = Statements.filter(category);
-
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -137,7 +136,8 @@ class HsqlDatabase implements Database {
 
             try (ResultSet rs = statement.executeQuery()) {
                 List<Task> tasks = createTasks(rs);
-                logger.trace("Successfully filtered and retrieved the tasks");
+
+                logger.trace("Successfully filtered tasks on category [={}]", category);
 
                 return tasks;
             }
@@ -149,7 +149,8 @@ class HsqlDatabase implements Database {
 
         while (rs.next()) {
             int taskId = rs.getInt(1);
-            logger.trace("Processing task (id=" + taskId + ")");
+            logger.trace("Creating a task representation (id=" + taskId + ")");
+
             String description = rs.getString(2);
             Timestamp createdDate = rs.getTimestamp(3);
             Timestamp endDate = rs.getTimestamp(4);

@@ -1,6 +1,7 @@
 package commands;
 
 import datasource.Database;
+import printing.Printer;
 import utils.Chronos;
 import utils.Strings;
 
@@ -55,7 +56,8 @@ public class AddTaskCommand extends Command {
     @Override
     void executeCommand(Database database) {
         try {
-            database.save(this);
+            long taskId = database.save(this);
+            Printer.success("Successfully saved a task with id=" + taskId + ".");
         } catch (SQLException e) {
             throw new RuntimeException("SQL execution has failed", e);
         }

@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface Database {
-    void save(AddTaskCommand task) throws SQLException;
+    long save(AddTaskCommand task) throws SQLException;
     List<Task> getAll() throws SQLException;
     int delete(RemoveTaskCommand task) throws SQLException;
     void clear() throws SQLException;

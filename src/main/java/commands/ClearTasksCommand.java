@@ -1,6 +1,7 @@
 package commands;
 
 import datasource.Database;
+import printing.Printer;
 
 import java.sql.SQLException;
 
@@ -30,6 +31,7 @@ public class ClearTasksCommand extends Command {
     void executeCommand(Database database) {
         try {
             database.clear();
+            Printer.success("Tasks have been cleared");
         } catch (SQLException e) {
             throw new RuntimeException("Clearing of the tasks has failed", e);
         }
