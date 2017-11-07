@@ -68,7 +68,7 @@ public class RemoveTaskCommandTest {
 
     @Test
     public void reportsInvalidInput() {
-        expectedException.expectMessage("\"invalid\" is not a number");
+        expectedException.expectMessage("\"invalid\" is not a valid id");
         expectedException.expect(NumberFormatException.class);
 
         RemoveTaskCommand.from("invalid");

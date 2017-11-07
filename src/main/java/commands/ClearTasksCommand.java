@@ -4,6 +4,10 @@ import datasource.Database;
 
 import java.sql.SQLException;
 
+/**
+ * Command that handles removing all the taks from data
+ * storage.
+ */
 public class ClearTasksCommand extends Command {
 
     private boolean executable;
@@ -27,7 +31,7 @@ public class ClearTasksCommand extends Command {
         try {
             database.clear();
         } catch (SQLException e) {
-            throw new RuntimeException("Clearing of the tasks failed", e);
+            throw new RuntimeException("Clearing of the tasks has failed", e);
         }
     }
 }

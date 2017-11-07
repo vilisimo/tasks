@@ -7,7 +7,10 @@ import printing.Printer;
 import java.sql.SQLException;
 import java.util.List;
 
-public class FilterCategoryCommand extends FilterTasksCommand {
+/**
+ * Command that allows filtering tasks on categories.
+ */
+class FilterCategoryCommand extends FilterTasksCommand {
 
     private final String category;
 

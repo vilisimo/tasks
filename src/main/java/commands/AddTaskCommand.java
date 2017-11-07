@@ -7,6 +7,9 @@ import utils.Strings;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+/**
+ * Command that handles adding tasks to the data storage.
+ */
 public class AddTaskCommand extends Command {
 
     private final String description;
@@ -31,9 +34,6 @@ public class AddTaskCommand extends Command {
     /**
      * If description is present, we can save the task in the database.
      *
-     * If description is missing, it doesn't mean the parameters are
-     * invalid. It could be that the user did not want to add a task.
-     *
      * However, if description is null and deadline is not, it is clear
      * user wanted to do add a task with a deadline, but the parameters
      * supplied are insufficient to do so.
@@ -57,7 +57,7 @@ public class AddTaskCommand extends Command {
         try {
             database.save(this);
         } catch (SQLException e) {
-            throw new RuntimeException("SQL execution failed", e);
+            throw new RuntimeException("SQL execution has failed", e);
         }
     }
 

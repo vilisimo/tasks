@@ -4,6 +4,10 @@ import datasource.Database;
 
 import java.sql.SQLException;
 
+/**
+ * Command responsible for removing individual tasks
+ * from data storage.
+ */
 public class RemoveTaskCommand extends Command {
 
     private final Integer taskId;
@@ -14,13 +18,11 @@ public class RemoveTaskCommand extends Command {
     }
 
     public static RemoveTaskCommand from(String optionValue) {
-        logger.trace("Creating {}", RemoveTaskCommand.class.getSimpleName());
-
         if (optionValue != null) {
             try {
                 return new RemoveTaskCommand(Integer.parseInt(optionValue));
             } catch (NumberFormatException e) {
-                throw new NumberFormatException("\"" + optionValue + "\" is not a number");
+                throw new NumberFormatException("\"" + optionValue + "\" is not a valid id (=integer)");
             }
         } else {
             return new RemoveTaskCommand(null);
@@ -34,7 +36,7 @@ public class RemoveTaskCommand extends Command {
         } else if (taskId >= 0) {
             this.state = Command.State.VALID;
         } else {
-            this.errorMessage = "Task id cannot be negative";
+            this.errorMessage = "Task id cannot be negative [input=" + taskId + "]";
             this.state = Command.State.INVALID;
         }
     }

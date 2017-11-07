@@ -7,6 +7,13 @@ import printing.Printer;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Base command that all commands should inherit from.
+ *
+ * The class encapsulates a standard way of execution.
+ * To affect the outcome, subclasses should override
+ * the abstract methods with appropriate behavior.
+ */
 public abstract class Command {
 
     static final Logger logger = LogManager.getLogger();
@@ -26,7 +33,7 @@ public abstract class Command {
             case INVALID:
                 showError();
                 break;
-            default:
+            default: // EMPTY state: do nothing
                 break;
         }
     }

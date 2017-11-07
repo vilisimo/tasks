@@ -7,6 +7,9 @@ import printing.Printer;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Command responsible for displaying all saved tasks.
+ */
 public class ShowTasksCommand extends Command {
 
     private boolean executable;

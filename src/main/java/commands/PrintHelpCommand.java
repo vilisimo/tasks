@@ -4,6 +4,9 @@ import datasource.Database;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
+/**
+ * Command that outputs available CLI options.
+ */
 public class PrintHelpCommand extends Command {
 
     private final boolean executable;

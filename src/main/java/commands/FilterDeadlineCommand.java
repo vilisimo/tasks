@@ -8,7 +8,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class FilterDeadlineCommand extends FilterTasksCommand {
+/**
+ * Command that allows filtering tasks on their deadline.
+ */
+class FilterDeadlineCommand extends FilterTasksCommand {
 
     private Timestamp deadline;
 
@@ -24,7 +27,7 @@ public class FilterDeadlineCommand extends FilterTasksCommand {
         try {
             tasks = database.filter(deadline);
         } catch (SQLException e) {
-            throw new RuntimeException("Retrieval of tasks has failed", e);
+            throw new RuntimeException("Filtering of tasks on deadline [=" + deadline + "] has failed", e);
         }
 
         Printer.printTasks(tasks);
