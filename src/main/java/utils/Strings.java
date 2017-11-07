@@ -7,6 +7,10 @@ import java.util.Optional;
 import static java.util.Objects.requireNonNull;
 import static utils.Validations.requireLarger;
 
+/**
+ * Utility class that concerns itself with operations
+ * on Strings.
+ */
 public final class Strings {
 
     private Strings() {

@@ -10,6 +10,9 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static utils.Validations.*;
 
+/**
+ * Represents header's table.
+ */
 public class Header {
 
     private final LinkedHashMap<String, Integer> columns;

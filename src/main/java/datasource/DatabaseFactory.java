@@ -2,6 +2,10 @@ package datasource;
 
 import configuration.JdbcConfiguration;
 
+/**
+ * The class is responsible for initializing and providing an
+ * appropriate database implementation.
+ */
 public final class DatabaseFactory {
 
     private DatabaseFactory() {

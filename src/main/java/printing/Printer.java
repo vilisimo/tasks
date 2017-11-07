@@ -12,6 +12,10 @@ import java.util.List;
 import static colors.Colors.*;
 import static java.util.Objects.requireNonNull;
 
+/**
+ * A class that is concerned with printing: from errors
+ * to tables.
+ */
 public final class Printer {
 
     private Printer() {

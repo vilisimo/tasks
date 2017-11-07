@@ -8,6 +8,10 @@ import static java.util.Objects.requireNonNull;
 import static utils.Validations.requireNonEmpty;
 import static utils.Validations.requireSameSize;
 
+/**
+ * Utility class that concerns itself with operations
+ * on collections.
+ */
 public final class Containers {
 
     private Containers() {

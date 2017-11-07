@@ -8,6 +8,9 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static utils.Validations.requireNonEmpty;
 
+/**
+ * Represents one row in a table.
+ */
 public class DataRow {
 
     private final LinkedHashMap<String, String> columns;

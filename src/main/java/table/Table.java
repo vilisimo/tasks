@@ -7,6 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * A class that represents a table and serves as a container
+ * for rows and header.
+ *
+ * Note that much of the functionality and attributes of tables
+ * is derived from headers and rows. Table without header or rows
+ * does not make much sense. In fact, for table to exist it must
+ * have at least a header.
+ */
 public class Table {
 
     private final Header header;
@@ -49,6 +58,8 @@ public class Table {
 
     /**
      * Answers the question of whether the table has any rows.
+     * Note that header is not considered to be a row, as headers
+     * do not contain any data aside from column names.
      *
      * @return whether the table has rows
      */

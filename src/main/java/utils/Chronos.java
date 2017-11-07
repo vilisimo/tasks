@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Optional;
 
+/**
+ * Utility class that concerns itself with operations on time.
+ */
 public final class Chronos {
 
     private Chronos() {

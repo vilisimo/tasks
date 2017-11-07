@@ -5,11 +5,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.Properties;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 
+/**
+ * The class is responsible for loading external properties
+ * file(s).
+ */
 public class ConfigurationLoader {
 
     private final static Logger logger = LogManager.getLogger();
@@ -20,11 +25,16 @@ public class ConfigurationLoader {
         InputStream input = getInputStream(path);
         logger.trace("Loaded input stream from {}", path);
         Properties properties = loadProperties(input);
-        logger.info("Loaded properties from {}", path);
+        logger.info("Successfully loaded properties from {}", path);
 
         return createJdbcConfig(properties);
     }
 
+    /**
+     * Converts a file at a given location to InputStream
+     * @param path file's location
+     * @return {@code InputStream} of the file
+     */
     static InputStream getInputStream(String path) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         InputStream stream = classLoader.getResourceAsStream(path);

@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 import static utils.Validations.requireLarger;
 
+/**
+ * A class that holds the logic of how to print tables.
+ */
 public class TablePrinter {
 
     private final Table table;

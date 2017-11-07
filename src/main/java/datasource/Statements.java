@@ -2,6 +2,9 @@ package datasource;
 
 import java.sql.Timestamp;
 
+/**
+ * A class to hold various SQL statements in one place.
+ */
 final class Statements {
 
     private Statements() {

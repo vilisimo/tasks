@@ -9,6 +9,9 @@ import java.util.List;
 
 import static cli.OptionNames.*;
 
+/**
+ * Class that does the parsing of user's input.
+ */
 class ArgumentParser {
 
     private static final Logger logger = LogManager.getLogger();

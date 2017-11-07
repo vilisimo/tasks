@@ -7,6 +7,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utility class that concerns itself with validations
+ * of various conditions.
+ */
 public final class Validations {
 
     private Validations() {

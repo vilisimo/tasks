@@ -8,6 +8,10 @@ import java.time.LocalTime;
 import static dates.Days.TODAY;
 import static dates.Days.TOMORROW;
 
+/**
+ * Utility class that concerns itself with parsing dates
+ * from Strings.
+ */
 public final class DateParser {
 
     private DateParser() {

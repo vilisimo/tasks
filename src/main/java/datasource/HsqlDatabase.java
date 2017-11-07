@@ -14,6 +14,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that provides HSQLDB-specific implementation of the
+ * database operations.
+ */
 class HsqlDatabase implements Database {
 
     private final static Logger logger = LogManager.getLogger();
@@ -25,7 +29,6 @@ class HsqlDatabase implements Database {
         connectionPool.setURL(config.url);
         connectionPool.setUser(config.username);
         connectionPool.setPassword(config.password);
-        logger.trace("Created a connection pool (url={})", config.url);
     }
 
     @Override
@@ -45,7 +48,7 @@ class HsqlDatabase implements Database {
                 long taskId = resultSet.getLong(1);
                 Printer.success("Successfully saved a task with id=" + taskId + ".");
 
-                logger.info("Committed task(id={}) to the database", taskId);
+                logger.info("Successfully committed a task(id={}) to the database", taskId);
             }
         }
     }
@@ -53,6 +56,7 @@ class HsqlDatabase implements Database {
     @Override
     public List<Task> getAll() throws SQLException {
         logger.trace("Attempting to retrieve all tasks");
+
         try (Connection conn = connectionPool.getConnection();
              PreparedStatement statement = conn.prepareStatement(Statements.select())) {
 

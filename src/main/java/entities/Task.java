@@ -2,6 +2,10 @@ package entities;
 
 import java.time.Instant;
 
+/**
+ * A class that encapsulates relevant information
+ * about a task.
+ */
 public final class Task {
 
     private final int id;
