@@ -1,6 +1,7 @@
 package commands;
 
 import datasource.Database;
+import printing.Printer;
 
 import java.sql.SQLException;
 
@@ -45,6 +46,7 @@ public class RemoveTaskCommand extends Command {
     void executeCommand(Database database) {
         try {
             database.delete(this);
+            Printer.success("Successfully deleted a task [id=" + taskId + "]");
         } catch (SQLException e){
             throw new RuntimeException("Deletion of a task failed", e);
         }
