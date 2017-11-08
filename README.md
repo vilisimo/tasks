@@ -26,6 +26,48 @@ If something useful comes out of it, all the better for it.
     mvn exec:java -Dexec.args="arguments"
     ~~~
 
+## Execution From Anywhere
+Alternatively, it is possible to set up the program so that it can be called
+by simply entering `tasks` (or any other preferred word).
+
+To do so:
+1. Clone the repo
+2. Ensure you have [Maven](https://maven.apache.org/install.html) installed
+3. Run the following command:
+    ~~~
+    mvn clean package
+    ~~~
+   This will package the program into one massive jar (~10mb), which can be 
+   launched like this:
+    ~~~
+    java -jar target/tasks-1.0-SNAPSHOT-jar-with-dependencies.jar {arguments}
+    ~~~
+4. Copy this jar to a location that you feel is appropriate for it. For example,
+   `/opt/`, `/usr/local/`, or simply `~/`
+5. Create a shell script with a name `tasks` (or any other preferred name).
+   How the script should/might look can be seen in 
+   [`tasks`](https://github.com/vilisimo/tasks/blob/master/tasks) file.
+6. Give execution permissions to the file you created:
+    ~~~
+    chmod u+x filename
+    ~~~
+7. Move the file to `/usr/local/bin`:
+    ~~~
+    sudo mv filename /usr/local/bin
+    ~~~ 
+8. Reload the terminal:
+    ~~~
+    source ~/.bashrc
+    ~~~
+9. Try it out:
+    ~~~
+    tasks -a Example task -d today -cat test
+    ~~~
+    If all goes well, you should see the following output:
+    > TASKS :: Successfully saved a task with id=1
+    
+
+
 # Supported Commands
 Currently supported commands are:
 ~~~
