@@ -1,0 +1,4 @@
+dir=/opt/
+name=tasks.jar
+
+java -jar $dir/$name "$@"
