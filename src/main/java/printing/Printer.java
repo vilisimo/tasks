@@ -18,20 +18,22 @@ import static java.util.Objects.requireNonNull;
  */
 public final class Printer {
 
+    private static final String PREFIX = "TASKS :: ";
+
     private Printer() {
         throw new AssertionError("The class should not be instantiated");
     }
 
     public static void success(String successText) {
-        System.out.println(ANSI_GREEN + successText + ANSI_RESET);
+        System.out.println(ANSI_GREEN + PREFIX + successText + ANSI_RESET);
     }
 
     public static void error(String errorText) {
-        System.out.println(ANSI_RED + errorText + ANSI_RESET);
+        System.out.println(ANSI_RED + PREFIX + errorText + ANSI_RESET);
     }
 
     public static void warning(String warningText) {
-        System.out.println(ANSI_YELLOW + warningText + ANSI_RESET);
+        System.out.println(ANSI_YELLOW + PREFIX + warningText + ANSI_RESET);
     }
 
     public static void printTasks(List<Task> tasks) {
